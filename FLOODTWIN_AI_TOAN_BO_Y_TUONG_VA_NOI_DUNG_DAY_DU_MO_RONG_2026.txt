@@ -1,0 +1,1727 @@
+FLOODTWIN AI
+TOÀN BỘ NỘI DUNG VÀ KHO Ý TƯỞNG SẢN PHẨM
+FloodPulse AI + FloodPath AI + FloodVision AI + FloodCommand
+
+Tài liệu mô tả ý tưởng, nội dung, tính năng và giá trị sản phẩm.
+Không phải prompt lập trình. Không phải kế hoạch, tiến độ, backlog hay tài liệu giao việc kỹ thuật.
+Trạng thái: ĐỀ XUẤT Ý TƯỞNG; không hàm ý đã có phần mềm chạy hoặc dữ liệu ngập thực địa đã xác minh.
+
+======================================================================
+01. TÊN DỰ ÁN, ĐỊNH VỊ VÀ THÔNG ĐIỆP
+======================================================================
+
+Tên dự án: FloodTwin AI.
+Tên đầy đủ: FloodTwin AI – Nền tảng trí tuệ nhân tạo hỗ trợ nhận diện, dự báo nguy cơ ngập cục bộ và phân tích phương án di chuyển theo diễn biến thời gian.
+Tên các hợp phần:
+- FloodPulse: theo dõi tín hiệu mưa, lịch sử và đánh giá nguy cơ ngập theo khu vực/đoạn đường.
+- FloodVision: nhận diện dấu hiệu nước ngập trong ảnh, hiểu báo cáo hiện trường.
+- FloodReport: trích xuất thông tin từ phản ánh bằng tiếng Việt và tổng hợp báo cáo liên quan.
+- FloodPath: phân tích mạng lưới đường và so sánh lộ trình dựa trên mức độ rủi ro, dữ liệu có sẵn và độ không chắc chắn.
+- FloodCommand: hệ thống tổng hợp dữ liệu, xác minh phản ánh, giải thích cảnh báo và hỗ trợ người quản lý theo dõi diễn biến.
+- FloodLab: môi trường giả lập kịch bản "nếu như" để trình diễn cách hệ thống phản ứng khi mưa hoặc thông tin hiện trường thay đổi.
+
+Thông điệp gợi ý:
+"Biết nguy cơ trước. Hiểu bằng chứng rõ. Chủ động ứng phó." 
+"Từ dữ liệu mưa đến dấu hiệu ngập, từ báo cáo hiện trường đến phương án di chuyển." 
+"Không chỉ biết trời mưa – hiểu nơi nào cần chú ý và vì sao." 
+
+Ý tưởng lõi: FloodTwin AI không dừng ở việc hiển thị dự báo thời tiết hoặc ghim các điểm ngập lên bản đồ. Hệ thống cố gắng kết nối thông tin theo chuỗi:
+
+TÍN HIỆU THỜI TIẾT -> PHÂN TÍCH NGUY CƠ -> BẰNG CHỨNG HIỆN TRƯỜNG -> XÁC MINH -> CẬP NHẬT ĐOẠN ĐƯỜNG -> SO SÁNH LẠI LỘ TRÌNH -> GIẢI THÍCH CHO CON NGƯỜI.
+
+Sản phẩm có thể thiết kế, lập trình và trình diễn bằng laptop. Không bắt buộc lắp thiết bị IoT, cảm biến mực nước, camera giao thông hoặc thiết bị đo ngoài thực địa. Các nguồn API, ảnh do người dùng cung cấp, dữ liệu GIS và bộ dữ liệu tình huống có thể phục vụ trải nghiệm phần mềm. Với ứng dụng thực tế ở quy mô lớn, chất lượng đầu ra vẫn phụ thuộc vào độ đầy đủ và độ tin cậy của quan trắc địa phương.
+
+Ranh giới sản phẩm: Đây là công cụ thông tin và hỗ trợ đánh giá nguy cơ, không phải cơ quan dự báo/cảnh báo thiên tai chính thức, không xác nhận một tuyến đường chắc chắn an toàn và không thể xác định mực nước chính xác tới từng centimet chỉ từ một ảnh bất kỳ. Khi có cảnh báo chính thức hoặc có tình huống nguy hiểm, thông tin và hướng dẫn của cơ quan có thẩm quyền luôn được ưu tiên.
+
+======================================================================
+02. VẤN ĐỀ THỰC TẾ MÀ DỰ ÁN MUỐN GIẢI QUYẾT
+======================================================================
+
+Ở những khu vực có thể xảy ra ngập cục bộ, vấn đề của người dân không chỉ là "ngày mai có mưa hay không". Những câu hỏi khó hơn bao gồm:
+
+- Tuyến đường mình thường đi có đang xuất hiện dấu hiệu ngập không?
+- Mưa ở đây mạnh hơn khu vực khác, nhưng khu nào từng ngập trước đó?
+- Một bức ảnh ngập đăng trên mạng có còn phản ánh tình trạng hiện tại không?
+- Ảnh chụp là mặt đường ngập hay chỉ là mặt đường ướt, ao, sông, vũng nước nhỏ?
+- Tin "đường bị ngập" do một người gửi đã có ai xác minh chưa?
+- Nếu một đoạn đường cần tránh, còn phương án di chuyển nào để cân nhắc?
+- Nếu thông tin đều thiếu hoặc đã cũ, hệ thống có biết thừa nhận "chưa thể đánh giá" không?
+
+Thông tin hiện thường nằm rời rạc giữa dự báo thời tiết, nhóm chat, tin nhắn, bài đăng mạng xã hội, phản ánh của người dân và bản đồ giao thông thông thường. Người dùng phải tự tổng hợp, đối chiếu thời gian, vị trí và độ tin cậy. Điều này mất thời gian, dễ hiểu nhầm và khó chủ động chuẩn bị.
+
+Với đơn vị quản lý trường học, khuôn viên, khu dân cư hoặc bộ phận điều phối, thách thức khác là nhận nhiều báo cáo giống nhau, thông tin thiếu tọa độ, ảnh gửi sai thời điểm hoặc báo cáo cũ chưa được đóng. FloodTwin AI muốn hỗ trợ chuyển luồng thông tin phân tán này thành những hồ sơ sự kiện có nguồn, thời gian, vị trí và trạng thái xác minh rõ ràng.
+
+Mục tiêu tác động:
+1) Giảm công sức tìm kiếm và đối chiếu thông tin nhiều nguồn.
+2) Phát hiện sớm các khu vực đáng chú ý để con người kiểm tra.
+3) Hỗ trợ sàng lọc và tổng hợp nhiều phản ánh hiện trường.
+4) Giúp người dùng hiểu sự khác nhau giữa dự báo, quan sát đã xác minh và thông tin chưa xác minh.
+5) So sánh các phương án đi lại dựa trên thông tin hiện có, không đưa ra lời bảo đảm an toàn.
+6) Tăng khả năng giải trình: tại sao một khu vực được cảnh báo, nguồn từ đâu, lúc nào và ai xác minh.
+7) Tạo dữ liệu lịch sử có cấu trúc phục vụ phân tích dài hạn khi được thu thập và kiểm chứng hợp pháp.
+
+======================================================================
+03. ĐỐI TƯỢNG SỬ DỤNG VÀ NHU CẦU CỤ THỂ
+======================================================================
+
+A. Người dân, sinh viên, người đi làm:
+Muốn xem các điểm được báo cáo ngập gần lộ trình quen thuộc, đọc giải thích ngắn, cân nhắc hoãn chuyến đi hoặc chọn phương án khác. Không muốn phải biết GIS hay đọc đồ thị thủy văn.
+
+B. Phụ huynh và người đưa đón học sinh:
+Muốn biết khu vực quanh trường có phản ánh ngập đã xác minh hay chưa, thời gian báo cáo gần nhất, có cần hỏi nhà trường hoặc theo dõi thông báo chính thức hay không.
+
+C. Nhà trường và đơn vị quản lý khuôn viên:
+Muốn tập hợp phản ánh tại cổng trường, bãi xe, đường nội bộ, lối đi bộ; giao người phụ trách kiểm tra; lưu diễn biến và nhắc nhở người thuộc phạm vi quản lý.
+
+D. Nhân sự điều phối nội bộ, giao nhận, bảo trì:
+Muốn xem tuyến nào có báo cáo bất lợi để điều chỉnh công việc không cấp thiết, hạn chế gửi người vào khu vực đã được xác nhận hạn chế tiếp cận.
+
+E. Tình nguyện viên và nhóm hỗ trợ cộng đồng:
+Muốn cập nhật bằng chứng tại những điểm được phân công kiểm tra, tránh trùng lặp khảo sát và cung cấp thông tin có nguồn.
+
+F. Người quản trị/kiểm duyệt dữ liệu:
+Muốn thấy các ảnh cần xác minh, báo cáo trùng, hình ảnh không rõ, thời gian đã cũ, vấn đề địa điểm mơ hồ và lịch sử chỉnh sửa cảnh báo.
+
+G. Người nghiên cứu và tổ chức giáo dục:
+Muốn sử dụng dữ liệu thử nghiệm đã ẩn danh để hiểu tương quan giữa mưa, đặc điểm địa hình và phản ánh hiện trường; đồng thời đánh giá sai sót, khả năng giải thích và độ tin cậy của mô hình AI.
+
+======================================================================
+04. TRẢI NGHIỆM CỐT LÕI CỦA NGƯỜI DÙNG
+======================================================================
+
+Hành trình 1 – Xem tình hình một khu vực:
+Người dùng mở website, chọn một khu vực thử nghiệm trên bản đồ. Họ thấy lớp dữ liệu mưa, các địa điểm đang có báo cáo, mức nguy cơ tham khảo và một nhãn rõ ràng cho biết thời điểm cập nhật. Bấm vào một điểm để xem: diễn biến mưa, số phản ánh, mức độ xác minh, ảnh được phép công khai, dữ liệu đã cũ hay chưa và các yếu tố dẫn đến nhận định.
+
+Hành trình 2 – Hỏi về một lộ trình:
+Người dùng chọn điểm xuất phát và điểm đến. FloodPath trình bày các tuyến khả thi trên mạng đường đã được số hóa, mô tả đoạn nào có báo cáo ngập, đoạn nào chỉ có nguy cơ dự báo và đoạn nào thiếu dữ liệu. Người dùng có thể xem tuyến ngắn nhất và những phương án thay thế để cân nhắc. Khi thông tin chưa đủ, ứng dụng phải thể hiện sự không chắc chắn hoặc từ chối đưa khuyến nghị chắc chắn.
+
+Hành trình 3 – Gửi báo cáo ngập:
+Người dùng tải ảnh hoặc viết "Khoảng 16 giờ, nước đọng nhiều ở đoạn gần cổng trường". AI kiểm tra dấu hiệu trong ảnh, tách dữ liệu liên quan, hỏi bổ sung vị trí/thời gian còn thiếu. Báo cáo được đánh dấu "chờ xác minh". Sau khi người phụ trách duyệt, thông tin mới được dùng với vai trò bằng chứng đã kiểm duyệt để cập nhật lớp bản đồ.
+
+Hành trình 4 – Thông tin mới làm thay đổi kết quả:
+Một đoạn đường trước đó chưa có sự kiện nào, sau đó xuất hiện báo cáo đã được kiểm tra. Bản đồ đổi trạng thái; FloodPath so sánh lại các lộ trình và giải thích sự thay đổi bằng nguồn báo cáo mới. Người dùng thấy trước/sau chứ không chỉ nhận được một đường vẽ khác trên bản đồ.
+
+Hành trình 5 – Tình huống dữ liệu lỗi thời:
+Dự báo mưa không cập nhật, ảnh gửi từ hôm qua và không có trạm quan trắc phù hợp. Hệ thống nêu chính xác điểm thiếu dữ liệu, giữ lại mốc thông tin cuối cùng như lịch sử và ngừng trình bày dữ liệu đó như một nhận định tình trạng hiện tại.
+
+======================================================================
+05. FLOODPULSE AI – BỘ NÃO ĐÁNH GIÁ NGUY CƠ NGẬP CỤC BỘ
+======================================================================
+
+FloodPulse là phần giúp trả lời "Đâu là khu vực đáng chú ý trong thời gian tới, và yếu tố nào khiến khu vực đó có nguy cơ?"
+
+Nhóm tín hiệu đầu vào có thể có:
+- Mưa giờ gần nhất hoặc dữ liệu mưa ước lượng theo nguồn.
+- Mưa tích lũy trong 1 giờ, 3 giờ, 6 giờ và 24 giờ.
+- Mưa dự báo trong những khung thời gian tiếp theo.
+- Khu vực từng có sự kiện ngập được xác minh, ngày/giờ xảy ra và mức độ ảnh hưởng.
+- Địa hình và độ cao tương đối; chỉ là tín hiệu tham khảo nếu dữ liệu địa hình thô.
+- Đặc điểm mặt phủ đô thị, mật độ xây dựng hoặc khu trũng nếu có dữ liệu GIS đáng tin.
+- Khả năng thoát nước, cống rãnh, điểm thường xuyên ứ nước khi có dữ liệu được cấp phép.
+- Khoảng cách phù hợp đến sông/rạch và các yếu tố thủy văn liên quan đến từng khu vực.
+- Mực nước quan trắc hoặc lưu lượng sông nếu có nguồn, vị trí trạm, hệ quy chiếu và thời gian đo rõ ràng.
+- Báo cáo hiện trường đã xác minh và tuổi của mỗi báo cáo.
+- Dữ liệu còn thiếu, độ trễ và mức không chắc chắn của từng nguồn.
+
+Các cách thể hiện khác nhau:
+- "Mưa hiện tại/dự báo tăng": thông tin thời tiết, không tự đồng nhất với ngập đường.
+- "Nguy cơ tham khảo thấp/trung bình/cao": xếp hạng dựa trên tín hiệu có sẵn, không mặc định là xác suất phần trăm.
+- "Có báo cáo ngập đã xác minh vào thời điểm X": phát biểu có bằng chứng trong một mốc thời gian.
+- "Thiếu quan trắc để đánh giá": trường hợp nên thừa nhận giới hạn.
+
+Điểm sáng tạo lớn là hiển thị sự thay đổi của nguy cơ theo thời gian, đồng thời giải thích các yếu tố nào thay đổi. Chẳng hạn: "Mức cần chú ý tăng do lượng mưa dự báo cao hơn, khu vực từng có báo cáo ngập, nhưng hiện chưa có ảnh xác minh mới". Đây là một câu diễn giải có điều kiện và thể hiện đúng độ không chắc chắn, thay vì tuyên bố "đường chắc chắn sắp ngập".
+
+FloodPulse còn có thể hỗ trợ:
+- Danh sách điểm nóng xếp theo mức độ cần kiểm tra.
+- So sánh nguy cơ của hai khu vực theo cùng thời điểm.
+- Trục thời gian cho một đoạn đường trong một ngày mưa.
+- Phát hiện thay đổi bất thường của tín hiệu mưa theo chuỗi thời gian.
+- Nhắc dữ liệu mực nước/trạm đo chưa có hoặc quá cũ.
+- Giải thích các cảnh báo đang dựa trên mô hình, chưa có quan sát trực tiếp.
+- Phân biệt vùng mưa lớn với vùng thực sự có bằng chứng ngập đường.
+- Phân tích tương quan lịch sử giữa lượng mưa và phản ánh ngập nếu tập dữ liệu có chất lượng.
+
+======================================================================
+06. FLOODVISION AI – ĐỌC BẰNG CHỨNG HÌNH ẢNH
+======================================================================
+
+FloodVision tiếp nhận ảnh người dùng chủ động cung cấp hoặc ảnh được cấp phép, và cố gắng trả lời "Ảnh này có bằng chứng trực quan cho thấy nước đang che phủ mặt đường hay không?"
+
+Những tình huống ảnh AI cần phân biệt:
+1. Mặt đường ẩm ướt sau mưa nhưng không có dấu hiệu ngập rõ ràng.
+2. Vũng nước nhỏ, giới hạn cục bộ, chưa có đủ thông tin về khả năng đi lại.
+3. Nước bao phủ một phần mặt đường hoặc lối đi.
+4. Nước bao phủ rộng, không rõ ranh giới mép đường.
+5. Ảnh ao hồ, sông, mương nước nhưng không phải cảnh ngập đường.
+6. Ảnh không chứa nước.
+7. Ảnh thiếu sáng, rung, chụp mờ hoặc bị che khuất – phải trả "không xác định" nếu cần.
+8. Ảnh đã chụp từ quá khứ, không chứng minh tình trạng hiện tại.
+9. Ảnh lấy trên Internet hoặc chụp lại màn hình, cần kiểm tra nguồn chứ không tự xác nhận địa điểm.
+10. Ảnh có đối tượng nhạy cảm như người, biển số, địa chỉ nhà riêng cần che trước khi công khai.
+
+Đầu ra hữu ích có thể gồm:
+- Nhóm tình trạng ảnh: có dấu hiệu ngập / không thấy dấu hiệu / không đủ thông tin / không đúng chủ đề.
+- Mô tả ngắn vì sao AI đưa ra nhận định: nước che phủ mặt đường, mép vỉa hè khó nhận biết, phản chiếu nước có thể gây nhầm, v.v.
+- Độ chắc chắn nội bộ hoặc nhãn không chắc chắn, tránh lạm dụng điểm số như "khả năng đường ngập chính xác 97%" khi chưa hiệu chuẩn.
+- Vùng ảnh cần chú ý nếu mô hình thực sự hỗ trợ định vị vùng/bounding box/segmentation.
+- Những thông tin còn thiếu: vị trí, thời gian, góc chụp, độ sâu thực đo.
+- Đề nghị người dùng tự xác nhận các chi tiết quan sát, không khuyến khích tiến vào vùng nước nguy hiểm để chụp bổ sung.
+
+Ý tưởng nâng cao mang tính nghiên cứu:
+- So sánh ảnh cùng một góc tại các thời điểm khác nhau.
+- Phát hiện ảnh gần trùng hoặc ảnh đã từng xuất hiện ở báo cáo khác.
+- Nhận diện sự hiện diện của vật chuẩn có kích thước xác thực để nghiên cứu ước lượng mực nước kèm sai số. Không được tự đổi "nước tới mắt cá" thành số cm cố định.
+- Theo dõi vùng mặt đường có nước bằng segmentation nếu có dữ liệu nhãn tương thích.
+- Tách nước trên mặt đường với dòng sông/ao hồ bằng hiểu ngữ cảnh hình ảnh.
+- Gợi ý chất lượng ảnh: quá tối, không thấy mặt đường, thiếu góc nhìn; nhắc người gửi bổ sung từ vị trí an toàn nếu có thể.
+
+Mục đích thực sự không phải "AI kết luận ngập thay con người", mà là giảm công sàng lọc hàng chục hoặc hàng trăm phản ánh và đưa các báo cáo có tín hiệu đáng quan tâm lên đầu hàng đợi xác minh.
+
+======================================================================
+07. FLOODREPORT AI – HIỂU NGÔN NGỮ TỰ NHIÊN VÀ GOM TIN HIỆN TRƯỜNG
+======================================================================
+
+Báo cáo hiện trường thường không có cấu trúc, ví dụ:
+- "Nước đọng sâu ở khúc đường gần cổng phụ trường, xe đi chậm".
+- "Đoạn trước chợ còn ngập lúc 17h".
+- "Mưa đã tạnh nhưng khúc cua sát cầu vẫn bị đọng nước".
+- "Ảnh này chụp hồi trưa, giờ mình chưa biết ra sao".
+
+FloodReport AI có thể:
+- Nhận biết từ ngữ diễn tả mưa, nước, ngập, chảy xiết, khó di chuyển.
+- Tách mốc thời gian nhắc trong câu và phân biệt với thời gian đăng tin.
+- Trích xuất vị trí tương đối và hỏi thêm khi tên điểm mốc không đủ rõ.
+- Nhận diện mức độ chắc chắn trong lời người gửi: "nghe nói", "tôi vừa thấy", "ảnh cũ".
+- Phát hiện câu phủ định: "đường này không bị ngập" khác với "đường này bị ngập".
+- Gom những báo cáo có khả năng nói về cùng sự kiện theo vị trí, thời gian và nội dung.
+- Gợi ý phát hiện hai báo cáo mâu thuẫn và hiển thị chúng cùng trạng thái xem xét.
+- Tóm tắt diễn biến một điểm trong một ngày dưới dạng đoạn văn dễ hiểu.
+- Tạo bản tóm tắt cho người kiểm duyệt từ nhiều thông tin trùng nhau.
+- Phân loại phản ánh không liên quan hoặc mang tính quảng cáo để không gây nhiễu.
+- Đánh dấu các tin có dấu hiệu giả mạo, nhưng không kết luận người gửi nói dối chỉ bằng mô hình.
+
+Ví dụ thay vì xem 15 tin nhắn gần giống, người điều phối thấy một thẻ tổng hợp:
+"Trong 40 phút vừa qua có 6 phản ánh gần vị trí A; 2 ảnh liên quan cùng một cảnh; 1 bản ghi đã được xác minh; 3 phản ánh thiếu thời gian. Cần kiểm tra xem tình trạng hiện tại đã thay đổi chưa." Các số liệu trong ví dụ này là minh họa tình huống, không phải thống kê ngoài thực tế.
+
+======================================================================
+08. FLOODPATH AI – BẢN ĐỒ ĐƯỜNG ĐI CÓ NHẬN THỨC VỀ RỦI RO
+======================================================================
+
+FloodPath không đơn thuần tìm đường ngắn nhất. Nó phân tích mạng lưới đường cùng những đoạn đang có thông tin bất lợi, đoạn dự báo cần lưu ý và đoạn chưa đủ dữ liệu.
+
+Trải nghiệm chính:
+- Chọn điểm xuất phát/điểm đến bằng bản đồ hoặc địa danh được dữ liệu hỗ trợ.
+- Xem tuyến ngắn nhất theo mạng đường và phương án thay thế khi có đủ dữ liệu.
+- Mỗi tuyến có chiều dài, thời gian ước tính nếu nguồn hỗ trợ, những đoạn có báo cáo và tỉ lệ đoạn thiếu thông tin.
+- Bấm vào một đoạn đường để xem bằng chứng, thời điểm, nguồn và trạng thái kiểm duyệt.
+- Nếu đường có trạng thái hạn chế/đóng được xác nhận từ nguồn có thẩm quyền, loại đường đó khỏi những phương án đề xuất tương ứng.
+- Nếu chỉ có dự báo nguy cơ hoặc ảnh chưa xác minh, hệ thống không được tự tuyên bố đoạn đường đã đóng.
+- Khi có sự kiện mới, người dùng thấy lý do tuyến thay đổi cùng phiên bản thông tin trước–sau.
+- Nếu không có đủ thông tin, hiển thị "Chưa thể đánh giá điều kiện đi lại" và gợi ý tham khảo thông tin chính thức.
+
+Các chế độ giải thích tuyến:
+- "Tuyến A ngắn hơn nhưng đi qua 1 đoạn có báo cáo cần kiểm tra".
+- "Tuyến B dài hơn; hiện ít báo cáo bất lợi hơn, song có các đoạn chưa có quan trắc".
+- "Tuyến C không thể so sánh vì thiếu dữ liệu hoặc bị ràng buộc giao thông".
+- "Tuyến trước đó đã thay đổi do có bản ghi được duyệt lúc 17:20 tại đoạn X".
+
+Ý tưởng nâng cao:
+- Cá nhân hóa theo đi bộ, xe đạp, xe máy hoặc ô tô khi mạng đường và chính sách ứng dụng đủ hỗ trợ; không suy diễn mọi loại phương tiện đi được qua cùng một đoạn.
+- Tính đến thời điểm dự kiến đi qua từng đoạn, thay vì chỉ thời điểm bắt đầu chuyến đi.
+- Lưu một vài lộ trình quen thuộc do người dùng chủ động chọn, không cần ghi theo dõi GPS liên tục.
+- Cho phép so sánh ba tiêu chí: ngắn hơn / có ít bằng chứng bất lợi hơn / ít khu vực thiếu dữ liệu hơn.
+- Thể hiện các điểm cần hỏi thêm nhà trường hoặc người phụ trách trước khi di chuyển.
+- So sánh lộ trình trước và sau một sự kiện giả lập trong FloodLab.
+- Đánh dấu "không đủ điều kiện khuyến nghị" khi thông tin quá mơ hồ, thay vì vẫn cố vẽ một đường màu xanh để người dùng hiểu sai là an toàn.
+
+Ranh giới an toàn rất quan trọng: Tuyến ít rủi ro hơn trong dữ liệu không được gọi là "tuyến đường an toàn tuyệt đối". Ứng dụng phải tránh hướng người dùng vào vùng nguy hiểm, đặc biệt khi có cảnh báo chính thức hoặc nước chảy mạnh. Không khuyến khích cố vượt qua nước ngập.
+
+======================================================================
+09. FLOODCOMMAND – TRUNG TÂM QUAN SÁT VÀ KIỂM DUYỆT
+======================================================================
+
+FloodCommand là góc nhìn cho người quản trị khu vực thử nghiệm hoặc nhóm được phân công xác minh dữ liệu.
+
+Những bảng thông tin hữu ích:
+- Tình trạng nguồn dữ liệu: mới nhận, chậm cập nhật, mất kết nối, không có dữ liệu.
+- Danh sách báo cáo chờ duyệt với ảnh, mô tả, vị trí, thời gian quan sát.
+- Cảnh báo báo cáo trùng, ảnh cũ và vị trí không nhất quán.
+- Điểm đang có nhiều phản ánh chưa được giải quyết.
+- Các điểm thiếu thông tin nhưng có mưa đáng chú ý và lịch sử phản ánh.
+- Hồ sơ sự kiện có mốc bắt đầu, cập nhật, tạm hết hiệu lực hoặc đã đóng.
+- Thông tin nguồn chính thức đã đối chiếu, nếu có.
+- Lịch sử ai chỉnh sửa hoặc duyệt trạng thái gì, lúc nào.
+- Danh sách những cảnh báo đã hết hiệu lực nhưng vẫn tồn tại trong lịch sử.
+- Bản tin tổng hợp trong khu vực do AI hỗ trợ soạn thảo, cần người phụ trách duyệt trước khi công bố.
+
+Các trạng thái báo cáo cần phân biệt:
+- Mới tiếp nhận.
+- AI đã phân loại sơ bộ nhưng chưa được xác minh.
+- Cần người gửi bổ sung vị trí/thời gian.
+- Chờ người có thẩm quyền/được phân công kiểm tra.
+- Đã được kiểm duyệt như một quan sát theo mốc thời gian cụ thể.
+- Không xác thực được.
+- Bị từ chối vì trùng, ngoài phạm vi hoặc không liên quan.
+- Đã cũ/hết hiệu lực.
+
+FloodCommand không nên gắn huy hiệu "đã xác nhận từ cơ quan chức năng" trừ khi thật sự có bằng chứng nguồn và thẩm quyền. Kiểm duyệt bởi nhóm dự án chỉ nên ghi đúng là "nhóm kiểm duyệt đã xem xét".
+
+======================================================================
+10. FLOODLAB – PHÒNG THÍ NGHIỆM TÌNH HUỐNG WHAT-IF
+======================================================================
+
+Đây là yếu tố có tính trình diễn rất mạnh cho cuộc thi đổi mới sáng tạo.
+
+FloodLab là môi trường giả lập hoàn toàn tách biệt với dữ liệu hiện trường. Màn hình phải có nhãn rõ: "DỮ LIỆU MÔ PHỎNG – KHÔNG PHẢI CẢNH BÁO NGOÀI THỰC TẾ".
+
+Các tình huống tương tác:
+- Kéo thanh mưa tăng từ mức thấp lên mức cao, xem chỉ số nguy cơ tham khảo thay đổi.
+- Giả định một điểm mới xuất hiện ảnh ngập và nhận một sự kiện sau khi người kiểm duyệt xác nhận trong môi trường mô phỏng.
+- Tăng số báo cáo giả lập ở một đoạn và theo dõi quá trình gom trùng.
+- Làm một nguồn dữ liệu "mất kết nối" để xem UI thể hiện sự không chắc chắn.
+- Cho một bức ảnh cũ quay lại, thử xem hệ thống có nhầm thành sự kiện mới hay không.
+- Đánh dấu một đoạn "tạm không thể đi qua" trong mô phỏng và quan sát thuật toán đường đi tính lại.
+- Thay đổi thời gian giả lập từ 15:00 sang 17:00 để so sánh tình trạng ở cùng vị trí.
+- Rút báo cáo sai và xem lịch sử cảnh báo/đường đi được phục hồi như thế nào.
+
+Câu chuyện trình diễn mẫu:
+Ban đầu tuyến A từ cổng trường đến khu dân cư được hiển thị là một phương án ngắn. Sau đó kịch bản mưa lớn được kích hoạt và một ảnh ngập mô phỏng được gắn với đoạn A. AI xem ảnh, người kiểm duyệt duyệt báo cáo, hệ thống cập nhật đoạn đường và so sánh lại các tuyến. Giám khảo thấy đường đi thay đổi cùng lý do cụ thể. Đây là thay đổi trong mô hình thử nghiệm, tuyệt đối không phải khuyến cáo giao thông thời gian thực.
+
+Điểm hay là giám khảo có thể trực tiếp thay đổi biến số để kiểm tra sản phẩm, thay vì chỉ xem video quay sẵn.
+
+======================================================================
+11. BẢN ĐỒ TRỰC QUAN – NHÌN THẤY DỮ LIỆU THAY VÌ CHỈ ĐỌC CHỮ
+======================================================================
+
+Ý tưởng thể hiện trên bản đồ:
+- Các đoạn đường có trạng thái theo dữ liệu và thời gian.
+- Điểm phản ánh mới/chưa duyệt/đã xem xét khác nhau bằng biểu tượng, hoa văn, nhãn; không chỉ phân biệt bằng màu.
+- Lớp lượng mưa và mưa dự báo theo khoảng thời gian.
+- Lớp "nguy cơ tham khảo" tách với lớp "báo cáo ngập".
+- Lớp lịch sử ngập, có thời điểm và mức độ tin cậy.
+- Lớp trạm đo mực nước nếu có nguồn, nhấn mạnh giá trị đo chỉ áp dụng tại trạm.
+- Lớp địa hình tham khảo, có chú thích độ phân giải và hạn chế.
+- Danh sách điểm nóng gắn với bản đồ và liên kết hồ sơ chi tiết.
+- Các phương án tuyến có danh sách đoạn đường rõ ràng.
+- Trục thời gian phát lại diễn biến có thể dừng/xem từng mốc.
+- Chế độ hiển thị trước–sau khi có báo cáo mới.
+- Thông báo trường hợp bản đồ còn nhiều đoạn "chưa rõ".
+
+Mỗi thẻ sự kiện nên trả lời bốn câu hỏi:
+CÁI GÌ? Sự kiện/bằng chứng gì được báo cáo.
+Ở ĐÂU? Vị trí có độ chính xác như thế nào.
+KHI NÀO? Thời điểm ghi nhận và thời điểm hệ thống nhận dữ liệu.
+TIN CẬY ĐẾN ĐÂU? Dự báo, thông tin chưa duyệt, thông tin đã duyệt hay thông tin chính thức.
+
+======================================================================
+12. NHỮNG MÀN HÌNH VÀ TRANG NỘI DUNG CÓ THỂ CÓ
+======================================================================
+
+01. Trang chủ: giới thiệu FloodTwin, phạm vi thử nghiệm, trạng thái dữ liệu, hướng dẫn nhanh.
+02. Bản đồ FloodPulse: nguy cơ theo thời gian, lớp mưa và chú giải.
+03. Bản đồ FloodPath: chọn điểm, so sánh tuyến, giải thích điểm rủi ro.
+04. Gửi báo cáo hiện trường: ảnh, mô tả, vị trí, thời gian, quyền riêng tư.
+05. Chi tiết điểm nóng: lịch sử diễn biến, báo cáo liên quan, tín hiệu dữ liệu.
+06. Phân tích một ảnh ngập: các dấu hiệu AI nhìn thấy, giới hạn và trạng thái chờ kiểm chứng.
+07. Trung tâm báo cáo cộng đồng: lọc theo thời gian, vị trí, trạng thái kiểm duyệt.
+08. Bản tin khu vực: thông tin được tóm tắt và phê duyệt trước khi công bố.
+09. FloodCommand quản trị: xác minh, phát hiện trùng, xử lý dữ liệu cũ.
+10. FloodLab giả lập: điều chỉnh tình huống và xem hệ thống phản ứng.
+11. So sánh trước–sau: nhìn trực quan thay đổi rủi ro và các phương án tuyến.
+12. Phân tích lịch sử: xu hướng theo thời điểm, điểm thường xuyên có phản ánh.
+13. Nguồn dữ liệu: ghi rõ API, mốc cập nhật, phạm vi, đơn vị, bản quyền.
+14. Trạng thái hệ thống: nguồn nào còn hoạt động, nguồn nào chậm hoặc gián đoạn.
+15. Hướng dẫn sử dụng an toàn: phân biệt bản đồ tham khảo và cảnh báo chính thức.
+16. Trang phương pháp AI: tín hiệu đầu vào, loại mô hình, cách đánh giá, giới hạn.
+17. Trang tác động thực tế: số liệu đo đã có chứng cứ, không sử dụng thống kê tự tạo.
+18. Trang quyền riêng tư: nguyên tắc dùng ảnh, vị trí, dữ liệu cá nhân và cách xóa.
+19. Màn hình điện thoại ưu tiên bản đồ, tìm kiếm, gửi phản ánh, thông tin quan trọng.
+20. Chế độ thông tin dễ đọc cho người lớn tuổi: câu ngắn, chữ lớn, ít biểu tượng gây nhiễu.
+
+Đây là kho ý tưởng nội dung có thể có trên sản phẩm, không có nghĩa tất cả đã được xây dựng.
+
+======================================================================
+13. TRỢ LÝ HỘI THOẠI – AI GIẢI THÍCH TÌNH HÌNH THAY VÌ BỊA CẢNH BÁO
+======================================================================
+
+Trợ lý hội thoại có thể giúp người dân dùng tiếng Việt tự nhiên để hỏi dữ liệu đang hiển thị.
+
+Ví dụ câu hỏi:
+- "Khu vực quanh trường hiện có những báo cáo ngập nào?"
+- "Tại sao đoạn này được đánh dấu cần chú ý?"
+- "Báo cáo này là thông tin mới hay ảnh cũ?"
+- "Hai tuyến A và B khác nhau ở đâu?"
+- "Nguồn mưa mới nhất cập nhật lúc nào?"
+- "Có cảnh báo từ cơ quan chức năng liên quan đến khu vực này không?"
+- "Tôi muốn gửi một báo cáo thì cần cung cấp thông tin gì?"
+- "Ảnh này có phải bằng chứng đường đang ngập ngay bây giờ không?"
+
+Nguyên tắc trả lời:
+- Chỉ tóm tắt sự kiện và số liệu tìm được trong cơ sở dữ liệu, nêu nguồn và mốc thời gian.
+- Khi thiếu dữ liệu, trả lời "chưa có đủ thông tin".
+- Không dựng chuyện đã có người kiểm tra tại hiện trường.
+- Không khẳng định độ sâu ngập hoặc tình trạng đi lại bằng tưởng tượng của mô hình.
+- Không trích dẫn một nguồn không tồn tại.
+- Không gọi nhầm dự báo mưa là quan trắc nước ngập trên đường.
+- Không đưa chỉ dẫn nguy hiểm như "cứ đi qua" hoặc gợi ý vượt dòng nước chảy.
+
+Nếu không cần chatbot, FloodTwin vẫn có AI thật qua FloodVision, xử lý báo cáo và đánh giá rủi ro. Trợ lý chỉ là một cách truy cập thông tin thuận tiện hơn, không phải năng lực duy nhất của dự án.
+
+======================================================================
+14. THÔNG BÁO VÀ TƯƠNG TÁC CỘNG ĐỒNG
+======================================================================
+
+Những ý tưởng tương tác bổ sung:
+- Người dùng chọn một khu vực cần theo dõi thay vì bật theo dõi GPS mọi lúc.
+- Thông báo khi có một báo cáo đã được kiểm duyệt gần khu vực đó.
+- Nhắc rằng dữ liệu đã cũ và không còn phản ánh chắc chắn tình hình hiện tại.
+- Cho phép theo dõi sự thay đổi của một sự kiện đã lưu.
+- Gửi yêu cầu xem xét báo cáo sai, ảnh không liên quan hoặc vị trí lệch.
+- Mời người gửi làm rõ thời điểm/địa điểm với cơ chế đồng ý và bảo vệ danh tính.
+- Hạn chế nhiều thông báo lặp lại về cùng một sự kiện.
+- Cập nhật thông tin khi một báo cáo được kết luận không xác thực.
+- Bản tin tổng hợp ngắn trong khuôn viên do người quản trị phê duyệt.
+- Lưu những nguồn chính thức để người dùng tự kiểm tra khi cần.
+
+Điểm quan trọng: Mọi thông báo phải cho biết đây là "thông tin hỗ trợ theo dõi" hay "bản tin chính thức được dẫn lại", không sử dụng ngôn từ khiến người dùng tưởng hệ thống đã được cơ quan chức năng ủy quyền.
+
+======================================================================
+15. TÍNH NĂNG ĐẶC BIỆT GIÚP DỰ ÁN NỔI BẬT
+======================================================================
+
+1. Predict–Observe–Replan: một chuỗi kết nối dự báo – quan sát – thay đổi quyết định.
+2. Giải thích nguy cơ ngay trên từng đoạn đường, không chỉ có chấm đỏ chung chung.
+3. Xem được "AI biết gì / chưa biết gì" trước khi tin vào kết quả.
+4. Dẫn nguồn chứng cứ cho mọi cảnh báo.
+5. Phân biệt rõ mưa thực đo, mưa dự báo, báo cáo người dân và dữ liệu mô phỏng.
+6. Nhận diện ảnh ngập kèm lý do và trường hợp không chắc chắn.
+7. Nhận tiếng Việt tự nhiên với cách nói không chuẩn về tình hình nước ngập.
+8. Phát hiện và gom báo cáo trùng theo không gian, thời gian, nội dung và ảnh.
+9. Nhận biết dữ liệu bị cũ, vô hiệu hóa ảnh hưởng khi hết hiệu lực.
+10. Lưu lịch sử vì sao mức nguy cơ hoặc tuyến thay đổi.
+11. Có môi trường "what-if" tương tác độc lập với cảnh báo thực.
+12. Cho phép khôi phục trạng thái trước khi mô phỏng để thấy đúng quan hệ nhân–quả của thử nghiệm.
+13. Có thể nói "không thể đánh giá" thay vì ép AI phải đưa ra câu trả lời.
+14. Chuyển một nhóm báo cáo thành hồ sơ sự kiện có thể theo dõi.
+15. Hỗ trợ người xác minh so sánh ảnh trước/sau theo cùng điểm nhìn.
+16. Gắn metadata và thời hạn sử dụng cho các số liệu thời tiết.
+17. Đánh dấu các đoạn thiếu thông tin như một loại bất định riêng.
+18. Cá nhân hóa khu vực theo dõi theo lựa chọn chủ động của người dùng.
+19. Tích hợp bản tin nguồn chính thức như một tầng ưu tiên riêng.
+20. Dashboard chất lượng dữ liệu, không chỉ dashboard số lượt truy cập.
+21. Đánh giá định lượng mức cải thiện AI so với quy tắc thông thường.
+22. Trải nghiệm mô phỏng ngoại tuyến, có ghi nhãn và không phát tán cảnh báo giả.
+23. Báo cáo diễn biến tự động bằng tiếng Việt dễ hiểu, có người duyệt.
+24. Chế độ tìm hiểu khoa học: xem yếu tố tác động, thay đổi giả định, xem phản hồi mô hình.
+25. Hiển thị độ đáng tin của kết quả dựa trên nguồn và khả năng kiểm tra độc lập.
+
+Những ý tưởng nâng cao mang tính nghiên cứu, không nên quảng bá như sản phẩm đã có:
+- Dự báo nguy cơ theo từng thời điểm xe có thể đi qua đoạn đường khi dự báo đủ chi tiết.
+- Phân tích các mẫu ngập lặp lại qua nhiều mùa mưa.
+- Học chủ động từ những ảnh khó để giúp người kiểm duyệt ưu tiên gán nhãn.
+- Khai phá "điểm mù" quan trắc: nơi có rủi ro tham khảo nhưng thiếu báo cáo.
+- Phân tích xem hai nguồn dữ liệu bất đồng do thời điểm hay độ phân giải.
+- Bản đồ dữ liệu tổng hợp ẩn danh chia sẻ cho nghiên cứu khi có quyền.
+- Hỗ trợ nhiều ngôn ngữ hoặc giao diện tiếp cận cho người hạn chế thị lực.
+- Khả năng cắt vùng bản đồ nhỏ để tra cứu trạng thái dữ liệu đã lưu khi mất mạng, có thông báo "thông tin cũ".
+
+======================================================================
+16. MÔ HÌNH "BẢN SAO SỐ" VÀ Ý NGHĨA TÊN FLOODTWIN
+======================================================================
+
+"Twin" trong FloodTwin không có nghĩa đã tái tạo toàn bộ thủy văn và cống thoát nước của thành phố với độ chính xác vật lý. Ý nghĩa phù hợp hơn là một "bản sao số hoạt động" ở quy mô thử nghiệm:
+
+- Một mạng lưới đường được mô tả bằng dữ liệu bản đồ.
+- Mỗi đoạn đường có trạng thái thông tin thay đổi theo thời gian.
+- Dự báo, báo cáo hiện trường và bằng chứng được gắn với vị trí.
+- Có thể giả lập dữ liệu đầu vào và quan sát kết quả thay đổi.
+- Lưu được sự khác nhau giữa trạng thái cũ và mới.
+
+Khi chưa có đủ dữ liệu vật lý và được kiểm định, nên gọi đây là "bản đồ số có mô phỏng tương tác" hoặc "digital-twin-inspired" thay vì tự khẳng định là bản sao số thủy văn hoàn chỉnh.
+
+======================================================================
+17. CÁC LOẠI DỮ LIỆU VÀ CÁCH HIỂU CHO ĐÚNG
+======================================================================
+
+Dữ liệu khí tượng:
+Mưa đo tại trạm, mưa ước lượng bằng mô hình, mưa dự báo. Ba loại này không có cùng giá trị chứng cứ. Mỗi bản ghi cần có thời gian đo/thời gian dự báo, vị trí, nguồn và đơn vị.
+
+Dữ liệu thủy văn:
+Mực nước tại trạm, lưu lượng sông hoặc sản phẩm mô phỏng thủy văn. Số liệu sông lớn không phản ánh trực tiếp ngập ở một con phố nhỏ; phải biết trạm nào, cao độ chuẩn nào và độ phân giải mô hình.
+
+Dữ liệu địa hình:
+Độ cao, độ dốc hoặc vị trí thấp tương đối có thể là tín hiệu bổ trợ. DEM toàn cầu độ phân giải thô không cho phép kết luận có ổ trũng ở một miệng cống hoặc độ sâu nước tại mặt đường.
+
+Dữ liệu đường:
+Dùng bản đồ đường và các ràng buộc đi lại. Mạng đường có thể thiếu đường nhỏ, sai chiều lưu thông hoặc không cập nhật thi công, vì vậy cần kiểm tra vùng thử nghiệm.
+
+Dữ liệu lịch sử:
+Lịch sử ngập được xác minh giúp mô hình có căn cứ. Địa điểm chỉ được gọi "điểm từng ngập" khi có sự kiện có nguồn, thời gian và vị trí đủ rõ.
+
+Dữ liệu cộng đồng:
+Ảnh, mô tả, thời gian, vị trí do người gửi tự khai. Đây là nguồn tín hiệu hữu ích nhưng không mặc định đúng hoặc còn hiệu lực.
+
+Dữ liệu mô phỏng:
+Tình huống người xây phần mềm chủ động tạo để kiểm thử. Đây không phải hiện tượng ngoài đời; phải có nhãn DEMO rõ trên bản đồ, trên kết quả và ở tệp xuất.
+
+Nguồn tham khảo có thể nghiên cứu thêm:
+- Open-Meteo Forecast: https://open-meteo.com/en/docs
+- Open-Meteo Historical: https://open-meteo.com/en/docs/historical-weather-api
+- Open-Meteo Flood API/GloFAS: https://open-meteo.com/en/docs/flood-api
+- Open-Meteo Elevation: https://open-meteo.com/en/docs/elevation-api
+- Trung tâm Dự báo KTTV Quốc gia: https://nchmf.gov.vn/Kttvsite/
+- NASA GPM IMERG: https://gpm.nasa.gov/data/imerg
+- OpenStreetMap: https://www.openstreetmap.org/
+
+Lưu ý: Có API công khai hoặc miễn phí không đồng nghĩa dữ liệu đủ tốt để cảnh báo ngập đường. Giới hạn sử dụng, điều khoản bản quyền và độ trễ phải được kiểm tra trước khi sử dụng. Không mặc định bất cứ cổng dữ liệu cơ quan nào cũng có API thời gian thực.
+
+======================================================================
+18. SỰ KHÁC BIỆT GIỮA AI, PHÉP TÍNH VÀ DỮ LIỆU THUẦN TÚY
+======================================================================
+
+AI không phải là mọi thành phần của FloodTwin. Phân biệt như sau:
+
+A. AI thị giác:
+Phân tích ảnh để phát hiện dấu hiệu nước ngập, phân biệt các ngữ cảnh gây nhầm và giải thích điểm cần người xem xét.
+
+B. AI ngôn ngữ:
+Trích xuất vị trí, thời gian và tình trạng từ câu mô tả tự nhiên; tóm tắt phản ánh có căn cứ.
+
+C. AI học máy về nguy cơ:
+Nếu có bộ dữ liệu lịch sử đủ chất lượng và nhãn thời gian–vị trí đáng tin, học mối quan hệ giữa tín hiệu mưa, ngữ cảnh địa hình, lịch sử và các sự kiện ngập. Khi chưa đủ nhãn, chỉ nên sử dụng chỉ số nguy cơ dựa trên quy tắc được công khai minh bạch.
+
+D. Thuật toán định tuyến:
+Tìm đường trên đồ thị có ràng buộc. Thuật toán tìm đường ngắn nhất tự nó không phải mô hình AI, dù nhận dữ liệu rủi ro có thể do AI tạo ra.
+
+E. Giao diện bản đồ:
+Hiển thị kết quả, không phải AI. Điểm khác biệt là khả năng liên kết nguồn dữ liệu, AI và phản hồi theo thời gian.
+
+F. Trợ lý giải thích:
+AI ngôn ngữ chỉ nên diễn giải những tín hiệu đã tồn tại, tuyệt đối không tự tạo sự kiện và không tự xưng là cơ quan cảnh báo chính thức.
+
+Điều khiến đề tài có chiều sâu nghiên cứu là so sánh được các cấu phần: ví dụ có/không có Vision AI thì tốc độ kiểm duyệt khác nhau ra sao; mô hình nguy cơ có tốt hơn quy tắc chỉ dựa trên mưa không; bản đồ có cung cấp ngữ cảnh hữu ích hơn danh sách báo cáo rời rạc không.
+
+======================================================================
+19. MỨC ĐỘ TIN CẬY VÀ NGÔN NGỮ CẢNH BÁO
+======================================================================
+
+Những tầng thông tin nên thể hiện tách biệt:
+- OFFICIAL: Bản tin/cảnh báo chính thức được dẫn lại, có nguồn và thời điểm.
+- MEASURED: Số đo quan trắc thực tại trạm, không tự suy rộng quá phạm vi.
+- REVIEWED: Báo cáo có người kiểm duyệt, gắn với đúng thời điểm đã quan sát.
+- UNVERIFIED: Phản ánh chưa xác minh.
+- FORECAST: Tín hiệu dự báo của mô hình thời tiết hoặc mô hình nguy cơ.
+- STALE: Dữ liệu đã cũ, không đại diện chắc chắn cho hiện tại.
+- UNKNOWN: Chưa đủ dữ liệu.
+- SIMULATED: Tình huống giả lập phục vụ thử nghiệm hoặc demo.
+
+Cách nói nên dùng:
+"Đoạn đường này có phản ánh được xem xét lúc 16:45; chưa có cập nhật mới."
+"Nguy cơ tham khảo tăng theo dự báo mưa, nhưng chưa có bằng chứng ngập hiện trường mới."
+"Tuyến B có ít báo cáo bất lợi hơn trong dữ liệu hiện có, song tình trạng thực tế chưa được xác nhận."
+"Không thể đánh giá đủ tin cậy điều kiện đi lại ở thời điểm này."
+
+Cách nói cần tránh:
+"Đường này chắc chắn an toàn."
+"AI xác nhận khu vực sẽ ngập 30 cm trong 45 phút nữa" nếu không có mô hình/số đo đạt chuẩn.
+"Tuyến an toàn nhất thành phố" khi mạng dữ liệu chưa đầy đủ.
+"Báo cáo đã được chính quyền xác nhận" nếu chỉ do nhóm dự án duyệt.
+"Không có báo cáo nghĩa là không ngập."
+"Ảnh này chứng minh đường đang ngập" khi không rõ địa điểm và thời gian.
+
+======================================================================
+20. QUYỀN RIÊNG TƯ, CÔNG BẰNG VÀ AN TOÀN CHO CỘNG ĐỒNG
+======================================================================
+
+Người gửi ảnh có thể vô tình cung cấp khuôn mặt, biển số xe, biển nhà, thời điểm di chuyển hoặc vị trí nhà riêng. Dự án cần tư duy privacy-first ngay trong phần ý tưởng:
+- Chỉ thu thập thông tin cần thiết cho báo cáo.
+- Người dùng chủ động chọn vị trí; không cần âm thầm theo dõi GPS liên tục.
+- Giải thích mục đích sử dụng dữ liệu và cho phép yêu cầu xóa khi áp dụng.
+- Cân nhắc làm mờ mặt người/biển số và gỡ EXIF trước khi công khai ảnh.
+- Không hiển thị danh tính hoặc lịch trình của người phản ánh lên bản đồ cộng đồng.
+- Cho phép báo cáo ẩn danh ở phạm vi hợp lý, đồng thời có chống spam.
+- Không chuyển ảnh riêng tư cho bên thứ ba nếu người dùng chưa biết và chưa đồng ý theo yêu cầu pháp lý áp dụng.
+- Không đưa vị trí riêng tư vào dữ liệu AI huấn luyện công khai nếu chưa có quyền.
+- Tránh hiển thị "điểm nóng" khiến người dân bị kỳ thị khu vực nếu chưa có dữ liệu kiểm chứng.
+- Nội dung từ ảnh/mô tả là dữ liệu chưa tin cậy; không để câu lệnh nằm trong ảnh điều khiển hệ thống.
+
+Không nên khuyến khích cộng đồng mạo hiểm xuống đường ngập để chụp ảnh phục vụ ứng dụng. Hướng dẫn chỉ ghi nhận từ vị trí an toàn hoặc sử dụng tư liệu có sẵn.
+
+======================================================================
+21. KỊCH BẢN MINH HỌA SẢN PHẨM TỪ ĐẦU ĐẾN CUỐI
+======================================================================
+
+KỊCH BẢN A – Cảnh báo nguy cơ trước khi có ảnh:
+Dữ liệu thời tiết cho thấy mưa dự báo tăng. Một đoạn từng có sự kiện ngập đã xác minh được xếp vào nhóm cần chú ý; không có thông tin hiện trường mới. FloodPulse chỉ ghi "nguy cơ tham khảo" và trình bày nguyên nhân. Người dùng có thể theo dõi và kiểm tra bản tin chính thức.
+
+KỊCH BẢN B – Ảnh được gửi, nhưng chưa xác minh:
+Một người tải ảnh đường có nước, tự chọn vị trí. FloodVision xác định "có dấu hiệu nước trên mặt đường" và nêu giới hạn. Hệ thống lưu trạng thái chờ kiểm duyệt, không lập tức kết luận cấm đường hoặc hiện đường nguy hiểm trên bản đồ toàn cộng đồng.
+
+KỊCH BẢN C – Báo cáo đã được kiểm duyệt:
+Người xác minh rà soát ảnh, giờ, nơi chụp và nguồn. Một báo cáo được duyệt là "quan sát ngập tại vị trí X vào 17:10". FloodPath gắn bằng chứng với đoạn đường liên quan và thể hiện khi so sánh tuyến. Nếu nguồn có thẩm quyền xác nhận đoạn đường bị đóng, hệ thống mới xử lý như ràng buộc đóng đường.
+
+KỊCH BẢN D – Hai phản ánh mâu thuẫn:
+Một người báo "còn đọng nước", người khác báo "đã hết" sau đó 40 phút. FloodTwin không xóa sạch lịch sử, mà lưu cả hai mốc và nêu rằng trạng thái có thể thay đổi. Nếu chưa có kiểm chứng mới, ứng dụng thể hiện "chưa rõ hiện trạng".
+
+KỊCH BẢN E – Dữ liệu nguồn hỏng:
+API mưa không phản hồi. Bản đồ vẫn có thể xem lịch sử gần nhất, nhưng ghi rõ "dữ liệu thời tiết đang gián đoạn"; không tô màu làm người dùng tưởng bản đồ cập nhật thời gian thực.
+
+KỊCH BẢN F – Người dùng hỏi tuyến đi:
+Từ A đến B có hai tuyến. Tuyến một ngắn hơn nhưng vừa có phản ánh đã duyệt ở một đoạn. Tuyến hai dài hơn và có ít phản ánh bất lợi, tuy nhiên một số đoạn chưa có dữ liệu. Hệ thống giải thích sự khác biệt thay vì đảm bảo tuyến hai an toàn.
+
+KỊCH BẢN G – Trình diễn trước giám khảo:
+Trong môi trường mô phỏng, bắt đầu từ bản đồ có hai tuyến. Kéo biến mưa tăng. Tải một ảnh tình huống giả lập; AI phân tích và người kiểm duyệt phê duyệt. Một đoạn đường được gắn sự kiện mới, lộ trình được so sánh lại. Màn hình giải thích vì sao kết quả thay đổi và hiển thị bảng đánh giá AI/baseline thật từ bộ thử nghiệm.
+
+KỊCH BẢN H – Điều phối trong khuôn viên:
+Ban quản lý trường nhận nhiều phản ánh về lối đi nội bộ sau mưa. Hệ thống nhóm các phản ánh gần nhau, đánh dấu ảnh trùng, hiển thị nơi thiếu bằng chứng và hỗ trợ ban quản lý tự đưa ra thông báo nội bộ có kiểm chứng.
+
+KỊCH BẢN I – Kiểm tra ảnh cũ lan truyền:
+Một ảnh hôm trước được gửi lại cùng chú thích "vừa ngập". FloodTwin cảnh báo không có bằng chứng về thời điểm chụp mới; nếu có ảnh trùng trong lịch sử thì cung cấp thông tin trùng lặp, không khẳng định đã xác định nguồn gốc chắc chắn.
+
+KỊCH BẢN J – Người dùng không rành công nghệ:
+Người dùng chỉ cần bấm "Xem quanh tôi" khi đã đồng ý sử dụng vị trí hoặc chọn địa điểm bằng bản đồ. Các thẻ ngắn trình bày "có báo cáo gần đây / dự báo rủi ro / chưa đủ dữ liệu" bằng ngôn ngữ đơn giản, có nút đọc giải thích và dẫn sang nguồn chính thức.
+
+======================================================================
+22. VÍ DỤ VỀ MỘT HỒ SƠ ĐIỂM NGẬP GIẢ LẬP
+======================================================================
+
+Tên điểm: Đoạn đường thử nghiệm K1, gần cổng trường minh họa.
+Trạng thái: SIMULATED – Dữ liệu minh họa.
+Thời điểm ghi nhận: 17:10 trong kịch bản demo.
+Dữ liệu mưa: thông tin dự báo/tệp tình huống theo nguồn hoặc mô phỏng được gắn nhãn.
+Bằng chứng: 1 ảnh tình huống, 2 báo cáo văn bản mô phỏng.
+Nhận định thị giác: "AI phát hiện vùng có nước bao phủ một phần mặt đường; ảnh không đủ để xác định mực nước và khả năng lưu thông".
+Kiểm duyệt: Người vận hành bấm duyệt trong môi trường demo.
+Tình trạng ràng buộc: Chưa có xác nhận chính thức cấm đường.
+Ảnh hưởng lộ trình: Một tuyến đi qua K1 xuất hiện nhãn rủi ro; hệ thống có thể so sánh thêm tuyến không đi qua K1 nếu mạng đường có.
+Giải thích hiển thị: "Phương án thay thế phát sinh vì K1 vừa được thêm sự kiện mô phỏng lúc 17:10. Đây không phải cảnh báo ngoài thực tế".
+
+Không sử dụng địa chỉ nhà dân cụ thể, tọa độ bịa hoặc tên đường thật gắn với ảnh ngập giả như thể sự kiện đã xảy ra.
+
+======================================================================
+23. CÁC KẾT QUẢ THẬT SỰ CÓ THỂ ĐO ĐƯỢC
+======================================================================
+
+Về phân tích ảnh:
+- Tỷ lệ nhận diện đúng dấu hiệu nước ngập trên bộ ảnh có nhãn.
+- Tỷ lệ bỏ sót cảnh có nước ngập.
+- Tỷ lệ báo nhầm ảnh đường ướt, ao hồ hoặc ảnh mờ.
+- Thời gian một nhân viên sàng lọc ảnh thủ công so với có AI hỗ trợ.
+
+Về phân tích nguy cơ:
+- Chất lượng dự báo so với quy tắc đơn giản chỉ dùng mưa, nếu có tập sự kiện được xác minh.
+- Tỷ lệ cảnh báo sai, bỏ sót và thời gian cảnh báo trước sự kiện theo dữ liệu được đánh giá hợp lệ.
+- Chất lượng khả năng nêu lý do: người kiểm tra có hiểu vì sao mức nguy cơ thay đổi không.
+- Độ nhạy của kết quả khi thiếu một nguồn dữ liệu.
+
+Về định tuyến:
+- Số tuyến thử nghiệm có đi qua đoạn đã được đánh dấu đóng đường hợp lệ trong tập kiểm thử.
+- Thời gian so sánh các phương án.
+- Tỷ lệ người dùng đọc đúng chú thích "chưa xác minh" và "chưa đủ dữ liệu".
+- Mức chênh lệch độ dài giữa các tuyến khi thay đổi ràng buộc mô phỏng.
+
+Về công sức người dùng:
+- Thời gian kiểm tra năm nguồn rời rạc so với một giao diện tổng hợp có trích nguồn.
+- Thời gian xử lý một tập phản ánh bằng tay so với công cụ có gợi ý phân nhóm.
+- Số thao tác cần thiết để cập nhật một sự kiện và tìm báo cáo liên quan.
+- Số trường hợp người dùng hiểu nhầm dữ liệu dự báo thành tình trạng thực.
+
+Nguyên tắc quan trọng: Không tự tạo số liệu "chính xác 98%", "tiết kiệm 90%" hoặc "giảm ngập 40%". Phần mềm không thể khẳng định đã ngăn ngập hoặc bảo vệ an toàn giao thông chỉ vì một buổi trình diễn mô phỏng. Mọi số liệu phải đến từ phép thử có mô tả số mẫu, dữ liệu, phương pháp và giới hạn.
+
+======================================================================
+24. TẠI SAO Ý TƯỞNG PHÙ HỢP CUỘC THI AI INNOVATION
+======================================================================
+
+1) Vấn đề gần với đời sống: các điểm ngập cục bộ khó nắm bắt, thông tin phân tán và thay đổi nhanh.
+2) Có AI ứng dụng rõ: thị giác máy tính, hiểu tiếng Việt hiện trường, học máy theo dữ liệu thời gian và không gian khi có đủ nhãn.
+3) Có đặc điểm sáng tạo dễ nhận thấy: kết hợp dự báo – quan sát – kiểm chứng – phân tích lại tuyến trên cùng một bản đồ.
+4) Trình diễn tương tác tốt: giám khảo thay đổi tình huống và thấy hệ thống phản ứng theo dữ liệu.
+5) Có chỉ số đánh giá: chất lượng mô hình, thời gian tổng hợp, giảm báo cáo trùng, khả năng giải thích.
+6) Có người dùng cụ thể: sinh viên, nhà trường, khu dân cư, nhóm điều phối được phân quyền.
+7) Không cần phần cứng: phần mềm và dữ liệu số đủ để hình thành một bản trình diễn có chiều sâu.
+8) Có tiềm năng mở rộng khi tiếp cận được nguồn quan trắc, lịch sử ngập và đơn vị kiểm chứng.
+9) Có nhận thức rõ về rủi ro và trách nhiệm: không tự nhận cảnh báo chính thức, không nói tuyến an toàn tuyệt đối.
+
+Nội dung mô tả cuộc thi chỉ là định hướng phù hợp về giá trị đổi mới; kết quả tham dự còn phụ thuộc thể lệ, thời hạn, quyền nộp và mức độ hoàn thiện sản phẩm thực tế.
+
+======================================================================
+25. GIÁ TRỊ CỦA MỘT SẢN PHẨM CHỈ CẦN LAPTOP
+======================================================================
+
+FloodTwin có thể được hình dung như một nền tảng website/PWA được sử dụng trên màn hình máy tính và điện thoại. Các phần quan trọng có thể tồn tại hoàn toàn dưới dạng phần mềm:
+- Bản đồ số và mạng đường.
+- Dữ liệu mưa từ API hoặc snapshot được lưu.
+- Ảnh và mô tả hiện trường do người dùng chủ động cung cấp.
+- AI phân loại/tóm tắt với mô hình có sẵn hoặc dịch vụ AI hợp lệ.
+- Chỉ số nguy cơ và các biểu đồ giải thích.
+- Tính toán tuyến đi trên đồ thị.
+- Giao diện kiểm duyệt và lịch sử báo cáo.
+- Kịch bản giả lập ngập để giám khảo tương tác.
+- Bộ dữ liệu kiểm thử và minh chứng định lượng.
+
+Không cần lắp trạm cảm biến để có nguyên mẫu tương tác. Tuy nhiên, khi không có cảm biến/trạm đo thực địa, sản phẩm chỉ được phép hiển thị những gì dữ liệu thực sự hỗ trợ. Đây là ưu điểm của một nguyên mẫu khoa học trung thực, không phải điểm yếu phải che giấu.
+
+======================================================================
+26. KHẢ NĂNG MỞ RỘNG Ý TƯỞNG TRONG TƯƠNG LAI
+======================================================================
+
+- Kết nối quan trắc mực nước có nguồn và quyền sử dụng tại các trạm phù hợp.
+- Bổ sung thông tin triều, kênh rạch hoặc các cống điều tiết khi phù hợp đặc điểm vùng thử nghiệm.
+- Phân tích nhiều đợt mưa qua các mùa để hiểu xu hướng báo cáo ngập.
+- Tích hợp bản tin đã công bố từ cơ quan chuyên môn như một nguồn tham khảo riêng.
+- Hỗ trợ trường học quản lý lối đi, bãi xe và lối thoát nước trong khuôn viên.
+- Trang cho doanh nghiệp nhỏ phân tích rủi ro gián đoạn lịch giao hàng ở phạm vi hoạt động.
+- Phân tích ẩn danh xu hướng "điểm cần khảo sát" cho hoạt động nghiên cứu thoát nước.
+- Hỗ trợ tra cứu bằng tiếng nói tiếng Việt trên điện thoại nếu có lợi ích tiếp cận.
+- Hỗ trợ đa ngôn ngữ cho người dùng nước ngoài trong phạm vi phù hợp.
+- Bản đồ thời gian nhiều ngày kèm so sánh điểm nóng.
+- Công cụ hỗ trợ người quản trị kiểm tra báo cáo theo nhóm và xem báo cáo mâu thuẫn.
+- Hiệu chuẩn mức độ tin cậy của AI với dữ liệu đánh giá độc lập.
+- Kết hợp đa ảnh khác góc quan sát nếu được phép và có quy trình kiểm chứng tốt.
+- Chế độ bài học tương tác về mưa–ngập–địa hình–rủi ro cho giáo dục STEM.
+- Gợi ý nơi cần bố trí khảo sát bổ sung vì còn nhiều khoảng trống dữ liệu.
+
+Những khả năng này là hướng phát triển ý tưởng, không phải tính năng đã có, không phải cam kết triển khai và không được tự chuyển thành tuyên bố nghiệp vụ chính thức.
+
+======================================================================
+27. CÂU HỎI GIÁM KHẢO CÓ THỂ ĐẶT VÀ ĐỊNH HƯỚNG TRẢ LỜI
+======================================================================
+
+Hỏi: Đây có khác ứng dụng thời tiết và bản đồ thông thường không?
+Đáp: Có, ở góc độ ý tưởng. FloodTwin liên kết dấu hiệu dự báo, ảnh hiện trường, kiểm duyệt bằng chứng và ảnh hưởng đến từng đoạn đường. Nó giải thích rõ thông tin đến từ đâu và thay đổi thế nào. Chất lượng vượt trội so với công cụ hiện có cần được kiểm chứng bằng thử nghiệm.
+
+Hỏi: AI có thể biết đường ngập bao nhiêu centimet không?
+Đáp: Không thể bảo đảm từ một ảnh ngẫu nhiên. Ảnh có thể cho thấy dấu hiệu ngập, còn độ sâu thật cần phép đo hoặc điều kiện suy luận được kiểm chứng.
+
+Hỏi: Dữ liệu mưa có đủ dự báo ngập đường không?
+Đáp: Không. Mưa chỉ là một yếu tố. Ngập đường còn phụ thuộc địa hình vi mô, thoát nước, mức nước xung quanh và tình trạng thực tế. Hệ thống cần báo cáo rõ độ bất định.
+
+Hỏi: Tại sao không tự động tin ảnh do người dân gửi?
+Đáp: Ảnh có thể thiếu ngày giờ, sai địa điểm, bị gửi lại hoặc không chứng minh điều kiện hiện tại. AI dùng để phân loại hỗ trợ, người kiểm duyệt xác nhận thông tin.
+
+Hỏi: AI ở đâu nếu tính đường bằng thuật toán ngắn nhất?
+Đáp: AI nằm ở phân tích ảnh, hiểu báo cáo và dự báo nguy cơ khi đủ dữ liệu; tìm đường là thuật toán sử dụng tín hiệu từ các thành phần đó. Không đánh đồng thuật toán đồ thị với mô hình AI.
+
+Hỏi: Nếu API lỗi thì sao?
+Đáp: Hệ thống phải ghi rõ nguồn gián đoạn và thời điểm dữ liệu cuối cùng. Chế độ demo có thể tiếp tục bằng snapshot mô phỏng được ghi nhãn; không giả như dữ liệu thời gian thực.
+
+Hỏi: Nếu tuyến được đề xuất vẫn ngập thì sao?
+Đáp: FloodTwin không chứng nhận tuyến an toàn và không thay thế cảnh báo chính thức. Nó hỗ trợ so sánh thông tin có sẵn; khi dữ liệu thiếu, cần thông báo giới hạn, thậm chí không khuyến nghị di chuyển.
+
+Hỏi: Sản phẩm có thể chạy chỉ bằng laptop không?
+Đáp: Có thể xây dựng và trình diễn nguyên mẫu bằng laptop, sử dụng dữ liệu bản đồ/API/ảnh được phép. Khả năng cảnh báo thực tế có trách nhiệm đòi hỏi thêm độ phủ dữ liệu và thẩm định độc lập.
+
+Hỏi: Giá trị đo lường có thể là gì?
+Đáp: Thời gian sàng lọc phản ánh, mức độ chính xác phân loại ảnh, tỷ lệ báo cáo trùng phát hiện đúng, sai sót thông tin và mức độ hiểu nguồn dữ liệu của người dùng. Chỉ báo cáo con số sau khi kiểm thử thật.
+
+======================================================================
+28. TUYÊN NGÔN Ý TƯỞNG CUỐI CÙNG
+======================================================================
+
+FloodTwin AI không cố thay thế dự báo khí tượng, cơ quan quản lý giao thông hay phán đoán an toàn của con người. Dự án đặt một câu hỏi khác: Khi thông tin mưa và các báo cáo hiện trường đang nằm phân tán, liệu AI có thể giúp con người kết nối chúng nhanh hơn, kiểm chứng thông minh hơn, nhìn thấy rõ những điều chưa biết và hiểu cách một sự kiện mới làm thay đổi bức tranh rủi ro giao thông hay không?
+
+Câu trả lời kỳ vọng của FloodTwin là một bản đồ số có khả năng lắng nghe nhiều nguồn dữ liệu, phân biệt quan sát với dự báo, đọc ảnh ngập có giới hạn, tổng hợp phản ánh tiếng Việt, giải thích từng cảnh báo và so sánh lại phương án tuyến theo diễn biến mới.
+
+Tầm nhìn dài hạn: từ một bản trình diễn trên laptop cho khu vực nhỏ, FloodTwin có thể trở thành công cụ hỗ trợ cộng đồng, trường học và đơn vị điều phối hiểu tình huống ngập tốt hơn, nếu tiếp cận được dữ liệu thực địa, chuyên gia thẩm định và quy trình quản trị phù hợp.
+
+GIÁ TRỊ CỐT LÕI:
+- AI hữu ích, không chỉ mang tên AI.
+- Bằng chứng trước kết luận.
+- Thông tin có thời gian và nguồn gốc.
+- Dữ liệu thiếu phải được thừa nhận.
+- Dự báo không phải quan sát thực tế.
+- Mô phỏng không phải cảnh báo thật.
+- So sánh lộ trình không đồng nghĩa bảo đảm an toàn.
+- Mọi tuyên bố hiệu quả đều phải đo lường được.
+
+(KẾT THÚC PHẦN Ý TƯỞNG NỀN TẢNG 01–28; XEM PHẦN MỞ RỘNG TOÀN DIỆN BÊN DƯỚI.)
+
+
+####################################################################################
+PHẦN II – BÁCH KHOA MỞ RỘNG: MỌI KHẢ NĂNG HỢP LÝ CỦA FLOODTWIN AI
+####################################################################################
+Cập nhật ý tưởng: 15/10/2026.
+Mục đích: mở rộng bản mô tả 28 phần phía trên thành một tài liệu ý tưởng sản phẩm tổng thể; KHÔNG phải prompt code, kế hoạch triển khai, lịch làm việc hay tuyên bố đã hoàn thiện hệ thống.
+Nguyên tắc: thu nhận tín hiệu -> phân tích có giới hạn -> đối chiếu bằng chứng -> xét tác động -> con người xác minh -> hỗ trợ quyết định. Bất kỳ chức năng nào thiếu dữ liệu đều là đề xuất, không phải năng lực đã xác nhận hoạt động.
+
+BỐN TÌNH TRẠNG CẦN ĐƯỢC PHÂN BIỆT TRONG MỌI GIAO DIỆN:
+1. QUAN TRẮC/XÁC MINH: Thông tin có nguồn tin cậy, thời điểm, phạm vi và mức xác minh rõ ràng.
+2. DỰ BÁO/ƯỚC LƯỢNG: Sản phẩm của mô hình hoặc quy tắc, mang sai số và khả năng thay đổi.
+3. PHẢN ÁNH CHƯA XÁC MINH: Dấu hiệu do cộng đồng/AI cung cấp, chưa đủ chứng minh tình trạng thực.
+4. MÔ PHỎNG/DEMO: Kịch bản giả định để thử nghiệm logic, tách hoàn toàn khỏi bảng tin thật.
+
+CÂU TUYÊN NGÔN MỞ RỘNG:
+FloodTwin AI = trí tuệ tình huống về NGẬP + BẢN ĐỒ + BẰNG CHỨNG + KẾT NỐI CỘNG ĐỒNG + ĐIỀU PHỐI + GIẢI THÍCH + HỌC TỪ DỮ LIỆU, đặt an toàn và quyền tự quyết của con người lên trên độ hào nhoáng của AI.
+
+====================================================================================
+29. HỆ SINH THÁI SẢN PHẨM: CÁC LỚP CHỨC NĂNG KẾT NỐI NHAU
+====================================================================================
+
+FloodTwin có thể trở thành một hệ sinh thái gồm những cánh cửa sử dụng khác nhau nhưng dùng chung nền tảng dữ liệu:
+- FloodPulse: tín hiệu mưa, mực nước, quá khứ, nguy cơ và sự bất định theo thời gian.
+- FloodVision: đọc ảnh/video, so sánh bằng chứng, phát hiện dấu hiệu bất thường và giới hạn kết luận.
+- FloodReport: tiếp nhận báo cáo tiếng Việt, gom trùng, tóm tắt diễn biến và hỗ trợ kiểm duyệt.
+- FloodPath: mô tả mạng đường, đoạn có quan sát, đoạn có rủi ro dự báo, tuyến ứng viên và giới hạn dữ liệu.
+- FloodMap: bảng đồ lớp GIS; không đồng nhất heatmap tương đối với bản đồ độ sâu ngập thực đo.
+- FloodCommand: công cụ quản trị, phân công xác minh, theo dõi sự kiện và kiểm toán thay đổi.
+- FloodAlert: thông báo theo khu vực tự chọn, có thời hạn, chống nhiễu và dẫn về nguồn chính thức.
+- FloodAssist: trợ lý hỏi đáp, hướng dẫn kiểm tra, đọc giải thích dễ hiểu, không được đóng vai cơ quan cứu nạn.
+- FloodLab: môi trường thực nghiệm 'nếu như' độc lập với cảnh báo thật.
+- FloodHistory: kho sự kiện được phiên bản hóa, phục vụ nghiên cứu các mùa mưa.
+- FloodInsights: thống kê rủi ro, mất kết nối, tác động và những vị trí còn thiếu dữ liệu.
+- FloodEducation: giáo dục STEM về mưa, địa hình, thoát nước và hành động an toàn.
+- FloodAccess: trải nghiệm tiếp cận, trợ giúp nhóm có nhu cầu đặc biệt.
+- FloodResilience: phân tích thích ứng dài hạn và so sánh các giải pháp giả định về hạ tầng.
+- FloodConnect: kết nối nguồn dữ liệu/đơn vị đối tác chính thức khi có thỏa thuận; không giả liên thông.
+
+Mỗi lớp trả lời một câu hỏi khác nhau: 'Điều gì đang được ghi nhận?', 'Vì sao có nguy cơ?', 'Bằng chứng nào?', 'Tôi nên kiểm tra gì?', 'Đường nào còn thiếu thông tin?', 'Ai có quyền xác nhận?' và 'Những thay đổi được lưu lại như thế nào?'.
+
+====================================================================================
+30. PHÂN LOẠI BÀI TOÁN NGẬP ĐỂ TRÁNH DÙNG SAI MÔ HÌNH
+====================================================================================
+
+A. Ngập cục bộ do mưa đô thị: nước đọng mặt đường vì lượng mưa lớn hơn năng lực thoát nước; cần dữ liệu vi địa hình và cống rãnh, không thể kết luận chỉ từ lượng mưa.
+B. Ngập do sông: liên quan lưu lượng, mực nước, đê bờ, tràn bờ; cần trạm đo và mô hình thủy văn phù hợp.
+C. Ngập do triều cường, cửa sông hoặc nước dâng: cần thông tin triều, kênh rạch, địa hình và tương tác với mưa; chỉ có ý nghĩa ở vùng chịu ảnh hưởng.
+D. Ngập do hồ chứa/xả điều tiết: phải đọc thông báo vận hành chính thức; không suy ra tình trạng hồ từ bài đăng mạng xã hội.
+E. Ngập vùng trũng, hầm chui, lối đi ngầm và bãi xe: chịu ảnh hưởng mạnh của hình học, thiết kế và bơm thoát nước; báo cáo tại chỗ thường quan trọng.
+F. Lũ quét/sạt lở: là nhóm nguy cơ KHÁC với ngập cục bộ mặt đường; phải có mô-đun chuyên biệt và nguồn cảnh báo có thẩm quyền nếu nghiên cứu thêm.
+G. Ngập trong nhà/xưởng: mức độ ảnh hưởng phụ thuộc nền nhà, độ cao ngưỡng, hàng hóa và điện; không dùng ảnh vỉa hè để suy ra ngập trong nhà.
+H. Mưa gây cản trở giao thông nhưng chưa ngập: tầm nhìn giảm, ùn tắc, đường trơn; cần thể hiện là nguy cơ đi lại riêng.
+
+Sản phẩm phải ghi 'phân loại nguy cơ nào, ở độ phân giải nào' ở từng màn hình. Một điểm mưa lớn không phải bằng chứng lụt đường; không được gộp cảnh báo chính thức với điểm rủi ro do thuật toán nội bộ tự tính.
+
+====================================================================================
+31. CHÂN DUNG NGƯỜI DÙNG: TỪ CÁ NHÂN TỚI TỔ CHỨC
+====================================================================================
+
+1) Học sinh, sinh viên: nhìn tuyến đến trường, nghe thông báo của trường, gửi ảnh khuôn viên có phép.
+2) Phụ huynh: theo dõi khu vực cổng trường, khuyến khích xác minh với nhà trường, không đưa quyết định liều lĩnh.
+3) Người đi làm: tra cứu tuyến thường dùng và báo cáo thay đổi, hiểu giờ cập nhật.
+4) Người cao tuổi: chế độ chữ lớn, lời giải thích ngắn, nút gọi người thân hoặc nguồn hỗ trợ chính thức.
+5) Người dùng xe lăn: xem lối đi, đường dốc và các rào cản được cập nhật; không hứa tuyến tiếp cận an toàn.
+6) Người khiếm thị: chế độ văn bản, đọc màn hình, thông báo bằng giọng nói có nguồn.
+7) Người giao hàng: xem tình trạng đã xác minh tại các đoạn đường trên tuyến nội bộ, chuẩn bị đổi lịch khi được phép.
+8) Tài xế xe công ty: tổng hợp rào cản giao thông và giới hạn tải trọng/chiều cao có nguồn.
+9) Bộ phận nhà trường: tập trung báo cáo về cổng, bãi xe, sân, hành lang, hệ thống điện.
+10) Bệnh viện/phòng khám: theo dõi khả năng tiếp cận cơ sở, tuyến nội bộ và tình trạng cơ sở được quản lý.
+11) Chung cư/khu dân cư: theo dõi tầng hầm, ram dốc, cống, bãi xe và phản ánh cư dân.
+12) Khu công nghiệp: xem điểm dễ ngập làm gián đoạn cổng kho, lối ra vào, tuyến xe nội bộ.
+13) Cơ sở kinh doanh: đánh giá gián đoạn giao nhận, điện và mở cửa dựa trên tin đã xác minh.
+14) Tổ chức cộng đồng: tập hợp báo cáo, phân công người kiểm tra có huấn luyện và tránh đi vào vùng nguy hiểm.
+15) Quản trị đô thị: xem thống kê không gian/thời gian, lịch sử, điểm cần khảo sát, phối hợp thủ công với đơn vị có thẩm quyền.
+16) Nghiên cứu viên: sử dụng dữ liệu đã khử định danh, đánh giá mô hình, mô tả hạn chế ngoại suy.
+17) Giáo viên: tổ chức bài học sử dụng mô phỏng tách biệt với dữ liệu thực.
+18) Khách ngoại tỉnh: giao diện song ngữ và chỉ dẫn đọc nguồn tin đáng tin cậy.
+19) Người tổ chức sự kiện: đối chiếu lịch hoạt động ngoài trời với thông tin mưa/địa điểm đã xác minh.
+20) Đơn vị duy tu: thống kê vị trí thoát nước gặp phản ánh lặp lại, nhưng không tự động kết luận lỗi công trình.
+
+====================================================================================
+32. DỮ LIỆU ĐẦU VÀO: TOÀN BỘ CÁC LỚP CÓ THỂ TÍCH HỢP
+====================================================================================
+
+NHÓM THỜI TIẾT: mưa quan trắc trạm có giấy phép; mưa dự báo theo giờ; mưa tích lũy 1/3/6/12/24/48 giờ; cường độ cực đại; xác suất mưa; sai khác giữa các mô hình; thời điểm phát hành bản dự báo; độ trễ.
+NHÓM THỦY VĂN: mực nước và lưu lượng trạm thực khi được cấp quyền; báo cáo hồ chứa; dữ liệu mô phỏng lưu lượng sông theo quy mô thích hợp; mức nước kênh rạch khi có phép; xu thế lên/xuống; ngưỡng do chuyên gia phê duyệt.
+NHÓM ĐỊA HÌNH: DEM/DTM, độ dốc, tương đối cao/thấp, hướng dòng chảy địa hình, đường phân thủy, thảm phủ, bề mặt bê tông và điểm trũng; độ chính xác phải gắn theo từng bộ nguồn.
+NHÓM HẠ TẦNG: đường, cầu, hầm chui, lối đi bộ, cống, miệng thu nước, trạm bơm, cửa xả, tuyến thoát nước, công trình đang thi công; chỉ hiển thị khi dữ liệu có quyền sử dụng và cập nhật.
+NHÓM HIỆN TRƯỜNG: ảnh, video, văn bản, ghi âm đã đồng ý xử lý, vị trí xấp xỉ, thời gian chụp/tải, tình trạng đã duyệt, nguồn tin, trạng thái hết hiệu lực.
+NHÓM TÁC ĐỘNG: công trình công cộng, trường, cơ sở khám chữa bệnh, trạm xe, cơ sở có nguy cơ gián đoạn; không công khai địa chỉ riêng tư không cần thiết.
+NHÓM BẢN TIN CHÍNH THỨC: đường dẫn, tiêu đề, thời điểm, cơ quan phát hành, khu vực áp dụng, thời hạn; ưu tiên bằng chứng cơ quan chuyên môn.
+NHÓM ĐỊNH TUYẾN: mạng đường, chiều lưu thông, loại đường, lệnh cấm, điểm đóng có nguồn, cầu/hầm, hạn chế giao thông theo phương tiện.
+NHÓM LỊCH SỬ: danh sách sự kiện có nhãn, bản ghi biến thiên trạng thái, ảnh đã được quyền dùng, kết quả đối chiếu sau sự kiện, phản hồi kiểm duyệt.
+NHÓM CHẤT LƯỢNG: nguồn chậm, missing values, tần suất cập nhật, version, checksum, quyền khai thác, sai số tọa độ, độ trễ ingestion.
+
+Nguyên tắc: KHÔNG tạo bảng mực nước 'live' khi không có trạm; KHÔNG tự tạo điểm ngập hoặc trộn dữ liệu giả vào bản đồ thật. Thông tin thiếu là trạng thái dữ liệu quan trọng chứ không phải lỗi nên giấu.
+
+====================================================================================
+33. NGUỒN, PROVENANCE VÀ TÍNH MINH BẠCH TỪNG SỰ KIỆN
+====================================================================================
+
+Mọi thực thể nguồn dữ liệu nên có: tên nguồn, URL, nhà cung cấp, giấy phép, mục đích dùng, độ phủ địa lý, độ phân giải, tần suất, độ trễ, thời gian đo, thời gian tải về, phiên bản, kiểm tra toàn vẹn, giới hạn, ngày xác minh.
+Mọi kết luận trên bản đồ có: biến đầu vào nào được dùng, bản quy tắc/mô hình nào, dữ liệu gần nhất từ lúc nào, nguồn nào đóng góp, mức chắc chắn, trạng thái kiểm duyệt, có bản tin chính thức trùng hay không.
+Định nghĩa 'tươi dữ liệu' theo từng nguồn, không dùng một đồng hồ duy nhất cho tất cả. Ví dụ một ảnh từ 14:00 không chứng tỏ 18:00 vẫn ngập; một forecast công bố hôm qua không là nowcast hiện tại.
+Nếu các nguồn trái nhau: hiển thị xung đột, không tự chọn số thuận mắt. Có thể mô tả 'trạm báo mưa cao nhưng chưa có báo cáo đường ngập được xác minh'; đây là kết luận có trách nhiệm.
+Nếu xóa ảnh theo yêu cầu, tiếp tục duy trì metadata tổng hợp an toàn khi có cơ sở pháp lý; không giữ dữ liệu cá nhân vô thời hạn chỉ để phục vụ nghiên cứu.
+
+====================================================================================
+34. FLOODPULSE: MỌI HƯỚNG TRÍ TUỆ DỰ BÁO VÀ NOWCAST
+====================================================================================
+
+FloodPulse là nơi gom tín hiệu, KHÔNG được coi là máy đo ngập của mọi con phố. Các hướng AI hợp lý:
+- Phát hiện mưa tăng nhanh theo giờ hoặc cơn mưa kéo dài, so với chuẩn địa phương nếu có đủ chuỗi dài.
+- Phân cụm các thời điểm có cấu hình mưa tương tự các sự kiện từng được quan sát.
+- Dự báo nguy cơ có điều kiện ở một số điểm đã có nhãn thực địa và hạ tầng liên quan.
+- Ước lượng bất định bằng ensemble hoặc conformal prediction khi dữ liệu cho phép.
+- So sánh chỉ số lịch sử với hiện tại; không khẳng định tần suất tái diễn nếu mẫu quá nhỏ.
+- Kết hợp mưa, thoát nước và tín hiệu hiện trường theo quy tắc trọng số dễ giải thích trước khi dùng ML.
+- Phân biệt 'mưa nhiều', 'có tín hiệu dễ ngập' và 'đã xác nhận ngập' bằng những nhãn rõ.
+- Nhận diện khoảng thời gian dự báo dễ có sai lệch lớn; tự hạ độ tin cậy khi nguồn bất đồng.
+- Phát hiện dữ liệu mưa bất thường do lỗi đơn vị, múi giờ hoặc trạm; đưa vào hàng chờ kiểm tra.
+- Thống kê nguy cơ theo khu vực nhỏ đúng mức phân giải đầu vào, không tô lưới 5km thành độ chính xác từng mét.
+- Dự báo tình huống giả lập sau khi thay đổi lượng mưa, có nhãn DEMO.
+- Trình bày những yếu tố tác động hàng đầu, kiểm tra tính nhất quán vật lý.
+- Tính risk score có kèm độ phủ/độ tin cậy chứ không chỉ một số đỏ/chấm xanh.
+
+Ba mức khả năng: (1) đánh dấu tín hiệu cần chú ý từ dữ liệu công khai; (2) dự báo thống kê có nhãn đã kiểm chứng; (3) mô hình thủy văn-thủy lực chi tiết cần dữ liệu và chuyên gia. Không mặc nhiên sở hữu mức (3).
+
+====================================================================================
+35. PHÂN TÍCH VI ĐỊA HÌNH VÀ THOÁT NƯỚC MƯA: ĐIỂM MẠNH VÀ RANH GIỚI
+====================================================================================
+
+Ngập đường do mưa nhiều khi quyết định bởi vài chục centimet chênh cao, vị trí miệng cống hoặc tình trạng nghẽn. Vì thế DEM 90m hoặc GloFAS 5km không đủ để khẳng định một con phố, lối đi hoặc hầm chui đang ngập.
+Tính năng đề xuất: khoanh vùng 'điểm trũng cần khảo sát' theo DEM có độ phân giải phù hợp; liên kết ảnh hiện trường đã xác minh; lớp tiềm năng tích nước; học từ lặp lại sau mưa; bảng dữ liệu hạ tầng cống do đơn vị quản lý cung cấp; đánh dấu vùng chưa có dữ liệu hạ tầng.
+Nếu có DTM/LiDAR chi tiết, bản vẽ cống, tình trạng bơm hoặc mô hình SWMM/HEC-RAS hợp lệ, có thể nghiên cứu mô phỏng dòng chảy/thoát nước. Không nên tự phong đây là mô hình đo chính xác nếu chỉ có dữ liệu mở chung.
+Các ứng dụng thực tế: đề xuất lịch khảo sát điểm tắc cống, theo dõi trạng thái khắc phục, so sánh can thiệp giả định, lưu lại hiệu quả sau những đợt mưa thực. Mọi gợi ý công trình cần kỹ sư đánh giá.
+
+====================================================================================
+36. THỦY VĂN SÔNG, HỒ, KÊNH RẠCH, TRIỀU VÀ VẬN HÀNH CÔNG TRÌNH
+====================================================================================
+
+Tại vùng ven sông/hồ có thể có các dashboard riêng: mức nước được công bố, xu thế quan trắc, lịch sử cao/thấp, dự báo lưu lượng lưu vực và các bản tin quản lý hồ chứa.
+AI có thể tóm tắt bản tin vận hành công trình do cơ quan có thẩm quyền công bố, nhận biết thay đổi so với bản tin trước, cảnh báo người dùng về thông tin mới kèm liên kết nguồn, nhưng không tự diễn giải thành lệnh sơ tán.
+Đối với triều cường và vùng cửa sông, cần nguồn triều, quan trắc tương ứng và chuyên môn địa phương. Đối với lũ quét/sạt lở, cần mô hình khác và không gộp tất cả thành 'ngập đô thị'.
+GloFAS/Open-Meteo Flood API: sản phẩm lưu lượng sông mô phỏng khoảng 5km; không biểu diễn đường ngập/độ sâu đường, không cung cấp dự báo flash flood hay coastal flooding. Dùng làm bối cảnh lưu vực có dẫn nguồn. Khi không có kết nối phép đo sông, đừng viết 'mực nước thực tế'.
+
+====================================================================================
+37. FLOODVISION: PHÂN TÍCH ẢNH CHI TIẾT VÀ GIỚI HẠN CHỨNG CỨ
+====================================================================================
+
+Các loại ảnh: đường có nước, đường ướt, mặt sông/hồ, ảnh chụp qua kính, ảnh tối, ảnh mưa hắt, ảnh phản chiếu ánh đèn, ảnh ngập trong sân/hầm, ảnh chỉnh sửa/cắt ghép, ảnh cũ bị đăng lại.
+Pipeline ý tưởng: đánh giá chất lượng ảnh -> nhận biết cảnh và bề mặt -> phân đoạn vùng có khả năng là nước -> đối chiếu đối tượng tham chiếu -> trích xuất dấu hiệu cụ thể -> đánh giá độ không chắc chắn -> hỏi người dùng thời gian/vị trí -> chờ kiểm duyệt.
+Có thể nhận diện xe máy/ô tô bị nước bao quanh, dòng nước chuyển động, vệt nước trên tường, nước tràn mép bó vỉa, vật cản lối đi. Tuy nhiên ảnh đơn không đủ chứng minh chiều sâu và tốc độ dòng; vật chuẩn không có kích thước chuẩn hóa cũng không đủ.
+Tính năng hiển thị: khung đánh dấu vùng nghi ngờ ngập; phần mô tả 'AI nhìn thấy gì', 'AI không xác định được gì'; toggle trước–sau; ảnh nhạy cảm được che; con người chấp nhận hoặc bác bỏ nhận diện.
+Nếu thử mô hình ước lượng độ sâu: chỉ dùng thước/mốc đo đã hiệu chuẩn, hình học camera được kiểm tra hoặc ảnh hiện trường có đo đồng thời; công bố khoảng sai số và điều kiện áp dụng. Không hiển thị 17cm chỉ vì LLM đoán theo bánh xe.
+
+====================================================================================
+38. VIDEO, CHUỖI ẢNH, ÂM THANH VÀ GIỌNG NÓI
+====================================================================================
+
+Video do người dùng gửi có thể cung cấp nhiều khung hình về dòng chảy hoặc diễn biến; AI trích frame đại diện, phát hiện cảnh ổn định, nhóm ảnh trùng và tạo bản tóm tắt thời lượng ngắn cho người kiểm duyệt.
+Có thể phân tích biến đổi trước/sau từ camera cố định hoặc chuỗi ảnh cùng góc nhìn; chuyển động camera, ánh sáng, mưa và vật thể có thể gây lỗi. Kết luận 'nước đang tăng' chỉ đáng tin với mốc không gian và thời gian được hiệu chuẩn.
+Ghi âm/giọng nói: nhận dạng câu 'đường trước cổng trường đang ngập' -> text -> trích vị trí tương đối -> hỏi bổ sung; không coi chỉ riêng giọng nói là bằng chứng. Cần xử lý đồng ý ghi âm và tránh ghi đè tiếng lóng địa phương.
+Trợ lý nói: đọc tóm tắt cảnh báo có nguồn, hỗ trợ thao tác khi tay không thuận tiện; không chiếm thời gian người dùng trong tình huống nguy hiểm. Không tự lắng nghe nền 24/7.
+Video từ camera công cộng chỉ tích hợp nếu có thỏa thuận, phạm vi sử dụng và biện pháp bảo vệ riêng tư; không tự thu thập camera không được cấp quyền.
+
+====================================================================================
+39. FLOODREPORT: HIỂU PHẢN ÁNH ĐỜI THƯỜNG THÀNH DỮ LIỆU CÓ CẤU TRÚC
+====================================================================================
+
+Một báo cáo ngập thường mơ hồ: 'gần cây xăng', 'khúc cầu cũ', 'nước qua cổ chân', 'cổng sau trường', 'trời vừa mưa xong'. AI có thể trích thực thể địa điểm và thời gian tương đối, tách quan sát với suy đoán, phát hiện thông tin còn thiếu, đặt câu hỏi tối thiểu.
+NLP tiếng Việt hỗ trợ từ viết tắt, lỗi chính tả, giọng miền Nam, địa danh cũ/mới và ngôn ngữ tự nhiên. Chỉ giải địa danh khi có bằng chứng đủ; nếu 'cầu mới' không duy nhất thì đề nghị chọn trên bản đồ.
+Hồ sơ báo cáo: loại tình huống, vị trí độ chính xác, thời gian quan sát, thời gian gửi, ảnh, người gửi ẩn danh/định danh, mức tin cậy, kiểm duyệt, thời hạn hiệu lực, thông tin hiện trường xung đột.
+Đặc biệt: chuẩn hóa 'nước ngập đến đầu gối' thành lời kể chưa có phép đo; giữ nguyên câu gốc, không chuyển thành 50cm như sự thật.
+AI có thể tóm tắt 30 phản ánh gần nhau thành 'Nhiều báo cáo trong khoảng 16:00–17:00 tại khu vực X, gồm 4 ảnh được duyệt'; phân biệt 30 người độc lập với 30 bài share cùng một ảnh.
+
+====================================================================================
+40. ĐÁNH GIÁ NGUỒN CỘNG ĐỒNG: CHỐNG ẢNH CŨ, SPAM VÀ THAO TÚNG
+====================================================================================
+
+Báo cáo cộng đồng rất có giá trị nhưng dễ trùng, cũ, sai vị trí hoặc bị khai thác để gây hoang mang.
+Các gợi ý AI: perceptual hashing phát hiện ảnh đăng lại; tìm gần-giống theo embeddings; so trùng văn bản; tìm mâu thuẫn về thời gian/địa điểm; nhận biết các báo cáo đột biến khác thường để kiểm tra; phân nhóm sự kiện theo vùng và cửa sổ thời gian.
+Không tự 'phát hiện nói dối' hay gắn nhãn người dùng gian lận từ một tín hiệu mơ hồ. Không công bố danh tính người báo ngập. Tín nhiệm dựa trên lịch sử kiểm chứng có quyền khiếu nại, không chấm điểm công dân.
+Chống tấn công dữ liệu: không cho 100 báo cáo từ một nguồn bị coi là 100 bằng chứng độc lập; chống trùng camera, ảnh từ mạng xã hội, mô tả do bot sinh; vẫn phải giữ kênh tiếp nhận cho người không có tài khoản.
+Một báo cáo 'chờ xác minh' không tự mở/đóng đường trong bản đồ điều hướng thật. Các giả định ảnh hưởng tuyến có thể thử trong FloodLab mà không gây cảnh báo xã hội.
+
+====================================================================================
+41. AI HỢP NHẤT ĐA NGUỒN VÀ XỬ LÝ CÁC NGUỒN MÂU THUẪN
+====================================================================================
+
+FloodTwin cần một 'Evidence Fusion' tách tín hiệu từ trạm mưa, dự báo, ảnh, báo cáo đã duyệt, lịch sử và bản tin chính thức. Nếu tất cả đều lấy từ cùng một bài đăng, không được cộng độ tin cậy nhiều lần.
+Hợp nhất theo thời gian và không gian: mỗi tín hiệu có cửa sổ hợp lệ; mức ảnh hưởng đến một đoạn đường được tính theo vị trí và sai số định vị; tín hiệu từ điểm cách đường 1km không tự coi là tại chính đường đó.
+Đối chiếu mức độ độc lập: hai trạm khác nhau; hai ảnh cùng camera khác thời gian; báo cáo trùng; một bản tin được nhiều báo chép lại.
+Gắn 'confidence interval', coverage và agreement thay vì số tin cậy phần trăm do LLM tự bịa. Cho phép trạng thái 'nguồn mâu thuẫn', 'không có quan trắc' và 'dữ liệu không còn mới'.
+Tự động sinh phần giải thích: 'Mưa dự báo tăng, lịch sử có hai sự kiện, nhưng chưa có báo cáo hiện trường được duyệt'; không đánh đồng cảnh báo nguy cơ với quan sát ngập.
+
+====================================================================================
+42. FLOODMAP: BẢN ĐỒ MỌI LỚP DỮ LIỆU VÀ LỊCH SỬ
+====================================================================================
+
+Các lớp có thể bật/tắt: mưa thời gian gần, mưa dự báo, trạm được cấp phép, lưu lượng sông mô phỏng, điểm phản ánh chưa xác minh, điểm đã xác minh, sự kiện cũ, điểm cần kiểm tra, đoạn đường đóng chính thức, lớp hạ tầng được chia sẻ, độ phủ dữ liệu, mức bất định, khu vực công cộng.
+Bản đồ có thanh thời gian để xem từng giờ và replay một đợt mưa; khác nhau giữa 'lúc xảy ra' và 'lúc hệ thống nhận được'.
+Các đồ họa: điểm pin có nhãn, đường đổi màu theo trạng thái nguồn, bản đồ nhiệt tương đối, so sánh trước–sau, biểu đồ mưa kèm ảnh sự kiện, đồ thị mức tin cậy, time slider; tùy mức zoom để tránh đánh lừa bằng độ chi tiết.
+Có thể có bản đồ 2D, chiều cao tương đối 3D khi đủ dữ liệu, ảnh panorama do chủ sở hữu cấp phép và hồ sơ bản đồ của trường/khu công nghiệp.
+Chú giải màu phải đi kèm nhãn chữ/họa tiết: người mù màu phải đọc được 'đã xác minh', 'dự báo', 'chưa biết'. Không dùng vùng màu xanh lá làm dấu 'chắc chắn an toàn'.
+
+====================================================================================
+43. FLOODPATH: SO SÁNH LỘ TRÌNH MỘT CÁCH CÓ TRÁCH NHIỆM
+====================================================================================
+
+FloodPath nhận mạng đường, loại phương tiện và thông tin rào cản. Mỗi đoạn đường có bộ đặc tính: khoảng cách, loại đường, hạn chế phương tiện, trạng thái đóng chính thức, báo cáo đã duyệt, thông tin rủi ro dự báo, thời điểm cập nhật, mức thiếu dữ liệu.
+Các lựa chọn so sánh: tuyến ngắn nhất; tuyến hạn chế đi qua nơi có báo cáo ngập đã duyệt; tuyến ưu tiên đường chính còn đủ dữ liệu; tuyến phù hợp phương tiện theo hạn chế bản đồ; phương án hoãn di chuyển.
+'Đường không có báo cáo' KHÔNG PHẢI 'đường an toàn'. Hệ thống hiển thị số km thiếu dữ liệu, nguồn cuối cập nhật và cảnh báo trường hợp tất cả tuyến đều thiếu tin cậy.
+Tuyến có lệnh đóng chính thức: chặn trong lớp bản đồ theo phạm vi và thời gian lệnh. Một report ảnh chưa xác minh: đề xuất người dùng kiểm tra thêm, không tự tạo lệnh cấm giao thông.
+Khi cảnh báo chính thức khuyến cáo không đi lại, chức năng so sánh tuyến không được khuyến khích người dùng tìm đường len vào vùng nguy hiểm. Mặc định ưu tiên hướng dẫn từ cơ quan có thẩm quyền.
+AI hỗ trợ giải thích tại sao tuyến thay đổi; lõi thuật toán tuyến là tối ưu trên đồ thị, không gọi nhầm là AI dự báo.
+
+====================================================================================
+44. ĐỊNH TUYẾN CHO CÁC HOÀN CẢNH VÀ ĐỐI TƯỢNG KHÁC NHAU
+====================================================================================
+
+Người đi bộ: chú trọng cầu đi bộ, hầm chui, vỉa hè, đường dốc, nơi thiếu đèn. Xe máy: hạn chế đường cao tốc và nơi có thông báo không phù hợp. Xe ô tô: cầu, hầm, đường một chiều, hạn chế quay đầu. Xe đạp: đoạn đường phù hợp, tầm nhìn và điều kiện mặt đường.
+Xe bus/xe đưa đón: chỉ lấy trạng thái tuyến, trạm dừng từ nguồn được phép; không tự suy diễn tuyến đang hoạt động. Xe logistics: các ràng buộc chiều cao, tải trọng, cửa kho, lịch bốc dỡ.
+Người có nhu cầu tiếp cận: độ dốc và chất lượng vỉa hè phải được kiểm tra thực, không được gắn lối đi 'accessible' dựa duy nhất trên OSM thiếu dữ liệu.
+Nếu điểm đầu và điểm cuối ở hai phía vùng ngập được cảnh báo chính thức: ưu tiên hiển thị phương án không khởi hành và các nguồn thông tin, không biến sản phẩm thành trò 'tìm đường bất chấp'.
+Độ dài/ETA: chỉ trả số từ công cụ định tuyến hoặc dữ liệu giao thông tương ứng, không để chatbot bịa quãng đường/thời gian.
+
+====================================================================================
+45. FLOODALERT: THÔNG BÁO HỮU ÍCH MÀ KHÔNG GÂY HOẢNG LOẠN
+====================================================================================
+
+Cho người dùng tự chọn khu vực theo dõi, khung giờ, loại sự kiện, kênh email/push, ngôn ngữ, mức độ nhạy, nhu cầu không làm phiền.
+Chỉ thông báo khi có thay đổi có ý nghĩa: bản tin mới từ cơ quan có thẩm quyền, báo cáo đã được duyệt ở khu vực đăng ký, rào cản giao thông chính thức, dữ liệu quan trọng bị gián đoạn; có thể tạo bản tóm tắt theo ngày.
+Quy trình chống spam: phát hiện báo cáo trùng; gộp nhiều update thành một; giới hạn tần suất; không phát cảnh báo ngập thật từ kịch bản FloodLab; hủy/tắt thông báo dễ dàng.
+Mỗi thông báo có: tiêu đề rõ, nơi áp dụng, thời gian, sự khác biệt, nguồn, đường dẫn chi tiết và lời nhắc về độ bất định. Nếu cảnh báo chính thức được cập nhật/hủy, lưu và hiển thị việc sửa đổi.
+Không gửi SMS hàng loạt hoặc danh nghĩa cơ quan nhà nước khi không được cấp phép. Người dùng phải đồng ý nhận thông báo; bảo vệ dữ liệu vị trí và không định vị nền liên tục mặc định.
+
+====================================================================================
+46. FLOODASSIST: CHATBOT, AI AGENT VÀ TRỢ LÝ ĐA NGÔN NGỮ
+====================================================================================
+
+Hỏi 'Khu vực X có báo cáo mới không?' -> công cụ truy vấn cơ sở dữ liệu -> trả số, nguồn, thời gian, vùng phủ.
+Hỏi 'Tại sao tuyến A thay đổi?' -> so sánh snapshot t-1 và t -> trích đoạn affected edges và nguồn tương ứng; không bịa ETA.
+Hỏi 'Hôm nay gần trường có mưa nhiều không?' -> gọi API thời tiết có ngày giờ -> phân biệt dự báo với quan trắc.
+Hỏi 'Tôi nên đi ngay không?' -> hiển thị điều đã biết, không biết, thông báo chính thức và lựa chọn trì hoãn; không khẳng định an toàn.
+Hỏi 'Tóm tắt 50 báo cáo gần đây' -> lọc nguồn, tách trùng, đưa tham chiếu đến từng hồ sơ.
+Có thể tương tác bằng giọng nói, đọc kết quả cho người khó nhìn, hỗ trợ tiếng Việt và tiếng Anh; muốn có tiếng dân tộc thiểu số cần cộng đồng thẩm định bản dịch.
+AI Agent được phép tìm dữ liệu, so sánh, soạn thảo bản tin và tạo đề xuất tác vụ. Các hành động phát cảnh báo công khai, khóa đường, xác nhận hiện trường, liên hệ cơ quan chức năng hoặc gửi dữ liệu cá nhân phải có con người phê duyệt và quyền hợp lệ.
+Cơ chế chống prompt injection: tin nhắn và ảnh người dùng là dữ liệu, không là lệnh cấp cao; mô hình không thể dùng câu 'tôi là cơ quan chức năng' để tự gắn nhãn đã xác minh.
+
+====================================================================================
+47. FLOODCOMMAND: QUẢN LÝ TÌNH HUỐNG VÀ QUY TRÌNH XÁC MINH
+====================================================================================
+
+Chế độ trung tâm: bảng điểm nóng theo thời gian, hàng chờ báo cáo, nhật ký thay đổi, quan sát dữ liệu thiếu, cảnh báo nguồn bị lỗi, danh sách báo cáo trùng, quyết định xác minh.
+Một case có thể gồm nhiều phản ánh, ảnh, bản tin, tọa độ xấp xỉ và quá trình kiểm chứng. Trạng thái: mới -> cần bổ sung -> đang xem xét -> xác minh có dấu hiệu/ngập -> chưa đủ chứng cứ -> bác bỏ -> đã hết hiệu lực -> đóng; ghi người duyệt và lý do.
+Tính năng quản trị: gợi ý ưu tiên dựa trên tuổi dữ liệu và mức quan trọng hạ tầng, phân công người có quyền, chế độ hai người duyệt trường hợp nhạy cảm, cờ mâu thuẫn, rollback quyết định, phản hồi người gửi.
+Cơ quan chức năng chỉ được xuất hiện dưới tên 'đơn vị phối hợp' nếu có xác nhận thật. Không dựng Dashboard như thể là phòng điều hành chính thức của tỉnh khi chưa có thỏa thuận.
+Một nội dung 'đã xác minh' cần ghi rõ đã xác minh điều gì: ảnh cho thấy nước tại thời điểm X, hay đã có người đo hiện trường, hay đã có quyết định đóng đường. Ba điều này là ba cấp khác nhau.
+
+====================================================================================
+48. TRUNG TÂM AN TOÀN, HỖ TRỢ VÀ TÌNH HUỐNG KHẨN CẤP
+====================================================================================
+
+Sản phẩm không nên dạy người dùng băng qua dòng nước hoặc thay thế quy trình cứu hộ. Tại mục nguy hiểm: hướng người dùng đến bản tin chính thức, lựa chọn tránh di chuyển, thông tin liên hệ khẩn cấp quốc gia có nguồn và hướng dẫn do chuyên gia/cơ quan có thẩm quyền ban hành.
+Các thẻ hỗ trợ: dấu hiệu cần gọi hỗ trợ; thông báo đã xác minh về đường bị chặn; liên hệ đơn vị đang quản lý khuôn viên (nếu có); chia sẻ vị trí CHỈ khi người dùng quyết định; danh sách nơi hỗ trợ chính thức nếu được cơ quan công bố.
+Hướng mở rộng: danh sách khu vực tập kết, điểm cung cấp nước sạch, cơ sở y tế, cơ sở trú tạm, điều kiện tiếp nhận — chỉ hiển thị là 'đang hoạt động/được phép đến' khi có xác nhận mới. Không tự gợi ý một trường học hay công trình bất kỳ là nơi trú an toàn.
+Cảnh báo cần nhất quán, không dùng từ ngữ giật gân; người dùng có thể mở nhanh bản tin chính thức. Bất kỳ đề xuất điều động lực lượng cứu hộ hoặc sơ tán nào chỉ là công cụ hỗ trợ nhân sự có thẩm quyền, không để chatbot tự ban hành.
+
+====================================================================================
+49. FLOODLAB: PHÒNG THÍ NGHIỆM WHAT-IF ĐỘC ĐÁO
+====================================================================================
+
+FloodLab là điểm nhấn demo an toàn. Cho phép kéo thanh mưa tích lũy, thay đổi thời gian, thêm báo cáo mô phỏng tại một điểm, xác nhận giả lập, đóng/mở đoạn đường giả lập, thay đổi độ tin cậy dữ liệu, ngừng nguồn API để xem hệ thống xử lý.
+Mỗi kịch bản có tên, seed, dữ liệu đầu vào, tác động, kết quả và nút replay/reset; bản đồ luôn có watermark 'MÔ PHỎNG – KHÔNG DÙNG ĐỂ DI CHUYỂN THỰC TẾ'.
+Ví dụ kịch bản: (1) có mưa to nhưng chưa đủ dữ liệu kết luận; (2) 10 báo cáo trùng từ một ảnh cũ; (3) xuất hiện ảnh thật nhưng thời gian chưa rõ; (4) báo cáo được duyệt khiến tuyến so sánh thay đổi; (5) trạm dữ liệu mất kết nối; (6) nguồn chính thức xác nhận đường đóng; (7) dữ liệu mâu thuẫn; (8) AI nhầm ao với đường ngập và bị người duyệt từ chối.
+Kết quả cần minh bạch 'đây là cách phần mềm phản ứng với sự kiện giả lập' chứ không nói 'AI đã dự báo thành công vụ ngập ngoài thực tế'.
+Có thể thử độ nhạy của mô hình, biến nào khiến kết quả thay đổi, tình huống nào cần đặt trạng thái 'không đủ dữ liệu'.
+
+====================================================================================
+50. DIGITAL TWIN NHIỀU CẤP: BẢN SAO SỐ THỰC CHẤT LÀ GÌ?
+====================================================================================
+
+Cấp 1 – Bản đồ và dữ liệu: thống kê điểm/đoạn, lịch sử, lớp mưa, trạng thái quan trắc.
+Cấp 2 – Phản ứng theo thời gian: cập nhật sự kiện mới, lưu phiên bản, hiển thị thay đổi rủi ro/lộ trình.
+Cấp 3 – Mô phỏng hành vi hệ thống: cho thay đổi đầu vào trong FloodLab và dự báo kết quả theo mô hình được xác định.
+Cấp 4 – Digital twin thủy văn/thủy lực vật lý có hiệu chuẩn: cần dữ liệu địa hình chi tiết, cống, mực nước, lưu lượng và chuyên gia; không được tự tuyên bố đạt đến cấp này khi chưa kiểm định.
+Phần mềm demo laptop vẫn có thể là 'bản sao số tình huống' nếu nó giữ quan hệ rõ giữa đối tượng thực, sự kiện, mô hình, thời gian và thay đổi trạng thái. Digital twin không nhất thiết phải 3D hào nhoáng; trọng tâm là dữ liệu có phiên bản và phản ứng kiểm chứng được.
+
+====================================================================================
+51. LƯU TRỮ LỊCH SỬ, TIMELINE, TÌM KIẾM SỰ KIỆN VÀ KHO BẰNG CHỨNG
+====================================================================================
+
+FloodHistory ghi mốc phát hiện, người/nguồn xác minh, thời điểm kết thúc, các phiên bản và chính sách lưu giữ. Có thể tìm 'những sự kiện sau mưa > ngưỡng tham khảo ở khu vực X trong năm trước' với dữ liệu được phép.
+Người dùng có thể xem trước/sau của khu vực, hiểu mức ngập từng được báo cáo, mối liên hệ với mưa và những khoảng thời gian không có quan trắc.
+Các chức năng AI: tự gắn thẻ sự kiện, gom hình tương tự, trích nguyên nhân được nêu trong biên bản, phát hiện câu hỏi chưa giải quyết, so sánh các vụ có điều kiện tương tự.
+Sự kiện cũ chỉ là lịch sử; trên bản đồ hiện tại phải đổi kiểu hiển thị và thời gian, tránh người dùng tưởng ảnh 2024 vẫn phản ánh năm 2026.
+Khai thác nghiên cứu cần khử danh tính và làm mờ độ chính xác vị trí của nhà ở cá nhân khi cần.
+
+====================================================================================
+52. TÁC ĐỘNG TỚI HẠ TẦNG, TRƯỜNG HỌC, BỆNH VIỆN VÀ CỘNG ĐỒNG
+====================================================================================
+
+Mỗi tổ chức có bản đồ phạm vi đã khai báo: trường học xem cổng, lối đi, sân, bãi xe; bệnh viện xem lối tiếp cận; nhà máy xem cổng, đường nội bộ và vị trí tập kết hàng; khu dân cư xem ram dốc hầm, bơm và đường thoát nước.
+Hệ thống hỗ trợ checklist rà soát dựa trên hướng dẫn nghiệp vụ do đơn vị duyệt, chứ không tự ra lệnh điều hành. Tính năng giao việc chỉ hoạt động với nhân sự được phép trong một tổ chức.
+Thông tin về trường, bệnh viện và người dễ bị tổn thương không được dùng để gợi ý tuyến đến nơi họ đang trú hoặc công khai vị trí cá nhân.
+AI có thể tóm tắt báo cáo ẩn danh cho người quản lý, so sánh vị trí lặp lại, thống kê thời gian từ báo cáo tới xác minh và đo hiệu quả sửa chữa qua dữ liệu sau mỗi sự kiện.
+
+====================================================================================
+53. ỨNG DỤNG CHO GIAO NHẬN, LOGISTICS, DOANH NGHIỆP VÀ CHUỖI CUNG ỨNG
+====================================================================================
+
+Doanh nghiệp quản lý đội xe có thể xem thông tin ngập đã được xác minh dọc mạng đường, đánh dấu đơn giao không khẩn cấp có thể điều chỉnh, mô phỏng ảnh hưởng khi một lối vào kho bị đóng.
+AI hỗ trợ phân nhóm đơn hàng dễ bị tác động, so sánh các phương án lịch giao, thông báo nhân viên về dữ liệu rủi ro mới, tóm tắt điều kiện hạn chế di chuyển, phân tích gián đoạn hậu kiểm.
+Các bài toán nâng cao: phân tích 'single point of failure' trong mạng giao hàng; ưu tiên kiểm tra vị trí cổng kho; so sánh phương án xuất hàng dưới giả định không được đi qua các đoạn đường đóng.
+Không dùng hệ thống để điều phối phương tiện cứu hộ chuyên dụng hoặc cam kết hành trình an toàn trong tình huống bão lũ. Mô hình cần phân biệt phương tiện, chi phí và các hạn chế đường thực tế.
+Dữ liệu chuyến đi của khách hàng/doanh nghiệp phải được bảo mật, không mặc nhiên công khai trên cộng đồng.
+
+====================================================================================
+54. HẠ TẦNG THOÁT NƯỚC, VỆ SINH MÔI TRƯỜNG VÀ PHẢN ÁNH ĐÔ THỊ
+====================================================================================
+
+Người dân có thể gửi phản ánh 'miệng cống bị che', 'rác chắn cửa thu', 'nước tràn', 'đường lún' dưới danh mục riêng. AI nhận diện loại hiện tượng hỗ trợ, nhắc chụp góc an toàn và gợi ý bổ sung vị trí.
+Tạo bản đồ những địa điểm có phản ánh lặp lại sau mưa; ghi tiến độ xác minh và khắc phục nếu đơn vị quản lý tham gia thực tế. Phân tích trước/sau xử lý qua ảnh cùng góc có phép.
+Kết hợp các báo cáo để hình thành câu hỏi nghiên cứu: 'Đoạn đường X có lặp lại sau các trận mưa tương tự hay không?', 'Thay đổi thoát nước đã tương quan với số phản ánh giảm chưa?'.
+Không dùng ảnh để kết luận hệ thống cống chắc chắn bị hỏng; nguyên nhân phải do nhân viên có chuyên môn xác định. Không công khai thông số hạ tầng nhạy cảm vượt quyền chia sẻ.
+
+====================================================================================
+55. CLIMATE RESILIENCE: MÔ HÌNH THÍCH ỨNG VÀ ĐẦU TƯ THÔNG MINH
+====================================================================================
+
+Hướng nghiên cứu dài hạn: bản đồ phơi lộ theo nhóm tài sản công cộng; thay đổi vùng trũng do đô thị hóa; phân tích mưa cực đoan; so sánh kịch bản rãnh thoát nước, bề mặt thấm, khu trữ nước, nạo vét và phương án quy hoạch được cung cấp.
+FloodResilience có thể giúp liệt kê những địa điểm nên nghiên cứu sâu, mô tả lợi ích/giới hạn của can thiệp xanh như vườn mưa, mặt đường thấm, cây xanh và bể giữ nước; không thiết kế kích thước kỹ thuật tự động.
+Mô phỏng dài hạn muốn có giá trị cần dữ liệu khí hậu, thay đổi sử dụng đất, kịch bản quy hoạch và kỹ sư thủy lực. Các con số 'giảm ngập 40%' phải chỉ là giả định mô hình có thẩm định, không phải kết quả đã xảy ra.
+Sản phẩm có thể hiển thị bản đồ 'nơi cần khảo sát thêm' và 'khoảng trống dữ liệu', điều này hữu ích hơn tô màu chính xác giả tạo khắp đô thị.
+
+====================================================================================
+56. KẾT NỐI VỚI BẢN TIN CHÍNH THỨC, CƠ QUAN QUẢN LÝ VÀ THÔNG TIN CÔNG
+====================================================================================
+
+Trung tâm Dự báo KTTV Quốc gia là nguồn cảnh báo chuyên môn về mưa lớn, lũ, ngập, lũ quét/sạt lở. FloodTwin có thể cung cấp link và tóm tắt có trích dẫn; mọi bản tin phải giữ nguyên tên cơ quan, thời gian phát hành, khu vực và nội dung gốc.
+Nếu chưa có API chính thức, chỉ thiết kế như 'liên kết và đối chiếu bản tin công khai', không ghi 'kết nối trực tiếp thời gian thực'. Nếu có dữ liệu từ địa phương/hệ thống quản lý đường, giấy phép và hợp đồng phải rõ.
+Quy trình phát bản tin công cộng: AI soạn nội dung dựa trên dữ liệu, người có trách nhiệm duyệt; phiên bản đã được phê duyệt không được LLM thay đổi ý nghĩa ngưỡng/cấp độ cảnh báo.
+Thông báo thời tiết từ đối tác không bao giờ được hiển thị với logo cơ quan để tạo cảm giác được bảo trợ nếu chưa có phép.
+Các đường dẫn chính thức cần có chế độ xác minh trang nguồn; không sao chép nội dung bị giới hạn bản quyền khi không có quyền.
+
+====================================================================================
+57. BẢN ĐỒ VỆ TINH VÀ VIỄN THÁM: PHÂN TÍCH LŨ TRÊN DIỆN RỘNG
+====================================================================================
+
+Ảnh Sentinel-1 SAR có thể hỗ trợ khoanh vùng nước ở những đợt lũ có ảnh vệ tinh thích hợp và bài toán đủ lớn; khả năng thu ảnh phụ thuộc quỹ đạo/tần suất chụp. Ảnh Sentinel-2 quang học tốt cho phân tích đất/nước khi ít mây; mùa mưa nhiều mây có thể hạn chế mạnh.
+AI có thể nghiên cứu phân đoạn vùng ngập trên ảnh vệ tinh, so sánh trước/sau, phân tích vùng phủ đất, xác định nơi có sai số; mức độ chính xác phải công bố theo vùng thử nghiệm.
+Ở khu đô thị, vật cản và cấu trúc thành phố khiến phân tích SAR có giới hạn; không dùng lớp nước vệ tinh để tuyên bố từng đoạn đường đủ an toàn.
+Nếu ảnh quá cũ, gắn nhãn ảnh lưu trữ. Kết quả viễn thám là một tín hiệu hậu kiểm/bối cảnh bổ trợ, không thay thế báo cáo hiện trường mới.
+Ứng dụng đẹp để demo: tua thời gian vùng hồ/sông qua nhiều năm và lớp nước tham khảo, đi kèm chú giải điều kiện thu ảnh. Dữ liệu mới khai thác phải tuân thủ điều khoản và khả năng máy tính.
+
+====================================================================================
+58. UX/UI HOÀN CHỈNH CHO WEB, PWA VÀ ỨNG DỤNG TƯƠNG LAI
+====================================================================================
+
+Giao diện công chúng phải ưu tiên bốn thao tác: chọn khu vực -> xem nguồn mới nhất -> đọc trạng thái -> xem phương án. Trang chủ không nên ngập trong biểu đồ khiến người dân khó hiểu.
+Mobile: bản đồ toàn màn hình, bottom sheet, chuyển bộ lọc đơn giản, biểu mẫu gửi ảnh, thông báo rõ ràng, font chữ ít nhất đủ đọc, nút lớn, bàn phím thân thiện; desktop: nhiều cột, sidebar, timeline so sánh.
+Các trang nội dung: bản đồ, dự báo, lịch sử, sự kiện, tuyến, báo cáo, trợ lý, giải thích AI, nguồn dữ liệu, đối chiếu bản tin, mô phỏng, dashboard cá nhân, quản trị, giáo dục, quyền riêng tư, trạng thái hệ thống.
+Tất cả biểu đồ có bản tóm tắt văn bản và mô tả định dạng thời gian. Màu đỏ không được là cách duy nhất truyền tải rủi ro. Mọi nội dung cần chú thích nguồn và độ trễ dễ tìm.
+PWA: có thể lưu tài liệu hướng dẫn và snapshot ĐÃ CŨ để xem offline; mọi snapshot offline phải đánh dấu không cập nhật và không cung cấp tư vấn tuyến đường như thể thời gian thực. Bản đồ offline chỉ dùng tile/provider có quyền tải trước.
+
+====================================================================================
+59. HỆ THỐNG CỘNG ĐỒNG VÀ KHUYẾN KHÍCH BÁO CÁO CÓ TRÁCH NHIỆM
+====================================================================================
+
+Một bản tin theo khu vực có các bài đã duyệt, Q&A, lịch sử, hướng dẫn gửi bằng chứng và phản hồi sửa sai. Không phải mạng xã hội thưởng điểm cho người dấn thân vào điểm ngập nguy hiểm.
+Tính năng đóng góp: đăng ảnh ở nơi an toàn, xác nhận thông tin vị trí, thêm thời gian, đề xuất sửa báo cáo, theo dõi kết quả xử lý; cung cấp lựa chọn gửi ẩn danh có giới hạn chống lạm dụng.
+Uy tín cộng đồng đo bằng chất lượng báo cáo đã xác minh và mức tuân thủ quy tắc, không chấm điểm tín nhiệm công dân hay loại bỏ phản ánh của người mới.
+Gợi ý gamification chỉ nên tập trung vào giáo dục, mô phỏng FloodLab, khóa học hiểu dữ liệu và đóng góp báo cáo an toàn; tuyệt đối không khuyến khích tiếp cận nước lũ để có hình đẹp.
+Cơ chế khiếu nại: người bị gắn nguồn sai có thể yêu cầu sửa, xác minh lại; người dùng có thể báo ảnh nhầm đường, lộ mặt người, thông tin nguy hiểm hoặc báo cáo rác.
+
+====================================================================================
+60. TÍNH NĂNG TIẾP CẬN, NGÔN NGỮ VÀ HÒA NHẬP
+====================================================================================
+
+Nhiều người trong một đợt mưa lớn sẽ ở ngoài trời, màn hình tối, mạng yếu hoặc không có khả năng thao tác chính xác. Vì vậy, các thành phần có thể có: font lớn, độ tương phản cao, ngôn ngữ ngắn, icon có chữ, TTS đọc bản tin, đầu vào giọng nói được người dùng chủ động bật.
+Hỗ trợ tiếng Anh cho khách ngoại quốc; ở địa phương có ngôn ngữ dân tộc thiểu số, nội dung phải được cộng đồng thẩm định và thống nhất thuật ngữ an toàn.
+Chế độ người già: nút 'Đọc tình hình', 'Xem nguồn chính thức', 'Gửi vị trí cho người tin cậy' (hành động tự nguyện), 'Tôi không chắc về vị trí này'.
+Chế độ người đi bộ/người dùng xe lăn cần cơ sở dữ liệu đường đi thực tế và phản ánh về khả năng tiếp cận, không tự gắn nhãn an toàn từ giao diện.
+Có lựa chọn sử dụng mà không tạo tài khoản để đọc nguồn công khai; dữ liệu nhạy cảm chỉ dùng khi cần thiết.
+
+====================================================================================
+61. HỆ THỐNG DỮ LIỆU VÀ THỰC THỂ: THIẾT KẾ Ý NGHĨA NGHIỆP VỤ
+====================================================================================
+
+Các thực thể khái niệm (không phải schema code): AREA – vùng nghiên cứu; ROAD_SEGMENT – đoạn mạng đường; WATERBODY – sông/hồ; OBSERVATION – phép đo có nguồn; FORECAST – dự báo; REPORT – phản ánh; EVIDENCE – bằng chứng; EVENT – sự kiện; VERIFICATION – quyết định xác minh; OFFICIAL_NOTICE – bản tin; RESTRICTION – hạn chế đường; RISK_ASSESSMENT – đánh giá nguy cơ; ROUTE_COMPARISON – so sánh tuyến; SUBSCRIPTION – khu vực theo dõi; DATA_SOURCE – provenance; MODEL_VERSION – phiên bản mô hình; SCENARIO – kịch bản FloodLab; AUDIT_LOG – kiểm toán.
+Quan hệ nghiệp vụ: nhiều báo cáo có thể liên quan một sự kiện, một báo cáo có nhiều bằng chứng, một đoạn đường có nhiều quan sát tại các thời điểm, một thay đổi tuyến liên kết đến phiên bản trạng thái đường; một bản tin chính thức có phạm vi và hiệu lực riêng.
+Các trường trạng thái bắt buộc từ góc độ ý tưởng: thời gian hiện tượng xảy ra; thời gian phát hành; giờ cập nhật hệ thống; múi giờ; độ chính xác; đơn vị đo; nguồn; quyền tái sử dụng; nhãn verified/predicted/unverified/simulated; khi nào dữ liệu hết hiệu lực.
+Không nên lưu tọa độ cá nhân độ chính xác cao nếu chỉ cần xác định một cụm đường; không được công khai thông tin liên hệ của người báo cáo mặc định.
+
+====================================================================================
+62. AI EXPLAINABILITY: GIẢI THÍCH BẰNG BẰNG CHỨNG CHỨ KHÔNG BẰNG VĂN PHONG
+====================================================================================
+
+Một dự báo cần giải thích 'nguyên nhân khiến mức nguy cơ cao hơn' bằng dữ liệu: mưa tích lũy, tiền sử ngập có nhãn, vị trí thấp tương đối, báo cáo đáng tin, hoặc ngưỡng chuyên gia.
+Bản giải thích từ SHAP/feature importance chỉ mô tả mức đóng góp theo mô hình; không chứng minh quan hệ nhân–quả. Cần thêm kiểm tra đối chứng/logic vật lý khi kết luận về nguyên nhân.
+Người dùng có thể bấm 'Vì sao?', 'Nguồn nào?', 'Nếu loại bỏ báo cáo này thì sao?', 'Tín hiệu đã cũ chưa?', 'Điều gì khiến AI chưa chắc chắn?'.
+Với ảnh AI, hiển thị vùng nghi vấn và các trường hợp dễ nhầm, không coi heatmap attention là bằng chứng khoa học tự thân.
+Với route, hiển thị số đoạn đã xác minh, số đoạn được gắn dự báo, số đoạn thiếu dữ liệu và các rào cản chính thức; tránh một điểm số màu xanh che giấu thiếu thông tin.
+
+====================================================================================
+63. ĐÁNH GIÁ HỌC MÁY NGHIÊM TÚC VÀ CÁCH ĐO GIÁ TRỊ THẬT
+====================================================================================
+
+Bài toán nhận ảnh: precision, recall, F1, confusion matrix, chất lượng theo bối cảnh ngày/đêm/mưa/tối, false reassurance rate, điều kiện không đủ thông tin.
+Bài toán phát hiện ngập địa phương: precision-recall, AUPRC, Brier score, hiệu chuẩn xác suất, kiểm định theo thời gian và theo khu vực, độ suy giảm khi chuyển địa điểm.
+Bài toán nhận diện sự kiện trùng: pairwise precision/recall, mức bỏ sót báo cáo độc lập, giảm thời gian kiểm duyệt.
+Bài toán định tuyến: tính đúng ràng buộc trên đồ thị thử nghiệm, tránh đoạn đóng chính thức, thời gian tái tính, trường hợp không có tuyến, mức minh bạch dữ liệu thiếu.
+Bài toán NLP: độ chính xác trích địa danh/giờ, tỷ lệ cần hỏi bổ sung, lỗi gán vị trí, lỗi dịch.
+Bài toán người dùng: thời gian tìm thông tin, độ hiểu sự khác nhau giữa quan trắc và dự báo, tỷ lệ chọn đọc bản tin chính thức trong tình huống nguy hiểm.
+Thiết kế đánh giá: tách train/val/test theo đợt mưa và địa điểm, tránh cùng một ảnh cắt nhiều phần rơi cả train/test; có baseline quy tắc; dùng mẫu người đánh giá độc lập; công bố cỡ mẫu, mức tin cậy và lỗi.
+Không viết 'AI 98% chính xác' nếu chưa đo thực. Không chuyển một test screenshot đẹp thành tuyên bố chất lượng mô hình.
+
+====================================================================================
+64. BIAS, KHOẢNG TRỐNG DỮ LIỆU VÀ CÔNG BẰNG THEO KHU VỰC
+====================================================================================
+
+Báo cáo cộng đồng thiên lệch về vùng dân cư đông, người có điện thoại và mạng. Một khu vực ít phản ánh có thể là vì không có người báo, không phải không ngập.
+Ảnh đêm, ánh đèn, mặt đường đen hoặc những chiếc xe che nước có thể khiến mô hình sai nhiều hơn. Kiểm thử phải báo kết quả theo điều kiện ánh sáng, loại đường và vị trí.
+Nguồn bản đồ và địa chỉ có thể không đồng đều giữa đô thị, ngoại ô và vùng nông thôn; cần hiển thị coverage.
+Nếu đánh giá rủi ro chỉ học từ những nơi có nhiều người báo, mô hình sẽ có nguy cơ bỏ sót khu ít được quan sát; nên dùng sampling/ưu tiên khảo sát để giảm thiên lệch.
+Sản phẩm không công khai danh tính người gửi để có điểm uy tín, không biến khuyết tật, tuổi, thu nhập hay nơi cư trú thành tín hiệu kỳ thị.
+Một bản đồ 'không có dữ liệu' phải được tách khỏi 'nguy cơ thấp'; đây là nguyên tắc công bằng quan trọng nhất.
+
+====================================================================================
+65. QUYỀN RIÊNG TƯ, BẢO MẬT VÀ TRÁCH NHIỆM DỮ LIỆU
+====================================================================================
+
+Người dùng có thể không đăng ký vẫn xem được dữ liệu công khai. Khi gửi ảnh: chủ động đồng ý, xem trước phần sẽ đăng, lựa chọn xóa, che người/biển số/bảng nhà/số điện thoại và EXIF nếu không cần thiết.
+Vị trí GPS làm tròn cho bản công khai nếu có nguy cơ lộ nhà riêng; chức năng 'khu vực tôi quan tâm' không đồng nghĩa theo dõi vị trí nền. Cho phép tắt thông báo, xóa vùng yêu thích và rút lại đồng ý hợp lệ.
+Quyền truy cập của kiểm duyệt viên khác người dùng; mọi thao tác sửa/bác bỏ/hủy cảnh báo đều có log. API có rate limiting, xác thực phù hợp, kiểm soát upload, antivirus, giới hạn tài liệu và chống prompt injection.
+Tránh gửi ảnh có khuôn mặt hoặc tọa độ chính xác cho dịch vụ AI bên thứ ba nếu chưa có cơ sở pháp lý/đồng ý; cần chính sách lưu dữ liệu và nơi xử lý.
+Công bố phạm vi trách nhiệm sản phẩm: hỗ trợ tham khảo, không thay thế cơ quan cảnh báo, không bảo đảm an toàn tuyến, không tự gửi lực lượng cứu hộ, không che dấu sai số.
+Khi gặp trường hợp nghiêm trọng, giao diện ưu tiên hành động đơn giản và đường dẫn chính thức, không yêu cầu người dùng nhập hồ sơ phức tạp trước khi gọi trợ giúp.
+
+====================================================================================
+66. KỸ THUẬT CÓ THỂ HÌNH DUNG MÀ KHÔNG BIẾN THÀNH KẾ HOẠCH CODE
+====================================================================================
+
+Giao diện web/PWA: bản đồ đa lớp tương tác MapLibre/Leaflet; biểu đồ mưa, radar có giấy phép, timeline; responsive desktop/mobile.
+AI thị giác: phân loại bối cảnh ảnh, segmentation đường-nước, đánh giá chất lượng ảnh, đối chiếu ảnh trước–sau, phát hiện ảnh trùng.
+AI ngôn ngữ: tiếng Việt, OCR, ASR, trích thực thể, tóm tắt có dẫn nguồn, chatbot truy xuất dữ liệu theo tool calling.
+AI thống kê: gradient boosting/Random Forest/ML nhỏ, forecast model khi đủ dữ liệu và baseline công khai; đánh giá bất định.
+GIS/graph: OSM/GeoJSON/PostGIS/OSMnx/NetworkX, nhiều trọng số, quy tắc đường đóng; không mặc nhiên là bản đồ giao thông thời gian thực.
+Nguồn dữ liệu: weather API, quan trắc có quyền, báo cáo cộng đồng, tài liệu chuyên môn, snapshot lịch sử. Có thể demo trên laptop với bộ dữ liệu mô phỏng và snapshot thời tiết đã lưu.
+Hạ tầng thật cần bảo mật, vận hành có giám sát, ghi nhận API lỗi; không giả là '100% realtime' vì tích hợp nhiều nguồn có độ trễ khác nhau.
+
+====================================================================================
+67. MÔ HÌNH TẠO GIÁ TRỊ VÀ CƠ CHẾ HỢP TÁC MINH BẠCH
+====================================================================================
+
+FloodTwin phù hợp mô hình sản phẩm xã hội/giáo dục/nghiên cứu, cung cấp công cụ tổng hợp dữ liệu và quản trị dành cho đơn vị tự nguyện sử dụng.
+Khả năng cung cấp: dashboard nội bộ khuôn viên; phân tích nguy cơ gián đoạn hoạt động; báo cáo ẩn danh theo thời gian; phần mềm kiểm duyệt sự kiện; dữ liệu mở có chuẩn và giấy phép; hợp tác nghiên cứu với trường đại học.
+Nếu phát triển theo doanh nghiệp SaaS: thu phí phần mềm quản lý tài sản/khuôn viên và hỗ trợ liên tục, nhưng KHÔNG bán công cụ như giải pháp bảo đảm an toàn tính mạng khi chưa được chứng nhận phù hợp.
+Dịch vụ bản đồ và dự báo có chính sách bản quyền/hạn mức, bản công khai có thể miễn phí để khuyến khích cộng đồng; lợi ích thương mại không được ảnh hưởng độ ưu tiên tin chính thức.
+Đối tác tiềm năng ở dạng đề xuất: trường học, đơn vị quản lý khuôn viên, phòng thí nghiệm GIS, công ty logistics, bộ phận hạ tầng đô thị, hội nhóm nghiên cứu. Không tuyên bố các bên này đã hợp tác hoặc cấp quyền dữ liệu nếu chưa có xác nhận.
+
+====================================================================================
+68. TRƯỜNG HỢP TÍCH HỢP SÁNG TẠO BỔ SUNG VÀ CÔNG NGHỆ TƯƠNG LAI
+====================================================================================
+
+1) Tích hợp mực nước trạm đo của đối tác tương lai mà không bắt buộc đội dự án tự làm IoT.
+2) Kết hợp ảnh vệ tinh có bản quyền phù hợp để đánh giá lũ quy mô vùng, không phải mọi ổ gà đô thị.
+3) Sử dụng dữ liệu giao thông có giấy phép để mô tả ùn tắc liên quan mưa nhưng không suy diễn ngập.
+4) FloodQuest giáo dục: trò chơi tìm lỗi trong báo cáo, phân biệt 'nước trên đường' và 'đường ướt'.
+5) Thẻ dữ liệu scan QR tại khuôn viên, dẫn đến báo cáo theo vị trí (không tự xác nhận an toàn).
+6) Thông báo theo lịch học/lịch làm việc tự chọn của người dùng, chỉ hiện nếu có dữ liệu đủ mới.
+7) Báo cáo ẩn danh về gián đoạn tiếp cận dịch vụ công sau sự kiện ngập.
+8) So sánh phân tích ảnh từ nhiều mô hình để đo mức bất đồng, không dùng bình chọn đơn giản để gọi là đúng.
+9) Trình xem 3D dòng nước mô phỏng phục vụ giáo dục khi có mô hình phù hợp, không trộn với dữ liệu thực.
+10) Tóm tắt đa ngôn ngữ bản tin chính thức với bản nguồn song song để phòng dịch sai.
+11) Phân tích chi phí gián đoạn hậu kiểm cho doanh nghiệp, dùng số liệu thực của họ dưới quyền kiểm soát.
+12) Xuất hồ sơ sự kiện minh bạch sang CSV/GeoJSON cho nghiên cứu có quyền.
+13) Tự động phát hiện khoảng trống giữa nguồn và hình ảnh để ưu tiên kiểm chứng.
+14) Gợi ý lịch kiểm tra rãnh thoát nước dưới vai trò thông tin cho người quản trị hạ tầng.
+15) Bảng sự kiện vùng trường học để phụ huynh hiểu nhà trường đã xác minh gì và khi nào.
+16) Lịch sử 'AI đã sai ở đâu', công khai giới hạn và thay đổi sau hiệu chuẩn.
+17) Camera cộng đồng tự nguyện đặt tại vị trí cố định (tương lai, có phép) chỉ xuất dữ liệu đã làm mờ.
+18) Tính năng nghiên cứu khả năng khôi phục mạng giao thông sau sự kiện bằng phân tích mạng đồ thị.
+19) Phân lớp cấp chính quyền trong hệ thống nếu có tích hợp chính thức, không tự gán đặc quyền cơ quan.
+20) Xuất báo cáo khoa học theo mẫu có số liệu và nguồn, phần kết luận phải do người dùng duyệt.
+
+====================================================================================
+69. CÁC TÌNH HUỐNG ĐẦY ĐỦ TỪ NGƯỜI DÙNG ĐẾN QUẢN TRỊ
+====================================================================================
+
+TÌNH HUỐNG A – MƯA LỚN NHƯNG CHƯA CÓ ẢNH: hệ thống ghi mưa dự báo/quan trắc, khu vực dữ liệu hạn chế và lịch sử tương quan. Không báo 'đã ngập'. Người dùng được hướng đến nguồn chính thức.
+TÌNH HUỐNG B – ẢNH NGẬP ĐƯỢC TẢI LÊN: AI chỉ ra vùng nghi ngờ có nước, đề nghị xác minh tọa độ/giờ; tin còn chờ duyệt, chưa thay đổi trạng thái đường chính thức.
+TÌNH HUỐNG C – ẢNH CŨ BỊ ĐĂNG LẠI: perceptual hash cho biết có ảnh tương tự trong kho, người duyệt kiểm tra. Nếu là ảnh cũ, không công bố là ngập hiện tại.
+TÌNH HUỐNG D – HAI BÁO CÁO MÂU THUẪN: cùng tuyến, một ghi 'đang ngập' lúc 15:00, một ghi 'đã rút' lúc 17:00. Hệ thống không gộp thành một 'ngập liên tục'; tạo timeline.
+TÌNH HUỐNG E – CÓ THÔNG BÁO ĐÓNG ĐƯỜNG CHÍNH THỨC: hồ sơ đường cập nhật theo phạm vi và thời hạn, FloodPath loại khỏi tuyến có điều kiện phù hợp, hiển thị nguồn gốc.
+TÌNH HUỐNG F – TẤT CẢ TUYẾN ĐỀU BẤT ĐỊNH: hệ thống nêu 'không đủ thông tin để so sánh đáng tin', nhắc theo dõi cảnh báo; không cố gợi tuyến 'an toàn nhất'.
+TÌNH HUỐNG G – MẤT API THỜI TIẾT: hiển thị thời điểm cuối cập nhật, ngừng gắn realtime; không chuyển snapshot cũ thành cảnh báo mới.
+TÌNH HUỐNG H – PHÒNG THÍ NGHIỆM WHAT-IF: giả mưa tăng 30mm, gắn đoạn mô phỏng có nguy cơ và xem thay đổi tuyến; watermark demo, không gửi thông báo.
+TÌNH HUỐNG I – TRƯỜNG HỌC CẦN TỔNG HỢP: tập hợp báo cáo khuôn viên, gợi ý nhân sự kiểm tra an toàn theo quy trình nội bộ; không tự yêu cầu học sinh đi xác minh.
+TÌNH HUỐNG J – NGƯỜI KHIẾM THỊ HỎI TÌNH HÌNH: TTS đọc tình trạng có nguồn, giới hạn và hỗ trợ mở hotline; không định vị nền bắt buộc.
+TÌNH HUỐNG K – BÁO CÁO TRÙNG HÀNG LOẠT: 100 bài cùng ảnh trộn thành một cụm sự kiện có cờ thao túng; không đếm 100 nhân chứng độc lập.
+TÌNH HUỐNG L – CẢNH BÁO CHÍNH THỨC ĐƯỢC THU HỒI/CẬP NHẬT: bản đồ lưu lịch sử phiên bản và hiển thị bản tin hiện hành đúng thời điểm.
+
+====================================================================================
+70. CÁC GIỚI HẠN KHÔNG ĐƯỢC VƯỢT QUA VÀ PHÂN CẤP ĐỘ KHẢ THI
+====================================================================================
+
+NHÓM CÓ THỂ LÀM TRÊN LAPTOP: bản đồ mẫu, nhập ảnh/CSV, OCR, NLP, phân loại ảnh thử nghiệm, gom báo cáo, nguồn dữ liệu thời tiết công khai, so sánh tuyến trên mạng đường mẫu, AI giải thích từ dữ liệu, mô phỏng, dashboard, PWA.
+NHÓM CẦN NGUỒN DỮ LIỆU ĐỐI TÁC/CHUYÊN GIA: đo mực nước thực địa, dữ liệu cống/rãnh, camera giao thông, trạng thái đóng đường, nơi trú tạm, dữ liệu vận hành hồ chứa, quy trình cứu hộ, phân tích thủy lực chi tiết.
+NHÓM CẦN NGHIÊN CỨU VÀ KIỂM ĐỊNH DÀI HẠN: dự báo xác suất ngập tới cấp đường với độ chính xác công bố, bản đồ độ sâu ngập, đề xuất can thiệp hạ tầng, điều độ cứu hộ hoặc cảnh báo cấp đô thị có trách nhiệm.
+NHỮNG ĐIỀU KHÔNG ĐƯỢC TUYÊN BỐ: 'tuyến này 100% an toàn', 'AI biết độ sâu chính xác từ ảnh', 'ngập realtime ở mọi con phố', 'hợp tác với chính quyền' chưa có bằng chứng, 'đã cứu bao nhiêu người' chưa có nghiên cứu, 'cảnh báo chính thức' khi chỉ là output nội bộ.
+Quan trọng hơn số tính năng là sự nhất quán: mô hình phải trả lời được NÓ KHÔNG BIẾT ĐIỀU GÌ, KHI NÀO CẦN CON NGƯỜI XÁC MINH và KHI NÀO BẮT BUỘC ƯU TIÊN BẢN TIN CHÍNH THỨC.
+
+====================================================================================
+71. DANH MỤC CHI TIẾT HÀNG TRĂM CHỨC NĂNG AI CÓ THỂ NGHIÊN CỨU
+====================================================================================
+
+Ghi chú: Danh mục sau là KHO Ý TƯỞNG CHỨC NĂNG, không phải backlog, danh sách chức năng đã làm hoặc cam kết chính xác. Với mỗi khả năng đều cần nguồn dữ liệu hợp pháp, kiểm thử, mức độ tin cậy phù hợp và sự tham gia của con người khi tác động an toàn.
+
+A. AI NHẬN TÍN HIỆU THỜI TIẾT VÀ LỊCH SỬ MƯA (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+001. Gộp mưa từ nhiều điểm dự báo theo khu vực thay vì dùng một giá trị cho cả thành phố.
+002. Xem mưa 1 giờ, 3 giờ, 6 giờ, 12 giờ và 24 giờ với mốc thời gian rõ.
+003. Nhận biết trận mưa kéo dài nhiều giờ so với một đỉnh mưa ngắn.
+004. So sánh bản dự báo phát hành mới nhất với bản dự báo trước để thấy xu thế đổi.
+005. Phát hiện múi giờ lệch giữa API quốc tế và thời gian Việt Nam.
+006. Kiểm tra đơn vị mm/h, mm, xác suất %, lưu lượng m³/s không bị nhầm.
+007. Cảnh báo nguồn thời tiết quá hạn hoặc có khoảng dữ liệu rỗng.
+008. Tổng hợp mức độ bất đồng giữa các mô hình dự báo có quyền truy cập.
+009. Đánh dấu tín hiệu mưa cường độ cao cần khảo sát thực địa.
+010. Phân cụm các ngày mưa giống nhau theo hình dạng biểu đồ.
+011. So sánh đợt mưa mới với các đợt cũ có báo cáo ngập đã kiểm chứng.
+012. Tính mưa tích lũy với cửa sổ thời gian di động thay vì chỉ theo ngày dương lịch.
+013. Hiển thị forecast lead time: dự báo trước bao lâu, càng xa càng bất định.
+014. Tạo bản tóm tắt mưa dễ hiểu cho người không đọc đồ thị.
+015. Phát hiện điểm thời tiết kỳ dị có thể là lỗi nguồn thay vì hiện tượng cực đoan.
+016. Ước lượng ảnh hưởng của việc thiếu một trạm dữ liệu đối với kết luận.
+017. Đề xuất vị trí cần khảo sát bổ sung do khoảng trống dữ liệu khí tượng.
+018. Gắn cảnh báo sử dụng sai nguồn khi độ phân giải vượt kích thước khu vực nghiên cứu.
+
+B. AI DỰ BÁO NGUY CƠ THEO KHU VỰC VÀ ĐOẠN ĐƯỜNG (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+019. Chỉ số nguy cơ tham khảo dựa trên mưa, lịch sử và dữ liệu mặt đất có nguồn.
+020. Mô hình Random Forest/XGBoost dự báo sự kiện có điều kiện khi có đủ nhãn.
+021. Mô hình baseline chỉ dựa trên mưa để so sánh xem AI có giá trị gia tăng không.
+022. Kiểm thử xác suất ngập bằng calibration/Brier score thay vì chỉ accuracy.
+023. Dùng khoảng tin cậy để mô tả bất định của nguy cơ.
+024. Tách đánh giá ngập mặt đường khỏi rủi ro lũ sông và triều.
+025. Phát hiện điểm nhạy cảm với mưa ở các sự kiện lịch sử.
+026. Phân tích ảnh hưởng của địa hình thấp tương đối khi DEM đủ chi tiết.
+027. Điều chỉnh đánh giá khi có báo cáo hiện trường mới được duyệt.
+028. Đánh giá trường hợp nhiều tín hiệu xung đột, không ép ra đáp án duy nhất.
+029. Tự hạ độ tin cậy khi dự báo xa hoặc khi data gaps lớn.
+030. Đề xuất khảo sát thêm ở những điểm rủi ro dự đoán cao nhưng chưa có quan sát.
+031. Tránh tái sử dụng mô hình từ vùng này sang vùng khác mà không kiểm định.
+032. Tái hiệu chuẩn xác suất theo mùa khi có thêm dữ liệu hợp lệ.
+033. Phân biệt rủi ro 'chưa có bằng chứng' với rủi ro 'đã được bác bỏ'.
+034. Hiển thị top yếu tố ảnh hưởng nhưng ghi rõ đó không nhất thiết là nguyên nhân.
+035. Tính điểm bất định từ chất lượng nguồn và độ phủ.
+036. So sánh tác động khi bỏ từng nguồn dữ liệu để đánh giá độ nhạy.
+
+C. AI THỊ GIÁC ẢNH HIỆN TRƯỜNG (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+037. Phân loại ảnh đường ướt, ngập, sông hồ và cảnh không liên quan.
+038. Khoanh vùng nước có khả năng nằm trên bề mặt đường.
+039. Phân biệt bóng phản chiếu đèn với vùng nước có thể ngập.
+040. Đánh dấu ảnh quá tối, quá mờ, bị che hoặc không đủ bằng chứng.
+041. Nhận biết ảnh chụp trong xe hoặc qua kính làm sai lệch kết quả.
+042. Đối chiếu ảnh trước-sau cùng vị trí khi góc chụp đủ tương đồng.
+043. Phát hiện cảnh có người hoặc biển số cần làm mờ trước khi chia sẻ.
+044. Nhận diện đối tượng chuẩn kích thước nếu đã hiệu chuẩn; không đoán mực nước bừa.
+045. Phát hiện bề mặt nước như vũng nước nhỏ, không đánh đồng thành ngập đường.
+046. Dùng model ensemble để xem các mô hình có bất đồng hay không.
+047. Gợi ý ảnh bổ sung: mốc cảnh quan, hướng chụp, thời gian.
+048. Hiển thị mask ảnh có thể chỉnh lại bởi kiểm duyệt viên.
+049. Dùng phản hồi kiểm duyệt để tạo dữ liệu huấn luyện chất lượng.
+050. Tách bằng chứng thị giác hiện tại và hình quảng cáo/ảnh mạng.
+051. Tìm ảnh giống nhau nhằm hạn chế đăng lại cảnh cũ.
+052. Trích khung hình đại diện từ video ngắn được phép.
+053. So sánh vùng nước thay đổi qua chuỗi ảnh camera cố định nếu đủ kiểm soát.
+054. Lập bảng lỗi theo ngày/đêm, trời mưa, ngược sáng, đường đất, đường nhựa.
+
+D. AI NGÔN NGỮ, OCR, GIỌNG NÓI VÀ BÁO CÁO HIỆN TRƯỜNG (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+055. Nhận phản ánh bằng tiếng Việt tự nhiên và xác định ý định.
+056. Trích giờ xảy ra và phân biệt với giờ người dùng gửi.
+057. Nhận biết địa danh mơ hồ, yêu cầu chọn đúng điểm trên bản đồ.
+058. Nhận chữ từ biển đường hoặc địa danh trong ảnh nhưng không coi là GPS chắc chắn.
+059. Chuẩn hóa địa danh cũ/mới mà vẫn giữ tên người dùng đã nhập.
+060. Đọc ghi âm do người dùng chủ động gửi rồi chuyển thành bản báo cáo.
+061. Hỏi chỉ những dữ liệu thiếu quan trọng, tránh form dài khi đang mưa.
+062. Phân loại 'nước tràn', 'cống tắc', 'đường trơn', 'ùn tắc', 'hầm bị nước vào'.
+063. Tách câu 'nghe nói' với 'tôi trực tiếp nhìn thấy'.
+064. Đọc nhiều báo cáo và tóm tắt theo đoạn đường, không đếm tin copy là nhiều nguồn.
+065. Hiển thị quote gốc cạnh phần AI diễn giải để kiểm tra sai.
+066. Dịch tóm tắt sang tiếng Anh kèm nguồn tiếng Việt.
+067. Đọc nội dung cho người khiếm thị bằng TTS.
+068. Phát hiện câu hướng dẫn nguy hiểm và yêu cầu duyệt thủ công.
+069. Gợi ý tiêu đề báo cáo trung lập, không giật gân.
+070. Tự tạo mô tả ngắn về diễn biến nhưng không biến suy đoán thành quan trắc.
+071. Tìm lại báo cáo bằng truy vấn đời thường như 'ngập gần cổng trường tối qua'.
+072. Phân tích sự thay đổi 'đã rút nước' so với báo cáo trước để mở trường kiểm tra.
+
+E. AI KIỂM CHỨNG BẰNG CHỨNG, CHỐNG SPAM VÀ CHẤT LƯỢNG NGUỒN (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+073. So trùng ảnh bằng perceptual hash và tìm kiếm ảnh tương tự.
+074. Phát hiện cùng một video bị cắt thành nhiều bài đăng.
+075. Phát hiện báo cáo trùng nội dung trong cùng cửa sổ thời gian.
+076. So sánh EXIF khi có nhưng không coi EXIF là bằng chứng tuyệt đối.
+077. Cảnh báo thời gian ảnh mâu thuẫn với thời điểm sự kiện được khai báo.
+078. Phân biệt ảnh nguồn gốc mạng xã hội với ảnh tự người dùng chụp.
+079. Nhận diện dấu hiệu ảnh nhân tạo/cắt ghép ở mức gợi ý, không buộc tội người gửi.
+080. Đề xuất ưu tiên báo cáo có tọa độ rõ và ảnh liên quan.
+081. Gom nhiều báo cáo thành một case, vẫn lưu từng bản gốc.
+082. Chỉ tăng mức tin cậy nếu nguồn thực sự độc lập.
+083. Đánh dấu nguồn gửi nhiều dữ liệu bất thường để kiểm tra, không công khai điểm tín nhiệm cá nhân.
+084. Cảnh báo báo cáo đã hết thời hạn hiệu lực.
+085. So sánh ảnh đã xác minh với ảnh mới cùng khu vực để tìm thay đổi.
+086. Hiển thị xung đột giữa ảnh và mưa dự báo mà không tự chọn một bên.
+087. Tạo audit trail các hành động duyệt, sửa, bác bỏ.
+088. Cho tác giả yêu cầu sửa thông tin nhầm về vị trí.
+089. Phát hiện dữ liệu tọa độ có khả năng sai hệ quy chiếu.
+090. Cho phép con người đánh dấu AI suy luận sai và cải thiện sau kiểm thử.
+
+F. AI BẢN ĐỒ GIS VÀ BẢN SAO SỐ THỜI GIAN (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+091. Tô lớp mưa theo nguồn và độ phân giải thật.
+092. Hiển thị điểm ngập xác minh và chờ duyệt bằng ký hiệu khác nhau.
+093. Vẽ timeline diễn biến mỗi sự kiện và ảnh đi kèm.
+094. Tua bản đồ qua từng giờ để thấy thay đổi bằng chứng.
+095. Tạo heatmap mật độ báo cáo nhưng ghi rõ không đồng nghĩa bản đồ độ sâu.
+096. Hiển thị vùng thiếu dữ liệu để tránh nhầm màu trắng thành an toàn.
+097. Phân lớp mực nước sông mô phỏng với bản tin ngập đường riêng.
+098. Hiển thị giới hạn hạ tầng cống nếu nguồn địa phương cho phép.
+099. Xem thời điểm cập nhật cuối của mỗi lớp độc lập.
+100. Giải thích khi nhấp vào một đoạn đường tại sao màu/trạng thái thay đổi.
+101. Tìm kiếm khu vực bằng tên đường/địa danh thay vì nhập tọa độ.
+102. Tạo snapshot bản đồ phục vụ kiểm toán quyết định tại thời điểm cũ.
+103. So sánh bản đồ 'không có ảnh hiện trường' và 'sau khi kiểm duyệt'.
+104. Cho người dùng bật chế độ chỉ xem dữ liệu quan trắc/đã xác minh.
+105. Xem lớp đóng đường đã thông báo chính thức với thời hạn hiệu lực.
+106. Phân tích mạng điểm nóng quanh trường và cơ sở công cộng.
+107. Phân tích chồng lớp giữa vị trí phản ánh và các điểm trũng cần khảo sát.
+108. Hiển thị vùng dữ liệu mô phỏng ở lớp/tông riêng, không trộn vào lớp thật.
+
+G. FLOODPATH: AI HỖ TRỢ LỰA CHỌN THÔNG TIN TUYẾN ĐƯỜNG (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+109. Đưa các tuyến ứng viên khi hệ thống còn đủ thông tin về mạng đường.
+110. So sánh tuyến theo khoảng cách và số đoạn có báo cáo đã duyệt.
+111. Hiển thị khoảng cách nằm trong vùng thiếu dữ liệu.
+112. Đánh dấu đoạn có quyết định đóng chính thức theo nguồn.
+113. Không mặc nhiên gán đoạn không có tin là đường thông thoáng.
+114. Giải thích đoạn rủi ro dự báo khác đoạn đã xác minh ngập.
+115. Cho phép người dùng loại các đoạn họ muốn tránh trong mô phỏng.
+116. Thiết kế bộ ràng buộc riêng cho ô tô, xe máy, đi bộ, xe đạp.
+117. Kiểm tra loại đường, đường một chiều và biển cấm từ dữ liệu mạng.
+118. So sánh tuyến trước và sau một báo cáo được kiểm duyệt.
+119. Hiển thị số đoạn nào khiến tuyến đổi và trạng thái nào gây ra.
+120. Cho biết khi không còn tuyến phù hợp thay vì vẽ đường xuyên qua rào cản.
+121. Khi có cảnh báo chính thức hạn chế đi lại, đặt tùy chọn hoãn di chuyển lên trước.
+122. Thống kê độ ổn định của tuyến trong những kịch bản FloodLab khác nhau.
+123. Theo dõi đoạn nào cần nguồn mới vì tình trạng quá cũ.
+124. Kiểm chứng chức năng định tuyến bằng đồ thị kiểm thử tự dựng.
+125. Không dùng AI tự chế ra ETA giao thông nếu không có nguồn dữ liệu.
+126. Không khuyến nghị đi vào vùng nguy hiểm để tiết kiệm quãng đường.
+
+H. CẢNH BÁO CÁ NHÂN HÓA VÀ TƯƠNG TÁC NGƯỜI DÙNG (16 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+127. Theo dõi một vùng do người dùng chọn thủ công.
+128. Tạo thông báo khi có báo cáo đã duyệt gần vùng quan tâm.
+129. Gộp cập nhật cùng sự kiện, tránh gửi thông báo dồn dập.
+130. Cho xem bản tin chính thức ở vị trí dễ tiếp cận.
+131. Nhắc dữ liệu nguy cơ được cập nhật đã lâu.
+132. Tự động hết hạn thẻ báo cáo sau khoảng thời gian cấu hình bởi chuyên gia.
+133. Trình bày tình trạng 'chưa có đủ dữ liệu' thay vì im lặng.
+134. Tóm tắt 24 giờ cho người dùng muốn theo dõi nhẹ.
+135. Tùy chọn im lặng ban đêm trừ thông tin họ chọn quan tâm.
+136. Cho phép thoát đăng ký nhận thông báo dễ dàng.
+137. Đưa tên nguồn và thời gian ngay trong thông báo.
+138. Tách thông báo từ cơ quan chính thức và thông báo nội bộ.
+139. Không dùng push dựa trên mô phỏng hoặc tin chưa duyệt.
+140. Gợi ý người dùng đối chiếu trước khi quyết định di chuyển.
+141. Đọc thông báo bằng giọng nói theo lựa chọn chủ động.
+142. Hỗ trợ không đăng nhập vẫn xem dữ liệu công cộng.
+
+I. TRỢ LÝ AI CHUYÊN GIA TÌNH HUỐNG VÀ HỎI ĐÁP AN TOÀN (16 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+143. Trả lời 'Có báo cáo gì mới quanh đây?' bằng truy vấn kho dữ liệu.
+144. Giải thích vì sao mức nguy cơ tăng so với buổi sáng.
+145. Tóm tắt các nguồn mâu thuẫn và khuyến nghị kiểm tra nguồn chính thức.
+146. Nhận câu hỏi 'Tuyến nào dữ liệu thiếu nhiều nhất?' và trả về thống kê.
+147. Dịch bản tin đã duyệt cho người nước ngoài.
+148. Hướng dẫn gửi báo cáo an toàn mà không tiếp cận dòng nước.
+149. Giải thích tại sao ảnh không đủ để ước lượng độ sâu.
+150. Tìm các điểm có lịch sử nhiều sự kiện mà không tuyên bố sắp ngập.
+151. Phân biệt cảnh báo chính thức với mô hình thử nghiệm.
+152. Tổng hợp thống kê sự kiện theo khoảng ngày mà người dùng chọn.
+153. Gợi ý câu hỏi bổ sung khi địa danh quá mơ hồ.
+154. Đề xuất đối chiếu bản tin mới hơn khi dữ liệu cũ.
+155. Tạo bản tóm tắt thân thiện người lớn tuổi.
+156. Đọc danh sách nguồn và mức tin cậy bằng ngôn ngữ dễ hiểu.
+157. Không nhận lời nhờ gọi cứu hộ nếu không có kênh thực và quyền.
+158. Không bịa tin về đường đóng hoặc trạm mưa chưa kết nối.
+
+J. HỖ TRỢ NHÀ TRƯỜNG, BỆNH VIỆN VÀ TỔ CHỨC (16 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+159. Tổng hợp phản ánh về lối ra cổng trường theo khung giờ.
+160. Phân loại vấn đề sân trường, bãi xe, cống và hầm để gửi người quản trị.
+161. Gợi ý vị trí cần người lớn kiểm tra theo quy trình trường.
+162. Phân tích báo cáo quanh bệnh viện với dữ liệu công cộng được phép.
+163. Tạo thông báo nội bộ cho quản trị tòa nhà khi có báo cáo đã duyệt.
+164. Tóm tắt tình trạng lối vào khu công nghiệp khi có nguồn đáng tin.
+165. So sánh số sự kiện tại khuôn viên qua các năm.
+166. Hỗ trợ phân loại ảnh điểm thoát nước có rác hoặc bị che.
+167. Ghi nhận thời gian từ báo cáo đến khi có người xác minh.
+168. Đo tỷ lệ báo cáo phải chỉnh sửa do thiếu vị trí/giờ.
+169. Gợi ý khoảng trống cần thu thập thêm ảnh sau sự kiện, chỉ khi an toàn.
+170. Lọc dữ liệu theo quyền truy cập từng đơn vị.
+171. Xuất báo cáo tổng hợp nội bộ không lộ dữ liệu cư dân.
+172. Đề xuất ưu tiên khảo sát dựa trên lặp lại và độ tin cậy, không là lệnh điều động.
+173. Đánh dấu tác động giả định nếu một cổng chính bị hạn chế.
+174. Tạo danh sách kiểm tra hậu kiểm khi đợt mưa kết thúc.
+
+K. KINH TẾ, LOGISTICS VÀ QUẢN TRỊ RỦI RO KINH DOANH (16 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+175. Mô phỏng gián đoạn tuyến giao hàng khi một đoạn đường bị đóng.
+176. Phân loại đơn hàng có nguy cơ trễ theo mạng đường thử nghiệm.
+177. So sánh phương án phân tuyến cho xe theo ràng buộc phù hợp.
+178. Cảnh báo nhân viên điều phối về nguồn giao thông hết hạn.
+179. Tóm tắt tác động đối với cổng kho có báo cáo được xác minh.
+180. Phân tích thời gian vận hành gián đoạn sau mỗi đợt mưa đã xảy ra.
+181. Gợi ý ghi chú lý do dời lịch giao dựa trên bản tin thực.
+182. Đo khối lượng yêu cầu hỗ trợ khách hàng tăng trong ngày mưa.
+183. Kết hợp lịch nội bộ với dữ liệu thời tiết để chuẩn bị chủ động.
+184. Phân tích điểm nghẽn mạng giao nhận khi một cây cầu/cổng không dùng được.
+185. Không tối ưu hóa đi vào vùng cấm hoặc rủi ro quá cao.
+186. Khử danh tính hành trình khách hàng trong báo cáo nghiên cứu.
+187. Tạo báo cáo chi phí gián đoạn từ số liệu doanh nghiệp tự nhập.
+188. Đánh giá lợi ích giả định của tăng tính dự phòng tuyến nội bộ.
+189. Xây dashboard B2B cung cấp lý do, nguồn và thời hạn hiệu lực dữ liệu.
+190. Phân biệt KPI thực đo với KPI theo mô phỏng.
+
+L. ĐÔ THỊ XANH, THOÁT NƯỚC VÀ THÍCH ỨNG KHÍ HẬU (16 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+191. Ghi nhận vị trí cống nhận nhiều phản ánh lặp lại.
+192. Nhận biết ảnh rác chắn miệng thu nước để hỗ trợ phân loại phiếu.
+193. Gợi ý công tác khảo sát trước mùa mưa ở điểm nhiều bằng chứng.
+194. Phân tích thay đổi lớp phủ bê tông từ dữ liệu viễn thám phù hợp.
+195. Lập bản đồ điểm trũng tiềm năng từ nguồn DTM/DEM ghi rõ sai số.
+196. Thống kê mức độ tiếp xúc ngập của tài sản công cộng theo vùng nghiên cứu.
+197. Mô phỏng giả định về bề mặt thấm trong mô hình được thẩm định.
+198. Gợi ý các câu hỏi thiết kế công trình cho chuyên gia, không đề xuất kích thước tự động.
+199. So sánh số sự kiện trước/sau hoạt động nạo vét có ghi nhận thực.
+200. Phát hiện sự thay đổi địa điểm phản ánh qua các mùa.
+201. Ước lượng giá trị dữ liệu khi thêm một điểm quan trắc có phép.
+202. Phân tích độ phủ khác nhau giữa đô thị và nông thôn.
+203. Tạo báo cáo minh bạch về nơi mô hình không thể ngoại suy.
+204. Hỗ trợ giáo dục về vai trò cây xanh, thảm thấm và thoát nước.
+205. Tóm tắt ý kiến cộng đồng về vấn đề hạ tầng ở dạng ẩn danh.
+206. Gợi ý điểm cần khảo sát nguyên nhân thay vì kết luận nguyên nhân từ ảnh.
+
+M. VIỄN THÁM, DEM, ẢNH VỆ TINH VÀ GIS NÂNG CAO (16 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+207. Phân loại vùng nước trên ảnh Sentinel-1 cho sự kiện quy mô lớn phù hợp.
+208. So sánh vùng nước trước-sau từ hai ảnh có cùng cách hiệu chỉnh.
+209. Đánh dấu hạn chế che phủ mây của ảnh quang học Sentinel-2.
+210. Thống kê vùng phủ ảnh vệ tinh và ngày chụp.
+211. Phát hiện tín hiệu thay đổi mặt nước hồ/sông dài hạn.
+212. Không tự suy ra tình trạng đường từ ảnh vệ tinh độ phân giải thô.
+213. Đối chiếu vùng ngập vệ tinh với báo cáo hiện trường nhưng giữ sai số.
+214. Phân tích lớp sử dụng đất và thay đổi bê tông hóa.
+215. Ước lượng độ dốc tương đối từ DEM có ghi chú độ phân giải.
+216. Kiểm tra hệ tọa độ khi ghép bản đồ nguồn khác nhau.
+217. Tạo ảnh minh họa quá khứ với ngày tháng rõ.
+218. Gợi ý vùng cần thu ảnh mới từ đối tác có quyền.
+219. Không dùng ảnh do AI tạo như ảnh vệ tinh hoặc bằng chứng thực.
+220. Đo hiệu suất segmentation theo vùng đô thị và vùng cây xanh riêng.
+221. Thể hiện khoảng tin cậy và kết quả không xác định trên raster.
+222. Trình bày khác biệt giữa ảnh vệ tinh quan sát và mô hình thủy lực.
+
+N. WHAT-IF, GIÁO DỤC, TƯƠNG TÁC VÀ TRẢI NGHIỆM ĐẶC BIỆT (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+223. Kéo mức mưa mô phỏng và xem biến đầu vào thay đổi.
+224. Giả lập ảnh ngập được duyệt rồi quan sát FloodPath tái tính.
+225. Giả lập một nguồn API mất kết nối và xem cảnh báo dữ liệu cũ.
+226. Cho người học phân biệt ba mức quan trắc/dự báo/tin chưa duyệt.
+227. Bài tập chọn ảnh nào là đường ướt, ảnh nào có bằng chứng ngập.
+228. Tạo quiz để người học phát hiện số liệu đơn vị sai.
+229. Cho học sinh xem độ nhạy của dự báo khi thiếu dữ liệu lịch sử.
+230. So sánh hành vi mô hình rule-based và ML trên cùng kịch bản.
+231. Hiển thị AI mắc lỗi trên một ảnh khó và cách con người sửa.
+232. Cho người dùng thử hai tuyến trên đồ thị mẫu khi một cầu đóng.
+233. Tua thời gian sự kiện giả lập và bản tin được duyệt.
+234. Tạo báo cáo thuyết minh tự động kèm nhãn 'dữ liệu mô phỏng'.
+235. Thử trường hợp một ảnh được đăng lại 20 lần để xem chống spam.
+236. Thử tình huống mưa lớn nhưng không có ngập được xác minh.
+237. Chơi game ghép tín hiệu nguồn đúng với loại kết luận được phép.
+238. Chụp kết quả replay và lưu cấu hình kịch bản cho kiểm thử.
+239. Không cho nút cảnh báo thật hoặc SMS chạy ở chế độ giả lập.
+240. Cho người dùng reset trạng thái trước và sau thử nghiệm.
+
+O. AI HỖ TRỢ VẬN HÀNH, BẢO MẬT, QUYỀN RIÊNG TƯ, CHẤT LƯỢNG (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+241. Phát hiện dữ liệu API không đúng schema hoặc đổi đơn vị.
+242. Tự chỉ ra độ trễ nguồn vượt ngưỡng.
+243. Dò file ảnh quá lớn, MIME sai và nội dung không hỗ trợ.
+244. Chặn lộ EXIF vị trí và thông tin cá nhân không cần.
+245. Gợi ý khuôn mặt/biển số cần che trước khi công khai.
+246. Phát hiện câu lệnh prompt injection trong mô tả do người dùng gửi.
+247. Giới hạn công cụ được chatbot gọi theo vai trò người dùng.
+248. Tóm tắt lỗi vận hành cho quản trị viên không lộ secret.
+249. Phát hiện mô hình suy giảm chất lượng sau thay đổi dữ liệu.
+250. Kiểm tra drift giữa mùa khô và mùa mưa.
+251. Tạo thẻ mô hình ghi phạm vi, dữ liệu, sai số và giới hạn.
+252. Nhắc khi bản đồ thiếu attribution hoặc dữ liệu không đúng giấy phép.
+253. Ưu tiên hiển thị trạng thái không chắc chắn khi có sự cố nguồn.
+254. Tạo phiên bản kiểm toán cảnh báo đã phát, sửa, thu hồi.
+255. Cảnh báo truy vấn quá nhiều từ một nguồn hoặc spam báo cáo.
+256. Cho xóa dữ liệu theo yêu cầu hợp pháp của người dùng.
+257. Đánh giá độ chính xác riêng cho ảnh tối/đêm và vùng ít dữ liệu.
+258. Tạo nhật ký thí nghiệm độc lập, tránh đưa dữ liệu test lên dashboard thật.
+
+P. CÁC Ý TƯỞNG TƯƠNG LAI CÓ ĐIỀU KIỆN HỢP TÁC THỰC TẾ (18 Ý TƯỞNG)
+-----------------------------------------------------------------------------
+259. Kết nối camera đường phố từ đối tác có quyền, chạy phân tích sau khi làm mờ thông tin.
+260. Kết nối trạm mực nước và mưa tại khuôn viên nếu đã được cấp phép.
+261. Kết nối dữ liệu vận hành bơm có quyền của đơn vị quản lý.
+262. Tích hợp bản tin chính quyền qua API chỉ khi có thỏa thuận.
+263. Tích hợp trạng thái đóng đường do cơ quan công bố chính thức.
+264. Kết nối hệ thống ticket của khu công nghiệp có phân quyền.
+265. Kết nối lịch vận hành trường học nhưng không xử lý dữ liệu học sinh không cần.
+266. Nghiên cứu mô hình thủy lực 2D khi đủ DTM và kỹ sư kiểm định.
+267. Đọc báo cáo quản lý hồ chứa được công bố có nguồn.
+268. Xuất dữ liệu sự kiện định dạng trao đổi chuẩn cho đối tác.
+269. Đối chiếu bản tin từ các nguồn quốc tế và nguồn Việt Nam mà không đánh đồng thẩm quyền.
+270. Hỗ trợ mạng lưới tình nguyện viên đã được huấn luyện, không cổ vũ vào vùng nguy hiểm.
+271. Công cụ dành riêng cho đơn vị đánh giá hạ tầng, không phát quyết định thay cơ quan.
+272. Thử nghiệm sensor data synthetic tách khỏi live để huấn luyện phần mềm.
+273. Phân tích dòng chảy công trình nếu có phép và dữ liệu chi tiết.
+274. Báo cáo hiệu quả giảm công xử lý sau khi đơn vị đối tác đo thật.
+275. Ứng dụng thực tế cần quy trình chịu trách nhiệm, hotline, SLA có xác nhận.
+276. Không hứa phát hiện 100% mọi trận ngập chỉ nhờ API mở.
+
+====================================================================================
+72. KHO Ý TƯỞNG TRẢI NGHIỆM MÀN HÌNH VÀ NỘI DUNG THEO TÌNH HUỐNG
+====================================================================================
+
+TRANG CHỦ: bức tranh dữ liệu có nguồn, tình trạng API, thông tin quan trọng; nhập khu vực nhanh.
+BẢN ĐỒ TRỰC TIẾP THEO NGUỒN: các lớp riêng, time slider, trạng thái công bố và độ trễ.
+BẢN ĐỒ RỦI RO THAM KHẢO: giới thiệu chỉ số, dữ liệu đầu vào và những điểm chưa có nhãn.
+BẢN ĐỒ LỊCH SỬ: xem 24 giờ, 7 ngày, sự kiện trước theo dữ liệu có sẵn.
+CHI TIẾT KHU VỰC: diễn biến mưa, báo cáo, người duyệt, bất định, ngày cập nhật.
+CHI TIẾT ĐOẠN ĐƯỜNG: trạng thái mạng, những báo cáo liên quan, nguồn lệnh hạn chế.
+FLOODPATH: so sánh tuyến, giải thích rủi ro, vùng thiếu tin và khuyến nghị kiểm tra nguồn chính thức.
+FLOODVISION: gửi/chỉnh ảnh, bản phân tích có thể sửa, quyền riêng tư.
+FLOODREPORT: dòng thời gian, hợp nhất báo cáo, trạng thái kiểm duyệt.
+FLOODALERT: tùy chọn theo dõi, mẫu thông báo, lịch sử, tắt/huỷ.
+FLOODASSIST: hỏi đáp có tham chiếu, các câu hỏi thường gặp và giới hạn AI.
+FLOODCOMMAND: dashboard quản lý theo phân quyền và audit trail.
+FLOODLAB: slider giả lập, replay, before/after, công cụ dạy học.
+FLOODHISTORY: cơ sở dữ liệu sự kiện cũ, tìm kiếm, xuất dữ liệu đủ điều kiện.
+FLOODRESILIENCE: phân tích điểm khảo sát, diễn biến nhiều năm, nghiên cứu công trình.
+FLOODACCESS: người dùng yêu cầu chữ lớn, TTS, ngôn ngữ, tối ưu mobile.
+FLOODSTATUS: chỉ số vận hành nguồn và ghi rõ dữ liệu nào hỏng/chậm.
+FLOODTRUST: nguồn dữ liệu, giấy phép, mô hình, bảng đánh giá, sai sót và cách khiếu nại.
+
+Định hướng cảm xúc giao diện: rõ ràng, bình tĩnh, đáng tin, không tạo hoang mang; không biến thiên tai thành trò giải trí, không chạy quảng cáo trên vùng cảnh báo an toàn, và tránh các nút 'đi an toàn 100%' gây hiểu nhầm.
+
+====================================================================================
+73. CÁC CÂU HỎI CỦA NGƯỜI DÙNG MÀ FLOODTWIN NÊN XỬ LÝ MINH BẠCH
+====================================================================================
+
+- Khu này có được cơ quan nào xác nhận ngập hay chỉ là mô hình dự báo?
+- Mưa hiện tại lấy từ nguồn nào, đo lúc nào, hoặc chỉ là giá trị dự báo?
+- Đường trước cổng trường có ảnh hiện trường từ hôm nay không?
+- Vì sao bản đồ tô vàng, nếu không có ảnh thì có phải chắc chắn an toàn?
+- Tuyến từ nhà đến cơ quan của tôi có đoạn đường được thông báo đóng không?
+- Vì sao hôm nay tuyến gợi ý khác với sáng nay?
+- Tôi có cần gửi ảnh mới, hay ảnh cũ đã đủ?
+- Ảnh chụp một vũng nước có thể chứng minh cả đoạn đường bị ngập không?
+- Có bao nhiêu báo cáo độc lập thật sự, không tính bài đăng lại?
+- Những báo cáo nào đã cũ hoặc chưa ai xác minh?
+- Mô hình của bạn được kiểm thử ở khu vực này chưa?
+- Trạm mưa này có thật không, hay là mô hình khí tượng?
+- Mực nước ước lượng từ ảnh có đủ để ra quyết định không?
+- Dữ liệu Open-Meteo/GloFAS giúp hiểu lưu vực nhưng tại sao không đủ cho ngập đường?
+- Tôi có thể xem bản tin của Trung tâm Dự báo KTTV Quốc gia ở đâu?
+- Nếu mọi tuyến đều thiếu thông tin thì hệ thống làm gì?
+- Tôi muốn gửi phản ánh nhưng không muốn công khai tọa độ chính xác, có được không?
+- Tôi nhìn thấy đường đã hết ngập, làm sao đề nghị cập nhật trạng thái?
+- Điều gì xảy ra khi internet/API mất kết nối?
+- Tôi muốn chia sẻ thông tin cho phụ huynh mà không lan truyền tin chưa duyệt, làm sao?
+- Bản đồ 3D này dựa trên phép đo thật hay là mô phỏng trình diễn?
+- AI có thể giúp trường học lập danh sách nơi cần kiểm tra mà không chỉ đạo học sinh ra nguy hiểm không?
+- Tại sao FloodTwin đôi khi trả lời 'chưa thể kết luận'?
+
+Chất lượng câu trả lời không nằm ở sự dứt khoát mà ở khả năng chỉ ra nguồn, thời gian, độ tin cậy và giới hạn sử dụng.
+
+====================================================================================
+74. TUYÊN BỐ XÃ HỘI, NGHIÊN CỨU VÀ GIÁ TRỊ KINH TẾ
+====================================================================================
+
+GIÁ TRỊ CHO NGƯỜI DÂN: ít tốn thời gian gom thông tin, phân biệt nguồn, có nơi tập trung báo cáo công khai an toàn.
+GIÁ TRỊ CHO NHÀ TRƯỜNG: quản lý phản ánh có cấu trúc, theo dõi tình trạng cập nhật và minh bạch với người liên quan.
+GIÁ TRỊ CHO DOANH NGHIỆP: phân tích nguy cơ gián đoạn không khẩn cấp, cải thiện trao đổi dữ liệu và lập phương án nội bộ.
+GIÁ TRỊ CHO ĐỊA PHƯƠNG: dữ liệu xu hướng và vùng cần khảo sát khi có thỏa thuận; hỗ trợ nhận biết nơi thiếu quan trắc.
+GIÁ TRỊ CHO NGHIÊN CỨU: môi trường benchmark về phân biệt dự báo/quan trắc/ảnh, phát hiện trùng, bản đồ theo thời gian, AI có khả năng giải thích.
+GIÁ TRỊ GIÁO DỤC: biến khoa học dữ liệu thời tiết, bản đồ và tư duy xác minh nguồn thành trải nghiệm thực hành.
+
+Các chỉ số muốn công bố như 'giảm 70% thời gian kiểm duyệt' hoặc 'phát hiện 95% ảnh ngập' phải có thiết kế thí nghiệm, số liệu thật, ngày đo, tập test và kết quả công khai. Không bao giờ tuyên bố FloodTwin đã cứu người, giảm tử vong hay chính thức chống ngập chỉ dựa trên nguyên mẫu.
+
+====================================================================================
+75. NGUỒN THAM KHẢO ĐÃ KIỂM TRA VÀ CÁC GIỚI HẠN QUAN TRỌNG (10/2026)
+====================================================================================
+
+[1] Trung tâm Dự báo KTTV Quốc gia, bản tin mưa/lũ/ngập chính thức:
+    https://nchmf.gov.vn/Kttvsite/
+    https://nchmf.gov.vn/kttvsite/vi-VN/1/gioi-thieu-trung-tam-du-bao-khi-tuong-thuy-van-quoc-gia-post50083.html
+    Là nguồn cảnh báo chuyên môn; KHÔNG mặc định có API realtime mở để tích hợp vào phần mềm.
+
+[2] Open-Meteo Forecast API: https://open-meteo.com/en/docs
+    Dữ liệu khí tượng có thể truy vấn bằng JSON; cần đọc biến, độ phân giải, tần suất, cập nhật và giấy phép sử dụng.
+
+[3] Open-Meteo Historical Weather: https://open-meteo.com/en/docs/historical-weather-api
+    Dữ liệu tái phân tích quá khứ (reanalysis), không phải lịch sử trạm đo tại từng con phố.
+
+[4] Open-Meteo Flood API: https://open-meteo.com/en/docs/flood-api
+    GloFAS mô phỏng lưu lượng sông khoảng 5km, KHÔNG mô tả độ sâu ngập đường phố.
+
+[5] Copernicus GloFAS About: https://global-flood.emergency.copernicus.eu/general-information/about-glofas/
+    GloFAS tập trung nguy cơ lũ sông; không dự báo lũ quét, ngập ven biển và vùng ngập chi tiết.
+
+[6] Open-Meteo Elevation: https://open-meteo.com/en/docs/elevation-api
+    DEM GLO-90 khoảng 90m, không thay thế đo cao độ vi mô hoặc bản vẽ mặt đường.
+
+[7] NASA GPM IMERG: https://gpm.nasa.gov/data/imerg
+    https://gpm.nasa.gov/data/directory
+    IMERG Early khoảng 4 giờ độ trễ, lưới khoảng 0,1 độ (~10km); không thể gọi là dữ liệu tức thời tại một đường đô thị.
+
+[8] Copernicus EMS công bố hạn chế SAR trong đô thị và vùng có thực vật:
+    https://mapping.emergency.copernicus.eu/about/rapid-mapping-manual/detection-methods-damage-assessment/enhanced-flood-modelling-and-depth-mapping-capabilities-exflos/
+    Không dùng ảnh vệ tinh để chứng nhận tuyến đi hiện tại an toàn.
+
+[9] Copernicus DEM GLO-30 View Service (từ 2026 có điều kiện truy cập):
+    https://dataspace.copernicus.eu/news/2026-8-25-copernicus-dem-30m-view-service-update
+    Cần kiểm tra quyền dữ liệu thay vì mặc định mọi DEM 30m miễn phí và tải được tự động.
+
+[10] OpenStreetMap tile policy: https://operations.osmfoundation.org/policies/tiles/
+     Phải ghi attribution và không bulk-download tile/triển khai offline trái chính sách; nếu cần offline dùng nhà cung cấp cho phép hoặc self-host dữ liệu phù hợp.
+
+[11] MapLibre GL JS: https://maplibre.org/maplibre-gl-js/docs/
+     Công cụ vẽ bản đồ tương tác với nguồn GeoJSON, bản đồ vector và tương tác phù hợp.
+
+[12] OSMnx: https://osmnx.readthedocs.io/
+     Nghiên cứu mạng đường và định tuyến graph; kiểm tra dữ liệu thiếu/chiều đường trước khi dùng.
+
+[13] Open-Meteo licensing: https://open-meteo.com/
+     Free API là phi thương mại theo điều khoản hiện tại; sản phẩm thương mại cần phương án phép sử dụng/đăng ký phù hợp.
+
+[14] Nguồn đánh giá và nghiên cứu chứ không là cảnh báo chính thức:
+     UrbanSARFloods: https://arxiv.org/abs/2406.04111
+     FloodNet: https://github.com/BinaLab/FloodNet-Supervised_v1.0
+     Hình ảnh vệ tinh/UAV không tương đương ảnh điện thoại ở mặt đường; cần đánh giá domain shift.
+
+[15] Nguồn phòng chống thiên tai và thông tin quốc tế: đối chiếu tại cổng cơ quan có thẩm quyền và giấy phép từng nguồn; không mặc nhiên tuyên bố hợp tác.
+
+Các link trong danh mục này là NGUỒN THAM KHẢO KỸ THUẬT/VĂN BẢN, không phải chứng cứ hệ thống FloodTwin đã tích hợp hoặc chứng nhận chất lượng.
+
+====================================================================================
+76. TUYÊN NGÔN FLOODTWIN AI – PHIÊN BẢN BAO QUÁT
+====================================================================================
+
+FloodTwin AI là hệ sinh thái nghiên cứu và hỗ trợ thông tin ngập cục bộ: dùng AI để đọc hình ảnh, hiểu phản ánh tiếng Việt, phân tích tín hiệu rủi ro khi dữ liệu đủ, ghép thông tin theo thời gian, giải thích bản đồ, so sánh mạng đường và hỗ trợ cộng đồng, nhà trường, doanh nghiệp, đơn vị nghiên cứu đưa ra quyết định có căn cứ hơn.
+
+Điểm đặc sắc nhất không phải có thật nhiều chức năng, mà là tạo thành một vòng tròn học hỏi có trách nhiệm:
+DỮ LIỆU -> PHÁT HIỆN TÍN HIỆU -> HIỂN THỊ GIỚI HẠN -> GỌI KIỂM CHỨNG -> XÁC NHẬN BẰNG CHỨNG -> CẬP NHẬT BẢN ĐỒ -> SO SÁNH TÁC ĐỘNG -> LƯU LỊCH SỬ -> CẢI THIỆN MÔ HÌNH.
+
+Nguyên tắc không được xóa bỏ khi mở rộng sản phẩm:
+- Bản tin chính thức được ưu tiên hơn các dự báo AI thử nghiệm.
+- Mưa dự báo không đồng nghĩa đường đã ngập.
+- Dữ liệu mô phỏng không được phát tán như cảnh báo thật.
+- 'Chưa có dữ liệu' khác với 'không có nguy cơ'.
+- AI có thể suy luận sai từ ảnh và ngôn ngữ; con người có quyền sửa.
+- Không có tuyến đường nào được ứng dụng tự cam kết an toàn 100%.
+- Dữ liệu người dân được bảo vệ; không tạo bản đồ theo dõi người báo cáo.
+- Hiệu quả phải có phép đo thật; tác động lớn cần chuyên gia xác minh.
+
+HẾT BÁCH KHOA Ý TƯỞNG FLOODTWIN AI – BẢN MỞ RỘNG TOÀN DIỆN.

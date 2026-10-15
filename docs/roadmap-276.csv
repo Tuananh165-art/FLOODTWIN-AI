@@ -1,0 +1,277 @@
+﻿id,group,group_name,idea,status,gate
+FT-001,A,AI thị giác và ảnh hiện trường,Gộp mưa từ nhiều điểm dự báo theo khu vực thay vì dùng một giá trị cho cả thành phố.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-002,A,AI thị giác và ảnh hiện trường,"Xem mưa 1 giờ, 3 giờ, 6 giờ, 12 giờ và 24 giờ với mốc thời gian rõ.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-003,A,AI thị giác và ảnh hiện trường,Nhận biết trận mưa kéo dài nhiều giờ so với một đỉnh mưa ngắn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-004,A,AI thị giác và ảnh hiện trường,So sánh bản dự báo phát hành mới nhất với bản dự báo trước để thấy xu thế đổi.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-005,A,AI thị giác và ảnh hiện trường,Phát hiện múi giờ lệch giữa API quốc tế và thời gian Việt Nam.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-006,A,AI thị giác và ảnh hiện trường,"Kiểm tra đơn vị mm/h, mm, xác suất %, lưu lượng m³/s không bị nhầm.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-007,A,AI thị giác và ảnh hiện trường,Cảnh báo nguồn thời tiết quá hạn hoặc có khoảng dữ liệu rỗng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-008,A,AI thị giác và ảnh hiện trường,Tổng hợp mức độ bất đồng giữa các mô hình dự báo có quyền truy cập.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-009,A,AI thị giác và ảnh hiện trường,Đánh dấu tín hiệu mưa cường độ cao cần khảo sát thực địa.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-010,A,AI thị giác và ảnh hiện trường,Phân cụm các ngày mưa giống nhau theo hình dạng biểu đồ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-011,A,AI thị giác và ảnh hiện trường,So sánh đợt mưa mới với các đợt cũ có báo cáo ngập đã kiểm chứng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-012,A,AI thị giác và ảnh hiện trường,Tính mưa tích lũy với cửa sổ thời gian di động thay vì chỉ theo ngày dương lịch.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-013,A,AI thị giác và ảnh hiện trường,"Hiển thị forecast lead time: dự báo trước bao lâu, càng xa càng bất định.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-014,A,AI thị giác và ảnh hiện trường,Tạo bản tóm tắt mưa dễ hiểu cho người không đọc đồ thị.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-015,A,AI thị giác và ảnh hiện trường,Phát hiện điểm thời tiết kỳ dị có thể là lỗi nguồn thay vì hiện tượng cực đoan.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-016,A,AI thị giác và ảnh hiện trường,Ước lượng ảnh hưởng của việc thiếu một trạm dữ liệu đối với kết luận.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-017,A,AI thị giác và ảnh hiện trường,Đề xuất vị trí cần khảo sát bổ sung do khoảng trống dữ liệu khí tượng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-018,A,AI thị giác và ảnh hiện trường,Gắn cảnh báo sử dụng sai nguồn khi độ phân giải vượt kích thước khu vực nghiên cứu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-019,B,AI dự báo và dữ liệu thời tiết,"Chỉ số nguy cơ tham khảo dựa trên mưa, lịch sử và dữ liệu mặt đất có nguồn.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-020,B,AI dự báo và dữ liệu thời tiết,Mô hình Random Forest/XGBoost dự báo sự kiện có điều kiện khi có đủ nhãn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-021,B,AI dự báo và dữ liệu thời tiết,Mô hình baseline chỉ dựa trên mưa để so sánh xem AI có giá trị gia tăng không.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-022,B,AI dự báo và dữ liệu thời tiết,Kiểm thử xác suất ngập bằng calibration/Brier score thay vì chỉ accuracy.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-023,B,AI dự báo và dữ liệu thời tiết,Dùng khoảng tin cậy để mô tả bất định của nguy cơ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-024,B,AI dự báo và dữ liệu thời tiết,Tách đánh giá ngập mặt đường khỏi rủi ro lũ sông và triều.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-025,B,AI dự báo và dữ liệu thời tiết,Phát hiện điểm nhạy cảm với mưa ở các sự kiện lịch sử.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-026,B,AI dự báo và dữ liệu thời tiết,Phân tích ảnh hưởng của địa hình thấp tương đối khi DEM đủ chi tiết.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-027,B,AI dự báo và dữ liệu thời tiết,Điều chỉnh đánh giá khi có báo cáo hiện trường mới được duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-028,B,AI dự báo và dữ liệu thời tiết,"Đánh giá trường hợp nhiều tín hiệu xung đột, không ép ra đáp án duy nhất.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-029,B,AI dự báo và dữ liệu thời tiết,Tự hạ độ tin cậy khi dự báo xa hoặc khi data gaps lớn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-030,B,AI dự báo và dữ liệu thời tiết,Đề xuất khảo sát thêm ở những điểm rủi ro dự đoán cao nhưng chưa có quan sát.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-031,B,AI dự báo và dữ liệu thời tiết,Tránh tái sử dụng mô hình từ vùng này sang vùng khác mà không kiểm định.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-032,B,AI dự báo và dữ liệu thời tiết,Tái hiệu chuẩn xác suất theo mùa khi có thêm dữ liệu hợp lệ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-033,B,AI dự báo và dữ liệu thời tiết,Phân biệt rủi ro 'chưa có bằng chứng' với rủi ro 'đã được bác bỏ'.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-034,B,AI dự báo và dữ liệu thời tiết,Hiển thị top yếu tố ảnh hưởng nhưng ghi rõ đó không nhất thiết là nguyên nhân.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-035,B,AI dự báo và dữ liệu thời tiết,Tính điểm bất định từ chất lượng nguồn và độ phủ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-036,B,AI dự báo và dữ liệu thời tiết,So sánh tác động khi bỏ từng nguồn dữ liệu để đánh giá độ nhạy.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-037,C,GIS và bản sao số,"Phân loại ảnh đường ướt, ngập, sông hồ và cảnh không liên quan.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-038,C,GIS và bản sao số,Khoanh vùng nước có khả năng nằm trên bề mặt đường.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-039,C,GIS và bản sao số,Phân biệt bóng phản chiếu đèn với vùng nước có thể ngập.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-040,C,GIS và bản sao số,"Đánh dấu ảnh quá tối, quá mờ, bị che hoặc không đủ bằng chứng.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-041,C,GIS và bản sao số,Nhận biết ảnh chụp trong xe hoặc qua kính làm sai lệch kết quả.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-042,C,GIS và bản sao số,Đối chiếu ảnh trước-sau cùng vị trí khi góc chụp đủ tương đồng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-043,C,GIS và bản sao số,Phát hiện cảnh có người hoặc biển số cần làm mờ trước khi chia sẻ.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-044,C,GIS và bản sao số,Nhận diện đối tượng chuẩn kích thước nếu đã hiệu chuẩn; không đoán mực nước bừa.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-045,C,GIS và bản sao số,"Phát hiện bề mặt nước như vũng nước nhỏ, không đánh đồng thành ngập đường.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-046,C,GIS và bản sao số,Dùng model ensemble để xem các mô hình có bất đồng hay không.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-047,C,GIS và bản sao số,"Gợi ý ảnh bổ sung: mốc cảnh quan, hướng chụp, thời gian.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-048,C,GIS và bản sao số,Hiển thị mask ảnh có thể chỉnh lại bởi kiểm duyệt viên.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-049,C,GIS và bản sao số,Dùng phản hồi kiểm duyệt để tạo dữ liệu huấn luyện chất lượng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-050,C,GIS và bản sao số,Tách bằng chứng thị giác hiện tại và hình quảng cáo/ảnh mạng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-051,C,GIS và bản sao số,Tìm ảnh giống nhau nhằm hạn chế đăng lại cảnh cũ.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-052,C,GIS và bản sao số,Trích khung hình đại diện từ video ngắn được phép.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-053,C,GIS và bản sao số,So sánh vùng nước thay đổi qua chuỗi ảnh camera cố định nếu đủ kiểm soát.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-054,C,GIS và bản sao số,"Lập bảng lỗi theo ngày/đêm, trời mưa, ngược sáng, đường đất, đường nhựa.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-055,D,Ngôn ngữ và báo cáo hiện trường,Nhận phản ánh bằng tiếng Việt tự nhiên và xác định ý định.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-056,D,Ngôn ngữ và báo cáo hiện trường,Trích giờ xảy ra và phân biệt với giờ người dùng gửi.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-057,D,Ngôn ngữ và báo cáo hiện trường,"Nhận biết địa danh mơ hồ, yêu cầu chọn đúng điểm trên bản đồ.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-058,D,Ngôn ngữ và báo cáo hiện trường,Nhận chữ từ biển đường hoặc địa danh trong ảnh nhưng không coi là GPS chắc chắn.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-059,D,Ngôn ngữ và báo cáo hiện trường,Chuẩn hóa địa danh cũ/mới mà vẫn giữ tên người dùng đã nhập.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-060,D,Ngôn ngữ và báo cáo hiện trường,Đọc ghi âm do người dùng chủ động gửi rồi chuyển thành bản báo cáo.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-061,D,Ngôn ngữ và báo cáo hiện trường,"Hỏi chỉ những dữ liệu thiếu quan trọng, tránh form dài khi đang mưa.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-062,D,Ngôn ngữ và báo cáo hiện trường,"Phân loại 'nước tràn', 'cống tắc', 'đường trơn', 'ùn tắc', 'hầm bị nước vào'.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-063,D,Ngôn ngữ và báo cáo hiện trường,Tách câu 'nghe nói' với 'tôi trực tiếp nhìn thấy'.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-064,D,Ngôn ngữ và báo cáo hiện trường,"Đọc nhiều báo cáo và tóm tắt theo đoạn đường, không đếm tin copy là nhiều nguồn.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-065,D,Ngôn ngữ và báo cáo hiện trường,Hiển thị quote gốc cạnh phần AI diễn giải để kiểm tra sai.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-066,D,Ngôn ngữ và báo cáo hiện trường,Dịch tóm tắt sang tiếng Anh kèm nguồn tiếng Việt.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-067,D,Ngôn ngữ và báo cáo hiện trường,Đọc nội dung cho người khiếm thị bằng TTS.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-068,D,Ngôn ngữ và báo cáo hiện trường,Phát hiện câu hướng dẫn nguy hiểm và yêu cầu duyệt thủ công.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-069,D,Ngôn ngữ và báo cáo hiện trường,"Gợi ý tiêu đề báo cáo trung lập, không giật gân.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-070,D,Ngôn ngữ và báo cáo hiện trường,Tự tạo mô tả ngắn về diễn biến nhưng không biến suy đoán thành quan trắc.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-071,D,Ngôn ngữ và báo cáo hiện trường,Tìm lại báo cáo bằng truy vấn đời thường như 'ngập gần cổng trường tối qua'.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-072,D,Ngôn ngữ và báo cáo hiện trường,Phân tích sự thay đổi 'đã rút nước' so với báo cáo trước để mở trường kiểm tra.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-073,E,Kiểm chứng bằng chứng và chất lượng nguồn,So trùng ảnh bằng perceptual hash và tìm kiếm ảnh tương tự.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-074,E,Kiểm chứng bằng chứng và chất lượng nguồn,Phát hiện cùng một video bị cắt thành nhiều bài đăng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-075,E,Kiểm chứng bằng chứng và chất lượng nguồn,Phát hiện báo cáo trùng nội dung trong cùng cửa sổ thời gian.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-076,E,Kiểm chứng bằng chứng và chất lượng nguồn,So sánh EXIF khi có nhưng không coi EXIF là bằng chứng tuyệt đối.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-077,E,Kiểm chứng bằng chứng và chất lượng nguồn,Cảnh báo thời gian ảnh mâu thuẫn với thời điểm sự kiện được khai báo.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-078,E,Kiểm chứng bằng chứng và chất lượng nguồn,Phân biệt ảnh nguồn gốc mạng xã hội với ảnh tự người dùng chụp.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-079,E,Kiểm chứng bằng chứng và chất lượng nguồn,"Nhận diện dấu hiệu ảnh nhân tạo/cắt ghép ở mức gợi ý, không buộc tội người gửi.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-080,E,Kiểm chứng bằng chứng và chất lượng nguồn,Đề xuất ưu tiên báo cáo có tọa độ rõ và ảnh liên quan.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-081,E,Kiểm chứng bằng chứng và chất lượng nguồn,"Gom nhiều báo cáo thành một case, vẫn lưu từng bản gốc.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-082,E,Kiểm chứng bằng chứng và chất lượng nguồn,Chỉ tăng mức tin cậy nếu nguồn thực sự độc lập.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-083,E,Kiểm chứng bằng chứng và chất lượng nguồn,"Đánh dấu nguồn gửi nhiều dữ liệu bất thường để kiểm tra, không công khai điểm tín nhiệm cá nhân.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-084,E,Kiểm chứng bằng chứng và chất lượng nguồn,Cảnh báo báo cáo đã hết thời hạn hiệu lực.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-085,E,Kiểm chứng bằng chứng và chất lượng nguồn,So sánh ảnh đã xác minh với ảnh mới cùng khu vực để tìm thay đổi.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-086,E,Kiểm chứng bằng chứng và chất lượng nguồn,Hiển thị xung đột giữa ảnh và mưa dự báo mà không tự chọn một bên.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-087,E,Kiểm chứng bằng chứng và chất lượng nguồn,"Tạo audit trail các hành động duyệt, sửa, bác bỏ.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-088,E,Kiểm chứng bằng chứng và chất lượng nguồn,Cho tác giả yêu cầu sửa thông tin nhầm về vị trí.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-089,E,Kiểm chứng bằng chứng và chất lượng nguồn,Phát hiện dữ liệu tọa độ có khả năng sai hệ quy chiếu.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-090,E,Kiểm chứng bằng chứng và chất lượng nguồn,Cho phép con người đánh dấu AI suy luận sai và cải thiện sau kiểm thử.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-091,F,Bản đồ GIS và bản sao số thời gian,Tô lớp mưa theo nguồn và độ phân giải thật.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-092,F,Bản đồ GIS và bản sao số thời gian,Hiển thị điểm ngập xác minh và chờ duyệt bằng ký hiệu khác nhau.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-093,F,Bản đồ GIS và bản sao số thời gian,Vẽ timeline diễn biến mỗi sự kiện và ảnh đi kèm.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-094,F,Bản đồ GIS và bản sao số thời gian,Tua bản đồ qua từng giờ để thấy thay đổi bằng chứng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-095,F,Bản đồ GIS và bản sao số thời gian,Tạo heatmap mật độ báo cáo nhưng ghi rõ không đồng nghĩa bản đồ độ sâu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-096,F,Bản đồ GIS và bản sao số thời gian,Hiển thị vùng thiếu dữ liệu để tránh nhầm màu trắng thành an toàn.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-097,F,Bản đồ GIS và bản sao số thời gian,Phân lớp mực nước sông mô phỏng với bản tin ngập đường riêng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-098,F,Bản đồ GIS và bản sao số thời gian,Hiển thị giới hạn hạ tầng cống nếu nguồn địa phương cho phép.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-099,F,Bản đồ GIS và bản sao số thời gian,Xem thời điểm cập nhật cuối của mỗi lớp độc lập.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-100,F,Bản đồ GIS và bản sao số thời gian,Giải thích khi nhấp vào một đoạn đường tại sao màu/trạng thái thay đổi.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-101,F,Bản đồ GIS và bản sao số thời gian,Tìm kiếm khu vực bằng tên đường/địa danh thay vì nhập tọa độ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-102,F,Bản đồ GIS và bản sao số thời gian,Tạo snapshot bản đồ phục vụ kiểm toán quyết định tại thời điểm cũ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-103,F,Bản đồ GIS và bản sao số thời gian,So sánh bản đồ 'không có ảnh hiện trường' và 'sau khi kiểm duyệt'.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-104,F,Bản đồ GIS và bản sao số thời gian,Cho người dùng bật chế độ chỉ xem dữ liệu quan trắc/đã xác minh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-105,F,Bản đồ GIS và bản sao số thời gian,Xem lớp đóng đường đã thông báo chính thức với thời hạn hiệu lực.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-106,F,Bản đồ GIS và bản sao số thời gian,Phân tích mạng điểm nóng quanh trường và cơ sở công cộng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-107,F,Bản đồ GIS và bản sao số thời gian,Phân tích chồng lớp giữa vị trí phản ánh và các điểm trũng cần khảo sát.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-108,F,Bản đồ GIS và bản sao số thời gian,"Hiển thị vùng dữ liệu mô phỏng ở lớp/tông riêng, không trộn vào lớp thật.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-109,G,FloodPath và tuyến đường,Đưa các tuyến ứng viên khi hệ thống còn đủ thông tin về mạng đường.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-110,G,FloodPath và tuyến đường,So sánh tuyến theo khoảng cách và số đoạn có báo cáo đã duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-111,G,FloodPath và tuyến đường,Hiển thị khoảng cách nằm trong vùng thiếu dữ liệu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-112,G,FloodPath và tuyến đường,Đánh dấu đoạn có quyết định đóng chính thức theo nguồn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-113,G,FloodPath và tuyến đường,Không mặc nhiên gán đoạn không có tin là đường thông thoáng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-114,G,FloodPath và tuyến đường,Giải thích đoạn rủi ro dự báo khác đoạn đã xác minh ngập.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-115,G,FloodPath và tuyến đường,Cho phép người dùng loại các đoạn họ muốn tránh trong mô phỏng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-116,G,FloodPath và tuyến đường,"Thiết kế bộ ràng buộc riêng cho ô tô, xe máy, đi bộ, xe đạp.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-117,G,FloodPath và tuyến đường,"Kiểm tra loại đường, đường một chiều và biển cấm từ dữ liệu mạng.",Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-118,G,FloodPath và tuyến đường,So sánh tuyến trước và sau một báo cáo được kiểm duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-119,G,FloodPath và tuyến đường,Hiển thị số đoạn nào khiến tuyến đổi và trạng thái nào gây ra.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-120,G,FloodPath và tuyến đường,Cho biết khi không còn tuyến phù hợp thay vì vẽ đường xuyên qua rào cản.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-121,G,FloodPath và tuyến đường,"Khi có cảnh báo chính thức hạn chế đi lại, đặt tùy chọn hoãn di chuyển lên trước.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-122,G,FloodPath và tuyến đường,Thống kê độ ổn định của tuyến trong những kịch bản FloodLab khác nhau.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-123,G,FloodPath và tuyến đường,Theo dõi đoạn nào cần nguồn mới vì tình trạng quá cũ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-124,G,FloodPath và tuyến đường,Kiểm chứng chức năng định tuyến bằng đồ thị kiểm thử tự dựng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-125,G,FloodPath và tuyến đường,Không dùng AI tự chế ra ETA giao thông nếu không có nguồn dữ liệu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-126,G,FloodPath và tuyến đường,Không khuyến nghị đi vào vùng nguy hiểm để tiết kiệm quãng đường.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-127,H,Cảnh báo và tương tác người dùng,Theo dõi một vùng do người dùng chọn thủ công.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-128,H,Cảnh báo và tương tác người dùng,Tạo thông báo khi có báo cáo đã duyệt gần vùng quan tâm.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-129,H,Cảnh báo và tương tác người dùng,"Gộp cập nhật cùng sự kiện, tránh gửi thông báo dồn dập.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-130,H,Cảnh báo và tương tác người dùng,Cho xem bản tin chính thức ở vị trí dễ tiếp cận.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-131,H,Cảnh báo và tương tác người dùng,Nhắc dữ liệu nguy cơ được cập nhật đã lâu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-132,H,Cảnh báo và tương tác người dùng,Tự động hết hạn thẻ báo cáo sau khoảng thời gian cấu hình bởi chuyên gia.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-133,H,Cảnh báo và tương tác người dùng,Trình bày tình trạng 'chưa có đủ dữ liệu' thay vì im lặng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-134,H,Cảnh báo và tương tác người dùng,Tóm tắt 24 giờ cho người dùng muốn theo dõi nhẹ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-135,H,Cảnh báo và tương tác người dùng,Tùy chọn im lặng ban đêm trừ thông tin họ chọn quan tâm.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-136,H,Cảnh báo và tương tác người dùng,Cho phép thoát đăng ký nhận thông báo dễ dàng.,Mở rộng,"Deferred beyond V1; revisit when data, safety review, or validated need exists"
+FT-137,H,Cảnh báo và tương tác người dùng,Đưa tên nguồn và thời gian ngay trong thông báo.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-138,H,Cảnh báo và tương tác người dùng,Tách thông báo từ cơ quan chính thức và thông báo nội bộ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-139,H,Cảnh báo và tương tác người dùng,Không dùng push dựa trên mô phỏng hoặc tin chưa duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-140,H,Cảnh báo và tương tác người dùng,Gợi ý người dùng đối chiếu trước khi quyết định di chuyển.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-141,H,Cảnh báo và tương tác người dùng,Đọc thông báo bằng giọng nói theo lựa chọn chủ động.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-142,H,Cảnh báo và tương tác người dùng,Hỗ trợ không đăng nhập vẫn xem dữ liệu công cộng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-143,I,FloodCommand và quản trị,Trả lời 'Có báo cáo gì mới quanh đây?' bằng truy vấn kho dữ liệu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-144,I,FloodCommand và quản trị,Giải thích vì sao mức nguy cơ tăng so với buổi sáng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-145,I,FloodCommand và quản trị,Tóm tắt các nguồn mâu thuẫn và khuyến nghị kiểm tra nguồn chính thức.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-146,I,FloodCommand và quản trị,Nhận câu hỏi 'Tuyến nào dữ liệu thiếu nhiều nhất?' và trả về thống kê.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-147,I,FloodCommand và quản trị,Dịch bản tin đã duyệt cho người nước ngoài.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-148,I,FloodCommand và quản trị,Hướng dẫn gửi báo cáo an toàn mà không tiếp cận dòng nước.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-149,I,FloodCommand và quản trị,Giải thích tại sao ảnh không đủ để ước lượng độ sâu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-150,I,FloodCommand và quản trị,Tìm các điểm có lịch sử nhiều sự kiện mà không tuyên bố sắp ngập.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-151,I,FloodCommand và quản trị,Phân biệt cảnh báo chính thức với mô hình thử nghiệm.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-152,I,FloodCommand và quản trị,Tổng hợp thống kê sự kiện theo khoảng ngày mà người dùng chọn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-153,I,FloodCommand và quản trị,Gợi ý câu hỏi bổ sung khi địa danh quá mơ hồ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-154,I,FloodCommand và quản trị,Đề xuất đối chiếu bản tin mới hơn khi dữ liệu cũ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-155,I,FloodCommand và quản trị,Tạo bản tóm tắt thân thiện người lớn tuổi.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-156,I,FloodCommand và quản trị,Đọc danh sách nguồn và mức tin cậy bằng ngôn ngữ dễ hiểu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-157,I,FloodCommand và quản trị,Không nhận lời nhờ gọi cứu hộ nếu không có kênh thực và quyền.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-158,I,FloodCommand và quản trị,Không bịa tin về đường đóng hoặc trạm mưa chưa kết nối.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-159,J,FloodLab và mô phỏng,Tổng hợp phản ánh về lối ra cổng trường theo khung giờ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-160,J,FloodLab và mô phỏng,"Phân loại vấn đề sân trường, bãi xe, cống và hầm để gửi người quản trị.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-161,J,FloodLab và mô phỏng,Gợi ý vị trí cần người lớn kiểm tra theo quy trình trường.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-162,J,FloodLab và mô phỏng,Phân tích báo cáo quanh bệnh viện với dữ liệu công cộng được phép.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-163,J,FloodLab và mô phỏng,Tạo thông báo nội bộ cho quản trị tòa nhà khi có báo cáo đã duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-164,J,FloodLab và mô phỏng,Tóm tắt tình trạng lối vào khu công nghiệp khi có nguồn đáng tin.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-165,J,FloodLab và mô phỏng,So sánh số sự kiện tại khuôn viên qua các năm.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-166,J,FloodLab và mô phỏng,Hỗ trợ phân loại ảnh điểm thoát nước có rác hoặc bị che.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-167,J,FloodLab và mô phỏng,Ghi nhận thời gian từ báo cáo đến khi có người xác minh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-168,J,FloodLab và mô phỏng,Đo tỷ lệ báo cáo phải chỉnh sửa do thiếu vị trí/giờ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-169,J,FloodLab và mô phỏng,"Gợi ý khoảng trống cần thu thập thêm ảnh sau sự kiện, chỉ khi an toàn.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-170,J,FloodLab và mô phỏng,Lọc dữ liệu theo quyền truy cập từng đơn vị.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-171,J,FloodLab và mô phỏng,Xuất báo cáo tổng hợp nội bộ không lộ dữ liệu cư dân.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-172,J,FloodLab và mô phỏng,"Đề xuất ưu tiên khảo sát dựa trên lặp lại và độ tin cậy, không là lệnh điều động.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-173,J,FloodLab và mô phỏng,Đánh dấu tác động giả định nếu một cổng chính bị hạn chế.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-174,J,FloodLab và mô phỏng,Tạo danh sách kiểm tra hậu kiểm khi đợt mưa kết thúc.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-175,K,Dữ liệu lịch sử và nghiên cứu,Mô phỏng gián đoạn tuyến giao hàng khi một đoạn đường bị đóng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-176,K,Dữ liệu lịch sử và nghiên cứu,Phân loại đơn hàng có nguy cơ trễ theo mạng đường thử nghiệm.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-177,K,Dữ liệu lịch sử và nghiên cứu,So sánh phương án phân tuyến cho xe theo ràng buộc phù hợp.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-178,K,Dữ liệu lịch sử và nghiên cứu,Cảnh báo nhân viên điều phối về nguồn giao thông hết hạn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-179,K,Dữ liệu lịch sử và nghiên cứu,Tóm tắt tác động đối với cổng kho có báo cáo được xác minh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-180,K,Dữ liệu lịch sử và nghiên cứu,Phân tích thời gian vận hành gián đoạn sau mỗi đợt mưa đã xảy ra.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-181,K,Dữ liệu lịch sử và nghiên cứu,Gợi ý ghi chú lý do dời lịch giao dựa trên bản tin thực.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-182,K,Dữ liệu lịch sử và nghiên cứu,Đo khối lượng yêu cầu hỗ trợ khách hàng tăng trong ngày mưa.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-183,K,Dữ liệu lịch sử và nghiên cứu,Kết hợp lịch nội bộ với dữ liệu thời tiết để chuẩn bị chủ động.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-184,K,Dữ liệu lịch sử và nghiên cứu,Phân tích điểm nghẽn mạng giao nhận khi một cây cầu/cổng không dùng được.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-185,K,Dữ liệu lịch sử và nghiên cứu,Không tối ưu hóa đi vào vùng cấm hoặc rủi ro quá cao.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-186,K,Dữ liệu lịch sử và nghiên cứu,Khử danh tính hành trình khách hàng trong báo cáo nghiên cứu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-187,K,Dữ liệu lịch sử và nghiên cứu,Tạo báo cáo chi phí gián đoạn từ số liệu doanh nghiệp tự nhập.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-188,K,Dữ liệu lịch sử và nghiên cứu,Đánh giá lợi ích giả định của tăng tính dự phòng tuyến nội bộ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-189,K,Dữ liệu lịch sử và nghiên cứu,"Xây dashboard B2B cung cấp lý do, nguồn và thời hạn hiệu lực dữ liệu.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-190,K,Dữ liệu lịch sử và nghiên cứu,Phân biệt KPI thực đo với KPI theo mô phỏng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-191,L,Hạ tầng và tích hợp,Ghi nhận vị trí cống nhận nhiều phản ánh lặp lại.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-192,L,Hạ tầng và tích hợp,Nhận biết ảnh rác chắn miệng thu nước để hỗ trợ phân loại phiếu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-193,L,Hạ tầng và tích hợp,Gợi ý công tác khảo sát trước mùa mưa ở điểm nhiều bằng chứng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-194,L,Hạ tầng và tích hợp,Phân tích thay đổi lớp phủ bê tông từ dữ liệu viễn thám phù hợp.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-195,L,Hạ tầng và tích hợp,Lập bản đồ điểm trũng tiềm năng từ nguồn DTM/DEM ghi rõ sai số.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-196,L,Hạ tầng và tích hợp,Thống kê mức độ tiếp xúc ngập của tài sản công cộng theo vùng nghiên cứu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-197,L,Hạ tầng và tích hợp,Mô phỏng giả định về bề mặt thấm trong mô hình được thẩm định.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-198,L,Hạ tầng và tích hợp,"Gợi ý các câu hỏi thiết kế công trình cho chuyên gia, không đề xuất kích thước tự động.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-199,L,Hạ tầng và tích hợp,So sánh số sự kiện trước/sau hoạt động nạo vét có ghi nhận thực.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-200,L,Hạ tầng và tích hợp,Phát hiện sự thay đổi địa điểm phản ánh qua các mùa.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-201,L,Hạ tầng và tích hợp,Ước lượng giá trị dữ liệu khi thêm một điểm quan trắc có phép.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-202,L,Hạ tầng và tích hợp,Phân tích độ phủ khác nhau giữa đô thị và nông thôn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-203,L,Hạ tầng và tích hợp,Tạo báo cáo minh bạch về nơi mô hình không thể ngoại suy.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-204,L,Hạ tầng và tích hợp,"Hỗ trợ giáo dục về vai trò cây xanh, thảm thấm và thoát nước.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-205,L,Hạ tầng và tích hợp,Tóm tắt ý kiến cộng đồng về vấn đề hạ tầng ở dạng ẩn danh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-206,L,Hạ tầng và tích hợp,Gợi ý điểm cần khảo sát nguyên nhân thay vì kết luận nguyên nhân từ ảnh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-207,M,Trải nghiệm người dùng,Phân loại vùng nước trên ảnh Sentinel-1 cho sự kiện quy mô lớn phù hợp.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-208,M,Trải nghiệm người dùng,So sánh vùng nước trước-sau từ hai ảnh có cùng cách hiệu chỉnh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-209,M,Trải nghiệm người dùng,Đánh dấu hạn chế che phủ mây của ảnh quang học Sentinel-2.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-210,M,Trải nghiệm người dùng,Thống kê vùng phủ ảnh vệ tinh và ngày chụp.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-211,M,Trải nghiệm người dùng,Phát hiện tín hiệu thay đổi mặt nước hồ/sông dài hạn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-212,M,Trải nghiệm người dùng,Không tự suy ra tình trạng đường từ ảnh vệ tinh độ phân giải thô.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-213,M,Trải nghiệm người dùng,Đối chiếu vùng ngập vệ tinh với báo cáo hiện trường nhưng giữ sai số.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-214,M,Trải nghiệm người dùng,Phân tích lớp sử dụng đất và thay đổi bê tông hóa.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-215,M,Trải nghiệm người dùng,Ước lượng độ dốc tương đối từ DEM có ghi chú độ phân giải.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-216,M,Trải nghiệm người dùng,Kiểm tra hệ tọa độ khi ghép bản đồ nguồn khác nhau.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-217,M,Trải nghiệm người dùng,Tạo ảnh minh họa quá khứ với ngày tháng rõ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-218,M,Trải nghiệm người dùng,Gợi ý vùng cần thu ảnh mới từ đối tác có quyền.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-219,M,Trải nghiệm người dùng,Không dùng ảnh do AI tạo như ảnh vệ tinh hoặc bằng chứng thực.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-220,M,Trải nghiệm người dùng,Đo hiệu suất segmentation theo vùng đô thị và vùng cây xanh riêng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-221,M,Trải nghiệm người dùng,Thể hiện khoảng tin cậy và kết quả không xác định trên raster.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-222,M,Trải nghiệm người dùng,Trình bày khác biệt giữa ảnh vệ tinh quan sát và mô hình thủy lực.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-223,N,"Đánh giá, an toàn và vận hành",Kéo mức mưa mô phỏng và xem biến đầu vào thay đổi.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-224,N,"Đánh giá, an toàn và vận hành",Giả lập ảnh ngập được duyệt rồi quan sát FloodPath tái tính.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-225,N,"Đánh giá, an toàn và vận hành",Giả lập một nguồn API mất kết nối và xem cảnh báo dữ liệu cũ.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-226,N,"Đánh giá, an toàn và vận hành",Cho người học phân biệt ba mức quan trắc/dự báo/tin chưa duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-227,N,"Đánh giá, an toàn và vận hành","Bài tập chọn ảnh nào là đường ướt, ảnh nào có bằng chứng ngập.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-228,N,"Đánh giá, an toàn và vận hành",Tạo quiz để người học phát hiện số liệu đơn vị sai.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-229,N,"Đánh giá, an toàn và vận hành",Cho học sinh xem độ nhạy của dự báo khi thiếu dữ liệu lịch sử.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-230,N,"Đánh giá, an toàn và vận hành",So sánh hành vi mô hình rule-based và ML trên cùng kịch bản.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-231,N,"Đánh giá, an toàn và vận hành",Hiển thị AI mắc lỗi trên một ảnh khó và cách con người sửa.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-232,N,"Đánh giá, an toàn và vận hành",Cho người dùng thử hai tuyến trên đồ thị mẫu khi một cầu đóng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-233,N,"Đánh giá, an toàn và vận hành",Tua thời gian sự kiện giả lập và bản tin được duyệt.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-234,N,"Đánh giá, an toàn và vận hành",Tạo báo cáo thuyết minh tự động kèm nhãn 'dữ liệu mô phỏng'.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-235,N,"Đánh giá, an toàn và vận hành",Thử trường hợp một ảnh được đăng lại 20 lần để xem chống spam.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-236,N,"Đánh giá, an toàn và vận hành",Thử tình huống mưa lớn nhưng không có ngập được xác minh.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-237,N,"Đánh giá, an toàn và vận hành",Chơi game ghép tín hiệu nguồn đúng với loại kết luận được phép.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-238,N,"Đánh giá, an toàn và vận hành",Chụp kết quả replay và lưu cấu hình kịch bản cho kiểm thử.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-239,N,"Đánh giá, an toàn và vận hành",Không cho nút cảnh báo thật hoặc SMS chạy ở chế độ giả lập.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-240,N,"Đánh giá, an toàn và vận hành",Cho người dùng reset trạng thái trước và sau thử nghiệm.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-241,O,Mở rộng AI có điều kiện,Phát hiện dữ liệu API không đúng schema hoặc đổi đơn vị.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-242,O,Mở rộng AI có điều kiện,Tự chỉ ra độ trễ nguồn vượt ngưỡng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-243,O,Mở rộng AI có điều kiện,"Dò file ảnh quá lớn, MIME sai và nội dung không hỗ trợ.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-244,O,Mở rộng AI có điều kiện,Chặn lộ EXIF vị trí và thông tin cá nhân không cần.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-245,O,Mở rộng AI có điều kiện,Gợi ý khuôn mặt/biển số cần che trước khi công khai.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-246,O,Mở rộng AI có điều kiện,Phát hiện câu lệnh prompt injection trong mô tả do người dùng gửi.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-247,O,Mở rộng AI có điều kiện,Giới hạn công cụ được chatbot gọi theo vai trò người dùng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-248,O,Mở rộng AI có điều kiện,Tóm tắt lỗi vận hành cho quản trị viên không lộ secret.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-249,O,Mở rộng AI có điều kiện,Phát hiện mô hình suy giảm chất lượng sau thay đổi dữ liệu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-250,O,Mở rộng AI có điều kiện,Kiểm tra drift giữa mùa khô và mùa mưa.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-251,O,Mở rộng AI có điều kiện,"Tạo thẻ mô hình ghi phạm vi, dữ liệu, sai số và giới hạn.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-252,O,Mở rộng AI có điều kiện,Nhắc khi bản đồ thiếu attribution hoặc dữ liệu không đúng giấy phép.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-253,O,Mở rộng AI có điều kiện,Ưu tiên hiển thị trạng thái không chắc chắn khi có sự cố nguồn.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-254,O,Mở rộng AI có điều kiện,"Tạo phiên bản kiểm toán cảnh báo đã phát, sửa, thu hồi.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-255,O,Mở rộng AI có điều kiện,Cảnh báo truy vấn quá nhiều từ một nguồn hoặc spam báo cáo.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-256,O,Mở rộng AI có điều kiện,Cho xóa dữ liệu theo yêu cầu hợp pháp của người dùng.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-257,O,Mở rộng AI có điều kiện,Đánh giá độ chính xác riêng cho ảnh tối/đêm và vùng ít dữ liệu.,V1,MVP scope; implementation and evidence tracked by milestone
+FT-258,O,Mở rộng AI có điều kiện,"Tạo nhật ký thí nghiệm độc lập, tránh đưa dữ liệu test lên dashboard thật.",V1,MVP scope; implementation and evidence tracked by milestone
+FT-259,P,Hợp tác thực tế có điều kiện,"Kết nối camera đường phố từ đối tác có quyền, chạy phân tích sau khi làm mờ thông tin.",Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-260,P,Hợp tác thực tế có điều kiện,Kết nối trạm mực nước và mưa tại khuôn viên nếu đã được cấp phép.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-261,P,Hợp tác thực tế có điều kiện,Kết nối dữ liệu vận hành bơm có quyền của đơn vị quản lý.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-262,P,Hợp tác thực tế có điều kiện,Tích hợp bản tin chính quyền qua API chỉ khi có thỏa thuận.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-263,P,Hợp tác thực tế có điều kiện,Tích hợp trạng thái đóng đường do cơ quan công bố chính thức.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-264,P,Hợp tác thực tế có điều kiện,Kết nối hệ thống ticket của khu công nghiệp có phân quyền.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-265,P,Hợp tác thực tế có điều kiện,Kết nối lịch vận hành trường học nhưng không xử lý dữ liệu học sinh không cần.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-266,P,Hợp tác thực tế có điều kiện,Nghiên cứu mô hình thủy lực 2D khi đủ DTM và kỹ sư kiểm định.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-267,P,Hợp tác thực tế có điều kiện,Đọc báo cáo quản lý hồ chứa được công bố có nguồn.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-268,P,Hợp tác thực tế có điều kiện,Xuất dữ liệu sự kiện định dạng trao đổi chuẩn cho đối tác.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-269,P,Hợp tác thực tế có điều kiện,Đối chiếu bản tin từ các nguồn quốc tế và nguồn Việt Nam mà không đánh đồng thẩm quyền.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-270,P,Hợp tác thực tế có điều kiện,"Hỗ trợ mạng lưới tình nguyện viên đã được huấn luyện, không cổ vũ vào vùng nguy hiểm.",Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-271,P,Hợp tác thực tế có điều kiện,"Công cụ dành riêng cho đơn vị đánh giá hạ tầng, không phát quyết định thay cơ quan.",Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-272,P,Hợp tác thực tế có điều kiện,Thử nghiệm sensor data synthetic tách khỏi live để huấn luyện phần mềm.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-273,P,Hợp tác thực tế có điều kiện,Phân tích dòng chảy công trình nếu có phép và dữ liệu chi tiết.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-274,P,Hợp tác thực tế có điều kiện,Báo cáo hiệu quả giảm công xử lý sau khi đơn vị đối tác đo thật.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-275,P,Hợp tác thực tế có điều kiện,"Ứng dụng thực tế cần quy trình chịu trách nhiệm, hotline, SLA có xác nhận.",Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"
+FT-276,P,Hợp tác thực tế có điều kiện,Không hứa phát hiện 100% mọi trận ngập chỉ nhờ API mở.,Cần dữ liệu hoặc đối tác,"Requires permissions, official source, partner, or specialist validation"

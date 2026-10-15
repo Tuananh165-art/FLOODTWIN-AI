@@ -1,0 +1,11 @@
+{
+  "name": "FloodTwin AI",
+  "short_name": "FloodTwin",
+  "description": "Thông tin mưa, phản ánh hiện trường và so sánh tuyến có giới hạn rõ ràng.",
+  "lang": "vi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f9fc",
+  "theme_color": "#f7fafc",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
