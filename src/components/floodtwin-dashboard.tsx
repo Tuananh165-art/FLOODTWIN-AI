@@ -67,10 +67,16 @@ type WeatherResponse = {
 };
 
 type Section = "overview" | "pulse" | "path" | "reports" | "lab" | "sources";
-type Session = { email: string; role: "member" | "moderator" | "admin" } | null;
+type Workspace = "dong_nai" | "ho_chi_minh" | "vietnam";
+type Session = { email: string; username?: string | null; role: "member" | "moderator" | "admin" } | null;
 type FeedStatus = "loading" | "available" | "unavailable" | "not_configured";
 const defaultPoint: MapPoint = { lat: 10.956, lon: 106.838 };
 const defaultDestination: MapPoint = { lat: 10.905, lon: 106.95 };
+const workspaceOptions: { id: Workspace; label: string; center: MapPoint }[] = [
+  { id: "dong_nai", label: "Đồng Nai", center: defaultPoint },
+  { id: "ho_chi_minh", label: "TP. Hồ Chí Minh", center: { lat: 10.7769, lon: 106.7009 } },
+  { id: "vietnam", label: "Toàn Việt Nam", center: { lat: 16.2, lon: 106.2 } },
+];
 const sections: { id: Section; label: string; icon: typeof Activity; tag?: string }[] = [
   { id: "overview", label: "Tổng quan", icon: Layers3 },
   { id: "pulse", label: "FloodPulse", icon: Waves },
@@ -89,6 +95,14 @@ const sectionHeadings: Record<Section, { eyebrow: string; title: string; descrip
   sources: { eyebrow: "FLOODTRUST · NGUỒN VÀ GIỚI HẠN", title: "Biết rõ mỗi lớp dữ liệu đến từ đâu.", description: "Dữ liệu thật, dự báo, thông tin cộng đồng và mô phỏng có nhãn riêng." },
 };
 
+const sectionGuides: Partial<Record<Section, { title: string; how: string; useful: string; limit: string }>> = {
+  pulse: { title: "Cách dùng FloodPulse", how: "Chọn điểm trên bản đồ rồi đọc biểu đồ và tổng mưa 1, 3, 6, 24 giờ. Mỗi số có thời điểm và nguồn Open-Meteo.", useful: "Giúp xem tín hiệu mưa dự báo quanh một vị trí trước khi kiểm tra thêm thông tin.", limit: "Mưa dự báo không chứng minh đường đang ngập; đây không phải trạm đo hay cảnh báo chính thức." },
+  path: { title: "Cách dùng FloodPath", how: "Nhập tọa độ A và B hoặc chọn từng điểm trên bản đồ, chọn phương tiện rồi bấm tìm tuyến. Chọn thẻ phương án để vẽ tuyến đó trên bản đồ.", useful: "Đối chiếu các tuyến nhà cung cấp tìm được, thời gian, khoảng cách và báo cáo đã được nhóm dự án xem xét gần tuyến.", limit: "Báo cáo thưa hoặc vắng không chứng minh tuyến an toàn. Chưa có dữ liệu đóng đường chính thức; kết quả không phải chỉ dẫn tránh ngập." },
+  reports: { title: "Cách dùng FloodReport và FloodCommand", how: "Người gửi đăng nhập, ghi nội dung, giờ, vị trí và đồng ý công khai tóm tắt đã biên tập. Moderator xem hàng chờ, yêu cầu bổ sung hoặc duyệt nội bộ.", useful: "Tạo luồng phản ánh có nguồn, thời điểm và bước người thật xem xét trước khi xuất hiện công khai.", limit: "FloodCommand hiện là hàng chờ kiểm duyệt, chưa điều phối cứu hộ, phát thông báo hay ra lệnh đóng đường. AI chỉ gợi ý, không quyết định." },
+  lab: { title: "FloodLab dùng để tập thử", how: "Chọn một trong tám tình huống, chỉnh mưa hoặc phát lại, quan sát watermark rồi đặt lại. Có thể xuất cấu hình JSON để lưu kịch bản.", useful: "Cho phép trình diễn trạng thái giao diện và thảo luận quy trình khi có mưa, báo cáo trùng, dữ liệu lỗi hoặc quyết định giả định.", limit: "Thao tác kịch bản chỉ đổi state trong tab, không ghi database, gọi AI/thời tiết/tuyến API, gửi thông báo hay tác động định tuyến thật. Bản đồ nền vẫn tải tile OpenStreetMap. Không dùng để ra quyết định di chuyển." },
+  sources: { title: "Cách đọc Nguồn dữ liệu", how: "Đối chiếu nhãn DỰ BÁO, DỮ LIỆU MỞ, ĐÃ XEM XÉT và MÔ PHỎNG cùng thời điểm cập nhật và trạng thái nguồn.", useful: "Giúp phân biệt dự báo mô hình với quan sát cộng đồng và nhận ra khi dịch vụ chưa được cấu hình.", limit: "Bản đồ nền không phải bản đồ ngập. Vùng không có báo cáo là khoảng trống dữ liệu, không phải vùng an toàn." },
+};
+
 function formatClock(value: string | null | undefined) {
   if (!value) return "Chưa rõ thời điểm";
   return new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Ho_Chi_Minh" }).format(new Date(value));
@@ -104,6 +118,7 @@ function rainLabel(weather: WeatherResponse | null) {
 
 export function FloodTwinDashboard() {
   const [section, setSection] = useState<Section>("overview");
+  const [workspace, setWorkspace] = useState<Workspace>("dong_nai");
   const [point, setPoint] = useState<MapPoint>(defaultPoint);
   const [weather, setWeather] = useState<WeatherResponse | null>(null);
   const [weatherError, setWeatherError] = useState("");
@@ -114,6 +129,7 @@ export function FloodTwinDashboard() {
   const [showAuth, setShowAuth] = useState(false);
   const [session, setSession] = useState<Session>(null);
   const [notice, setNotice] = useState("");
+  const [showNotifications, setShowNotifications] = useState(false);
   const [rainScenario, setRainScenario] = useState(24);
   const [labScenarioIndex, setLabScenarioIndex] = useState(0);
   const labCursorRef = useRef(0);
@@ -170,7 +186,27 @@ export function FloodTwinDashboard() {
   }, []);
 
   useEffect(() => {
-    if ("serviceWorker" in navigator) void navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+    if (!("serviceWorker" in navigator)) return;
+    if (process.env.NODE_ENV !== "production") {
+      const wasControlled = Boolean(navigator.serviceWorker.controller);
+      const reloadKey = "floodtwin-dev-service-worker-cleanup";
+      void (async () => {
+        const registrations = await navigator.serviceWorker.getRegistrations().catch(() => []);
+        await Promise.all(registrations.map((registration) => registration.unregister().catch(() => false)));
+        if ("caches" in window) {
+          const cacheNames = await window.caches.keys().catch(() => []);
+          await Promise.all(cacheNames.filter((name) => name.startsWith("floodtwin-shell-")).map((name) => window.caches.delete(name)));
+        }
+        if (wasControlled && !window.sessionStorage.getItem(reloadKey)) {
+          window.sessionStorage.setItem(reloadKey, "1");
+          window.location.reload();
+        } else if (!wasControlled) {
+          window.sessionStorage.removeItem(reloadKey);
+        }
+      })();
+      return;
+    }
+    void navigator.serviceWorker.register("/sw.js").catch(() => undefined);
   }, []);
 
   useEffect(() => {
@@ -216,6 +252,16 @@ export function FloodTwinDashboard() {
     announce("Đã mở FloodLab. Mọi điểm được đánh dấu đều là tình huống giả lập.");
   }
 
+  function changeWorkspace(value: Workspace) {
+    const selected = workspaceOptions.find((option) => option.id === value) ?? workspaceOptions[0];
+    setWorkspace(value);
+    setPoint(selected.center);
+    setMapPoint(selected.center);
+    setRouteOrigin(selected.center);
+    setRouteDestination(value === "dong_nai" ? defaultDestination : { lat: selected.center.lat - 0.035, lon: selected.center.lon + 0.06 });
+    setRouteLine(null);
+  }
+
   function resetLab() {
     setSimulated(false);
     setRainScenario(24);
@@ -248,6 +294,7 @@ export function FloodTwinDashboard() {
 
   const selectMapPoint = useCallback((selected: MapPoint) => {
     setMapPoint(selected);
+    setPoint(selected);
     if (routeTarget === "origin") { setRouteOrigin(selected); setRouteTarget(null); }
     if (routeTarget === "destination") { setRouteDestination(selected); setRouteTarget(null); }
   }, [routeTarget]);
@@ -259,11 +306,11 @@ export function FloodTwinDashboard() {
           <span className="brand-mark"><Waves size={21} strokeWidth={2.5} /></span>
           <span className="brand-name">FloodTwin<span>AI</span><small>FIELD INTELLIGENCE</small></span>
         </a>
-        <div className="workspace-label"><span>WORKSPACE</span><button aria-label="Chọn workspace"><span className="workspace-dot" /> Đồng Nai <ChevronDown size={13} /></button></div>
+        <div className="workspace-label"><label htmlFor="workspace-select">KHU VỰC</label><select id="workspace-select" value={workspace} onChange={(event) => changeWorkspace(event.target.value as Workspace)}>{workspaceOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}</select><small>Khung tọa độ tra cứu: Việt Nam</small></div>
         <nav className="primary-nav" aria-label="Điều hướng chính">
           {sections.slice(0, 4).map(({ id, label, icon: Icon }) => (
             <button key={id} className={`nav-item ${section === id ? "active" : ""}`} onClick={() => setSection(id)}>
-              <Icon size={18} strokeWidth={1.8} /><span>{label}</span>{id === "reports" ? <small>3</small> : null}
+              <Icon size={18} strokeWidth={1.8} /><span>{label}</span>
             </button>
           ))}
         </nav>
@@ -282,68 +329,68 @@ export function FloodTwinDashboard() {
           <small>Trạng thái lấy từ các lần tải hiện tại; không phải giám sát SLA.</small>
         </div>
         <button className="help-link" onClick={() => setSection("sources")}><CircleHelp size={16} /> Phương pháp &amp; trợ giúp <ArrowRight size={14} /></button>
-        <div className="sidebar-profile"><span className="profile-avatar">FT</span><span><b>{session?.email ?? "Không đăng nhập"}</b><small>{session ? `Tài khoản ${session.role}` : "Chế độ xem công khai"}</small></span><button aria-label={session ? "Đăng xuất" : "Đăng nhập"} onClick={async () => { if (!session) setShowAuth(true); else { await fetch("/api/auth/session", { method: "DELETE" }); setSession(null); announce("Đã đăng xuất."); } }}><Menu size={17} /></button></div>
+        <div className="sidebar-profile"><span className="profile-avatar">FT</span><span><b>{session?.username ?? session?.email ?? "Không đăng nhập"}</b><small>{session ? `Tài khoản ${session.role}` : "Chế độ xem công khai"}</small></span><button aria-label={session ? "Đăng xuất" : "Đăng nhập"} onClick={async () => { if (!session) setShowAuth(true); else { await fetch("/api/auth/session", { method: "DELETE" }); setSession(null); announce("Đã đăng xuất."); } }}><Menu size={17} /></button></div>
       </aside>
 
       <main className="main-panel" id="top">
         <header className="topbar">
-          <div className="breadcrumb"><span>Đồng Nai</span><ChevronRight size={14} /><b>{sections.find((item) => item.id === section)?.label}</b></div>
-          <div className="topbar-actions"><span className="demo-pill"><span /> BẢN THỬ NGHIỆM</span><button className="icon-action" aria-label="Thông báo" onClick={() => announce("Bạn chưa có thông báo mới.")}><Bell size={18} /><i /></button><button className="top-avatar" aria-label={session ? "Tài khoản đang đăng nhập" : "Đăng nhập"} onClick={() => setShowAuth(true)}>{session?.email?.slice(0, 1).toUpperCase() ?? "FT"}</button></div>
+          <div className="breadcrumb"><span>{workspaceOptions.find((option) => option.id === workspace)?.label}</span><ChevronRight size={14} /><b>{sections.find((item) => item.id === section)?.label}</b></div>
+          <div className="topbar-actions"><span className="demo-pill"><span /> BẢN THỬ NGHIỆM</span><div className="notification-wrap"><button className="icon-action" aria-label="Thông báo" aria-expanded={showNotifications} onClick={() => setShowNotifications((value) => !value)}><Bell size={20} /></button>{showNotifications ? <div className="notification-popover" role="status"><b>Thông báo chưa được kết nối</b><p>FloodTwin hiện chưa lưu hoặc phát thông báo tự động. Hãy mở Báo cáo hiện trường để xem phản ánh hoặc hàng chờ kiểm duyệt.</p><button onClick={() => { setShowNotifications(false); setSection("reports"); }}>Mở báo cáo hiện trường <ArrowRight size={14} /></button></div> : null}</div><button className="top-avatar" aria-label={session ? "Tài khoản đang đăng nhập" : "Đăng nhập"} onClick={() => setShowAuth(true)}>{session?.email?.slice(0, 1).toUpperCase() ?? "FT"}</button></div>
         </header>
 
         <section className="dashboard-content">
-          <div className="intro-row"><div><p className="eyebrow"><span className="eyebrow-line" />{heading.eyebrow}</p><h1>{heading.title}</h1><p className="intro-copy">{heading.description}</p></div><button className="primary-button" onClick={() => setShowReport(true)}><FilePlus2 size={17} /> Gửi phản ánh</button></div>
+          <div className="intro-row"><div><p className="eyebrow"><span className="eyebrow-line" />{heading.eyebrow}</p><h1>{heading.title}</h1><p className="intro-copy">{heading.description}</p></div>{section !== "sources" && section !== "lab" ? <button className="primary-button" onClick={() => setShowReport(true)}><FilePlus2 size={19} /> Gửi phản ánh</button> : null}</div>
+
+          {sectionGuides[section] ? <section className="section-guide"><div><BookOpenText size={20} /><h2>{sectionGuides[section]?.title}</h2></div><p><b>Cách dùng:</b> {sectionGuides[section]?.how}</p><p><b>Tác dụng:</b> {sectionGuides[section]?.useful}</p><p><b>Giới hạn:</b> {sectionGuides[section]?.limit}</p></section> : null}
 
           <div className="safety-note"><ShieldCheck size={17} /><span><b>Thông tin hỗ trợ tham khảo.</b> FloodTwin không thay thế cảnh báo chính thức và không xác nhận lộ trình an toàn.</span><button aria-label="Đọc nguyên tắc an toàn" onClick={() => setSection("sources")}><ArrowRight size={15} /></button></div>
 
-          {simulated ? <div className="lab-banner"><span><Sparkles size={17} /><b>FloodLab đang chạy</b><small> · Các điểm trên bản đồ được dựng để thử nghiệm, không phải phản ánh hiện trường.</small></span><button onClick={resetLab}><RefreshCw size={14} /> Đặt lại</button></div> : null}
+          {simulated && section === "lab" ? <div className="lab-banner"><span><Sparkles size={17} /><b>FloodLab đang chạy</b><small> · Các điểm trên bản đồ được dựng để thử nghiệm, không phải phản ánh hiện trường.</small></span><button onClick={resetLab}><RefreshCw size={16} /> Đặt lại</button></div> : null}
 
-          <div className="metric-grid">
+          {section === "overview" ? <div className="metric-grid">
             <article className="metric-card"><div className="metric-label">Mưa · điểm đang xem <CloudDrizzle size={16} /></div><div className="metric-main"><b>{weatherLoading ? "···" : rainLabel(weather)}</b><span className="metric-icon mint"><CloudDrizzle size={18} /></span></div><div className="metric-foot"><span className="subtle-dot teal" />{weather?.mode === "forecast" ? "Dự báo Open-Meteo" : weatherError ? "Nguồn đang gián đoạn" : "Đang tải dự báo"}<span className="metric-time">{weather ? formatClock(weather.retrievedAt) : ""}</span></div></article>
-            <article className="metric-card"><div className="metric-label">Tín hiệu mưa 1 giờ <Activity size={16} /></div><div className="metric-main"><b>{weatherLoading ? "···" : weather?.hours[0] ? `${weather.hours[0].precipitationMm.toFixed(1)} <small>mm</small>` : "—"}</b><span className="metric-icon sky"><Waves size={18} /></span></div><div className="metric-foot"><span className="subtle-dot blue" />{weather?.assessment.reasons[0] ?? "Chưa đủ dữ liệu để đánh giá"}</div></article>
+            <article className="metric-card"><div className="metric-label">Tín hiệu mưa 1 giờ <Activity size={16} /></div><div className="metric-main"><b>{weatherLoading ? "···" : weather?.hours[0] ? `${weather.hours[0].precipitationMm.toFixed(1)} mm` : "—"}</b><span className="metric-icon sky"><Waves size={18} /></span></div><div className="metric-foot"><span className="subtle-dot blue" />{weather?.assessment.reasons[0] ?? "Chưa đủ dữ liệu để đánh giá"}</div></article>
             <article className="metric-card"><div className="metric-label">Bằng chứng hiện trường <Eye size={16} /></div><div className="metric-main"><b>{reportFeedStatus === "not_configured" ? "Chưa cấu hình Supabase" : reportFeedStatus === "unavailable" ? "Nguồn báo cáo chưa tải được" : publicReports.length ? `${publicReports.length} báo cáo đã xem xét` : reportFeedStatus === "loading" ? "Đang tải nguồn báo cáo" : "Chưa có báo cáo được công bố"}</b><span className="metric-icon amber"><ShieldCheck size={18} /></span></div><div className="metric-foot"><span className="subtle-dot amber-dot" />Không đồng nghĩa không có nguy cơ</div></article>
             <article className="metric-card"><div className="metric-label">Mức độ phủ dữ liệu <Crosshair size={16} /></div><div className="metric-main"><b>Đang xây dựng</b><span className="metric-icon lilac"><Database size={18} /></span></div><div className="metric-foot"><span className="subtle-dot gray" />Chưa có quan trắc ngập tại địa phương</div></article>
-          </div>
+          </div> : null}
 
-          <section className="map-section">
-            <div className="section-head"><div><div className="section-title"><span className="live-dot" />Bản đồ tình hình</div><p><span className="map-updated">{weather ? `Cập nhật ${formatClock(weather.retrievedAt)}` : "Đang tải nguồn"}</span> <span className="tiny-divider">·</span> Đồng Nai sau hợp nhất</p></div><div className="map-actions"><button className="secondary-button" onClick={() => setShowLayers((value) => !value)}><Layers3 size={15} /> Lớp dữ liệu <ChevronDown size={13} /></button><button className="square-button" aria-label="Tải lại thời tiết" title="Tải lại thời tiết" onClick={() => void loadWeather(point)}><RefreshCw size={15} className={weatherLoading ? "spin-icon" : ""} /></button></div></div>
+          {section === "overview" || section === "pulse" || section === "path" || section === "lab" ? <section className="map-section">
+            <div className="section-head"><div><div className="section-title"><span className="live-dot" />Bản đồ tình hình</div><p><span className="map-updated">{weather ? `Cập nhật ${formatClock(weather.retrievedAt)}` : "Đang tải nguồn"}</span> <span className="tiny-divider">·</span> {workspaceOptions.find((option) => option.id === workspace)?.label}</p></div><div className="map-actions"><button className="secondary-button" onClick={() => setShowLayers((value) => !value)}><Layers3 size={17} /> Lớp dữ liệu <ChevronDown size={15} /></button><button className="square-button" aria-label="Tải lại thời tiết" title="Tải lại thời tiết" onClick={() => void loadWeather(point)}><RefreshCw size={17} className={weatherLoading ? "spin-icon" : ""} /></button></div></div>
             <div className="map-legend"><span><i className="legend-current" />Điểm đang xem</span><span><i className="legend-verified" />Đã xem xét</span><span><i className="legend-forecast" />Tín hiệu dự báo</span><span><i className="legend-unknown" />Chưa có dữ liệu</span></div>
-            <div className="map-wrap"><FloodMap selectedPoint={mapPoint} simulated={simulated} onPointSelected={selectMapPoint} routeLine={routeLine} reports={publicReports} />{showLayers ? <div className="layer-menu"><div className="layer-menu-title">LỚP HIỂN THỊ <button aria-label="Đóng lớp dữ liệu" onClick={() => setShowLayers(false)}><X size={15} /></button></div><p><span className="layer-symbol forecast" />Dự báo mưa <span className="layer-state enabled">ĐANG BẬT</span></p><p><span className="layer-symbol reports" />Báo cáo đã xem xét <span className="layer-state">{reportFeedStatus === "available" ? `${publicReports.length} CÒN HIỆU LỰC` : reportFeedStatus === "not_configured" ? "CHƯA CẤU HÌNH" : "NGUỒN CHƯA SẴN SÀNG"}</span></p><p><span className="layer-symbol unknown" />Khoảng trống dữ liệu <span className="layer-state enabled">ĐANG BẬT</span></p><small>Lớp dự báo không biểu diễn tình trạng ngập tại mặt đường.</small></div> : null}<button className="map-location-chip" onClick={() => { setPoint(mapPoint); void loadWeather(mapPoint); announce("Đang cập nhật dự báo cho điểm bản đồ vừa chọn."); }}><span className="location-chip-icon"><LocateFixed size={14} /></span><span><b>Điểm đang xem</b><small>{mapPoint.lat.toFixed(3)}°B, {mapPoint.lon.toFixed(3)}°Đ</small></span><ArrowRight size={15} /></button></div>
-          </section>
+            <div className="map-wrap"><FloodMap key={workspace} selectedPoint={mapPoint} simulated={simulated && section === "lab"} scenarioId={floodLabScenarios[labScenarioIndex].id} onPointSelected={selectMapPoint} routeLine={routeLine} reports={publicReports} /><div className="map-location-chip"><span className="location-chip-icon"><LocateFixed size={16} /></span><span><b>Điểm đang xem</b><small>{mapPoint.lat.toFixed(3)}°B, {mapPoint.lon.toFixed(3)}°Đ</small></span><button aria-label="Cập nhật dự báo tại điểm đang xem" onClick={() => { setPoint(mapPoint); void loadWeather(mapPoint); announce("Đang cập nhật dự báo cho điểm bản đồ vừa chọn."); }}><ArrowRight size={16} /></button></div>{showLayers ? <div className="layer-menu"><div className="layer-menu-title">LỚP HIỂN THỊ <button aria-label="Đóng lớp dữ liệu" onClick={() => setShowLayers(false)}><X size={17} /></button></div><p><span className="layer-symbol forecast" />Dự báo mưa <span className="layer-state enabled">ĐANG BẬT</span></p><p><span className="layer-symbol reports" />Báo cáo đã xem xét <span className="layer-state">{reportFeedStatus === "available" ? `${publicReports.length} CÒN HIỆU LỰC` : reportFeedStatus === "not_configured" ? "CHƯA CẤU HÌNH" : "NGUỒN CHƯA SẴN SÀNG"}</span></p><p><span className="layer-symbol unknown" />Khoảng trống dữ liệu <span className="layer-state enabled">ĐANG BẬT</span></p><small>Lớp dự báo không biểu diễn tình trạng ngập tại mặt đường.</small></div> : null}</div>
+          </section> : null}
 
-          <div className="lower-grid">
+          {section === "overview" || section === "pulse" ? <div className={`lower-grid ${section === "pulse" ? "pulse-grid" : ""}`}>
             <section className="panel forecast-panel"><div className="panel-header"><div><p className="panel-overline">FLOODPULSE · 48 GIỜ TỚI</p><h2>Diễn biến mưa theo giờ</h2></div><span className="forecast-source"><span />DỰ BÁO</span></div><p className="panel-caption">Lượng mưa theo mô hình tại tọa độ đã chọn · mm</p><div className="rain-accumulations" aria-label="Tổng lượng mưa dự báo theo cửa sổ thời gian">{([["1 giờ", rainTotals.hour1], ["3 giờ", rainTotals.hour3], ["6 giờ", rainTotals.hour6], ["24 giờ", rainTotals.hour24]] as const).map(([label, value]) => <span key={label}><small>{label}</small><b>{value === null ? "—" : `${value.toFixed(1)} mm`}</b></span>)}</div><div className="rain-chart" role="img" aria-label="Biểu đồ lượng mưa dự báo tối đa 48 giờ tới; nhãn giờ hiển thị mỗi bốn mốc">{hourlyBars.length ? hourlyBars.map((item, index) => <div key={`${item.time}-${index}`} className="rain-column" title={`${formatClock(item.time)} · ${item.value.toFixed(1)} mm`}><span className={item.value > 0 ? "rain-bar has-rain" : "rain-bar"} style={{ height: `${item.height}px` }} /><small>{index % 4 === 0 ? formatClock(item.time) : ""}</small></div>) : <div className="chart-empty">{weatherError || "Đang chờ dữ liệu thời tiết từ Open-Meteo."}</div>}</div><div className="chart-footer"><span><i /> Dự báo mưa (mm)</span><span>Nguồn: Open-Meteo <a href="https://open-meteo.com/en/docs" target="_blank" rel="noreferrer">xem chi tiết <ArrowRight size={11} /></a></span></div></section>
-            <section className="panel route-panel"><div className="panel-header"><div><p className="panel-overline">FLOODPATH · MẠNG ĐƯỜNG OSM</p><h2>So sánh lộ trình</h2></div><button className="route-more" aria-label="Mở FloodPath" onClick={() => setSection("path")}><ArrowRight size={17} /></button></div><div className="route-preview"><span className="route-node origin" /><span className="route-connector" /><span className="route-node destination" /><div className="route-endpoints"><span>Biên Hòa, Đồng Nai</span><span>Chưa chọn điểm đến</span></div></div><div className="route-empty"><div className="empty-route-icon"><GitCompareArrows size={18} /></div><div><b>Chọn hai điểm để so sánh</b><p>Phương tiện và nguồn tuyến sẽ được ghi trên mỗi phương án.</p></div></div><button className="route-cta" onClick={() => setSection("path")}>Mở FloodPath <ArrowRight size={14} /></button></section>
-          </div>
+            {section === "overview" ? <section className="panel route-panel"><div className="panel-header"><div><p className="panel-overline">FLOODPATH · MẠNG ĐƯỜNG OSM</p><h2>So sánh lộ trình</h2></div><button className="route-more" aria-label="Mở FloodPath" onClick={() => setSection("path")}><ArrowRight size={19} /></button></div><div className="route-preview"><span className="route-node origin" /><span className="route-connector" /><span className="route-node destination" /><div className="route-endpoints"><span>{workspaceOptions.find((option) => option.id === workspace)?.label}</span><span>Chọn điểm đến trong FloodPath</span></div></div><div className="route-empty"><div className="empty-route-icon"><GitCompareArrows size={20} /></div><div><b>So sánh hai tuyến ứng viên</b><p>Đọc khoảng cách, thời gian provider và báo cáo đã xem xét gần tuyến.</p></div></div><button className="route-cta" onClick={() => setSection("path")}>Mở FloodPath <ArrowRight size={16} /></button></section> : null}
+          </div> : null}
 
-          <div className="bottom-row"><button className="story-card" onClick={() => setSection("reports")}><span className="story-icon blue"><MessageCircleMore size={17} /></span><span><b>Chưa có phản ánh đã kiểm duyệt</b><small>Thông tin cộng đồng sẽ hiển thị sau khi người kiểm duyệt xem xét.</small></span><ChevronRight size={17} /></button><button className="story-card" onClick={activateLab}><span className="story-icon purple"><Sparkles size={17} /></span><span><b>Thử một kịch bản giả lập</b><small>Xem cách FloodTwin phản ứng khi mưa thay đổi.</small></span><ChevronRight size={17} /></button></div>
+          {section === "overview" ? <div className="bottom-row"><button className="story-card" onClick={() => setSection("reports")}><span className="story-icon blue"><MessageCircleMore size={19} /></span><span><b>Xem phản ánh hiện trường</b><small>Thông tin cộng đồng chỉ xuất hiện công khai sau khi người kiểm duyệt xem xét.</small></span><ChevronRight size={19} /></button><button className="story-card" onClick={activateLab}><span className="story-icon purple"><Sparkles size={19} /></span><span><b>Thử một kịch bản giả lập</b><small>Xem trạng thái mô phỏng mà không tác động dữ liệu thật.</small></span><ChevronRight size={19} /></button></div> : null}
 
           {section === "reports" ? <ReportsWorkspace role={session?.role ?? null} userEmail={session?.email ?? null} /> : null}
 
           {section === "path" ? <RouteWorkspace origin={routeOrigin} destination={routeDestination} onOriginChange={setRouteOrigin} onDestinationChange={setRouteDestination} onSelectPoint={(target) => { setRouteTarget(target); announce(`Chọn ${target === "origin" ? "điểm A" : "điểm B"} bằng cách chạm bản đồ.`); }} onRoute={(line) => setRouteLine(line)} /> : null}
 
-          {section === "lab" ? <section className="panel lab-controls"><div><p className="panel-overline">DỮ LIỆU MÔ PHỎNG · TÁCH BIỆT VỚI DỮ LIỆU THỰC</p><h2>Phát lại tình huống FloodLab</h2><p>8 kịch bản chỉ chạy trong trình duyệt. Không ghi database, không gọi AI/provider và không phát thông báo thật.</p></div><div className="lab-scenario-grid">{floodLabScenarios.map((scenario, index) => <button key={scenario.id} className={`lab-scenario ${index === labScenarioIndex ? "active" : ""}`} aria-pressed={index === labScenarioIndex} onClick={() => selectLabScenario(scenario.id)}><b>{index + 1}. {scenario.label}</b><small>{scenario.description}</small></button>)}</div><div className="lab-active-scenario"><Sparkles size={15} /><span><b>{floodLabScenarios[labScenarioIndex].label}</b><small>{floodLabScenarios[labScenarioIndex].signal}</small></span></div><div className="lab-slider-row"><input aria-label="Lượng mưa mô phỏng" type="range" min="0" max="120" step="5" value={rainScenario} onChange={(event) => { setSimulated(true); setRainScenario(Number(event.target.value)); }} /><span>{rainScenario} <small>mm / 3 giờ · mô phỏng</small></span><button className="secondary-button" onClick={() => { setSimulated(true); setLabPlaying((value) => !value); }}>{labPlaying ? "Tạm dừng" : "Phát lại"}</button><button className="secondary-button" onClick={resetLab}><RefreshCw size={14} /> Đặt lại</button><button className="secondary-button" onClick={exportLabScenario}>Xuất JSON</button></div><div className="lab-comparison"><span>TRƯỚC <b>24 mm · kịch bản ban đầu</b></span><ArrowLeftRight size={17} /><span>SAU <b>{rainScenario} mm · tình huống giả lập</b></span></div><p className="lab-isolation-note">Kết quả mô phỏng không thay đổi các báo cáo thật trên bản đồ hoặc trong Supabase. “Đóng đường” là minh họa; không gửi lệnh tới dịch vụ định tuyến.</p></section> : null}
+          {section === "lab" ? <section className="panel lab-controls"><div><p className="panel-overline">DỮ LIỆU MÔ PHỎNG · TÁCH BIỆT VỚI DỮ LIỆU THỰC</p><h2>Phát lại tình huống FloodLab</h2><p>Thao tác kịch bản chỉ đổi trạng thái trình duyệt; không ghi database, không gọi AI/thời tiết/tuyến API và không phát thông báo. Bản đồ nền vẫn tải tile OpenStreetMap.</p></div><div className="lab-scenario-grid">{floodLabScenarios.map((scenario, index) => <button key={scenario.id} className={`lab-scenario ${index === labScenarioIndex ? "active" : ""}`} aria-pressed={index === labScenarioIndex} onClick={() => selectLabScenario(scenario.id)}><b>{index + 1}. {scenario.label}</b><small>{scenario.description}</small></button>)}</div><div className="lab-active-scenario"><Sparkles size={15} /><span><b>{floodLabScenarios[labScenarioIndex].label}</b><small>{floodLabScenarios[labScenarioIndex].signal}</small></span></div><div className="lab-slider-row"><input aria-label="Lượng mưa mô phỏng" type="range" min="0" max="120" step="5" value={rainScenario} onChange={(event) => { setSimulated(true); setRainScenario(Number(event.target.value)); }} /><span>{rainScenario} <small>mm / 3 giờ · mô phỏng</small></span><button className="secondary-button" onClick={() => { setSimulated(true); setLabPlaying((value) => !value); }}>{labPlaying ? "Tạm dừng" : "Phát lại"}</button><button className="secondary-button" onClick={resetLab}><RefreshCw size={14} /> Đặt lại</button><button className="secondary-button" onClick={exportLabScenario}>Xuất JSON</button></div><div className="lab-comparison"><span>TRƯỚC <b>24 mm · kịch bản ban đầu</b></span><ArrowLeftRight size={17} /><span>SAU <b>{rainScenario} mm · tình huống giả lập</b></span></div><p className="lab-isolation-note">Kết quả mô phỏng không thay đổi các báo cáo thật trên bản đồ hoặc trong Supabase. “Đóng đường” là minh họa; không gửi lệnh tới dịch vụ định tuyến.</p></section> : null}
 
-          {section === "sources" ? <section className="panel sources-panel"><div className="panel-header"><div><p className="panel-overline">MINH BẠCH DỮ LIỆU</p><h2>Nguồn và cách đọc kết quả</h2></div><BookOpenText size={20} /></div><div className="source-row"><span className="source-brand open-meteo"><Sun size={18} /></span><span><b>Open-Meteo Forecast API</b><small>Dự báo theo mô hình tại tọa độ được chọn; không phải trạm đo ngập.</small></span><span className="source-kind forecast-label">DỰ BÁO</span></div><div className="source-row"><span className="source-brand osm"><Compass size={18} /></span><span><b>OpenStreetMap</b><small>Nền đường và địa danh; có thể thiếu hoặc chậm cập nhật.</small></span><span className="source-kind open-label">DỮ LIỆU MỞ</span></div><div className="source-row"><span className="source-brand twin"><Waves size={18} /></span><span><b>FloodLab</b><small>Chỉ là tình huống giả lập, tách khỏi phản ánh và dữ liệu thời tiết.</small></span><span className="source-kind simulated-label">MÔ PHỎNG</span></div><div className="method-note"><ShieldAlert size={16} /><span>FloodTwin không xác nhận tuyến an toàn hoặc cảnh báo thiên tai chính thức. Khi có nguy hiểm, hãy theo dõi thông tin từ cơ quan có thẩm quyền.</span></div></section> : null}
+          {section === "sources" ? <section className="panel sources-panel"><div className="panel-header"><div><p className="panel-overline">MINH BẠCH DỮ LIỆU</p><h2>Nguồn và cách đọc kết quả</h2></div><BookOpenText size={22} /></div><div className="source-row"><span className="source-brand open-meteo"><Sun size={20} /></span><span><b>Open-Meteo Forecast API</b><small>Dự báo theo mô hình tại tọa độ được chọn; không phải trạm đo ngập. Trạng thái hiện tại: {weatherLoading ? "đang tải" : weatherError ? `lỗi — ${weatherError}` : "có dữ liệu"}.</small></span><span className="source-kind forecast-label">DỰ BÁO</span></div><div className="source-row"><span className="source-brand osm"><Compass size={20} /></span><span><b>OpenStreetMap</b><small>Nền đường và địa danh; có thể thiếu hoặc chậm cập nhật. Nhấp bản đồ để chọn điểm và xem dự báo.</small></span><span className="source-kind open-label">DỮ LIỆU MỞ</span></div><div className="source-row"><span className="source-brand twin"><Database size={20} /></span><span><b>Phản ánh hiện trường</b><small>{reportFeedStatus === "not_configured" ? "Supabase chưa cấu hình; không có nguồn báo cáo công khai." : reportFeedStatus === "unavailable" ? "Nguồn báo cáo hiện không tải được." : reportFeedStatus === "loading" ? "Đang kiểm tra nguồn báo cáo." : `${publicReports.length} báo cáo đã xem xét còn hiệu lực.`} Bản ghi cần moderator xem xét trước khi công khai.</small></span><span className="source-kind open-label">CỘNG ĐỒNG</span></div><div className="source-row"><span className="source-brand twin"><Waves size={20} /></span><span><b>FloodLab</b><small>Tình huống giả lập trong trình duyệt, tách khỏi phản ánh và dữ liệu thật.</small></span><span className="source-kind simulated-label">MÔ PHỎNG</span></div><div className="method-note"><ShieldAlert size={18} /><span>FloodTwin không xác nhận tuyến an toàn hoặc cảnh báo thiên tai chính thức. Khi có nguy hiểm, hãy theo dõi thông tin từ cơ quan có thẩm quyền.</span></div></section> : null}
         </section>
         <footer className="app-footer"><span>FLOODTWIN AI <span>v0.1 · bản thử nghiệm nghiên cứu</span></span><span>Không có dữ liệu ≠ nguy cơ thấp <i>·</i> <button onClick={() => setSection("sources")}>Phương pháp &amp; nguồn</button></span></footer>
       </main>
 
       {notice ? <div className="toast-message" role="status"><ShieldCheck size={16} />{notice}</div> : null}
-      {showReport ? <ReportDialog location={mapPoint} userEmail={session?.email ?? null} onLogin={() => setShowAuth(true)} onClose={() => setShowReport(false)} onSuccess={() => { setShowReport(false); announce("Đã gửi phản ánh. Phản ánh ở trạng thái chờ xem xét."); }} onSimulated={() => { setShowReport(false); announce("Đã tạo phản ánh mô phỏng trong phiên FloodLab; không gửi lên máy chủ."); }} /> : null}
+      {showReport ? <ReportDialog location={mapPoint} userEmail={session?.email ?? null} onLogin={() => setShowAuth(true)} onClose={() => setShowReport(false)} onSuccess={() => { setShowReport(false); announce("Đã gửi phản ánh. Phản ánh ở trạng thái chờ xem xét."); }} /> : null}
       {showAuth ? <LoginDialog onClose={() => setShowAuth(false)} onSuccess={(nextSession) => { setSession(nextSession); setShowAuth(false); announce("Đăng nhập thành công."); }} /> : null}
     </div>
   );
 }
 
-function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess, onSimulated }: { location: MapPoint; userEmail: string | null; onLogin: () => void; onClose: () => void; onSuccess: () => void; onSimulated: () => void }) {
+function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess }: { location: MapPoint; userEmail: string | null; onLogin: () => void; onClose: () => void; onSuccess: () => void }) {
   const [description, setDescription] = useState("");
   const [observedAt, setObservedAt] = useState(() => new Date(Date.now() - new Date().getTimezoneOffset() * 60_000).toISOString().slice(0, 16));
   const [aiConsent, setAiConsent] = useState(false);
   const [publicConsent, setPublicConsent] = useState(false);
-  const [simulated, setSimulated] = useState(false);
   const [image, setImage] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [analysis, setAnalysis] = useState("");
@@ -353,7 +400,10 @@ function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess, onSimu
     try {
       const response = await fetch("/api/ai/analyze-report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ description, consent: aiConsent }) });
       const body = await response.json();
-      if (!response.ok) throw new Error(body.error ?? "Chưa phân tích được nội dung.");
+      if (!response.ok) {
+        const trace = typeof body.requestId === "string" ? ` Mã yêu cầu: ${body.requestId}.` : "";
+        throw new Error(`${body.error ?? "Chưa phân tích được nội dung."}${trace} AI là tùy chọn; bạn vẫn có thể gửi phản ánh bằng tay.`);
+      }
       const result = body.analysis;
       setAnalysis(`${result.neutralSummary} · ${result.sourceType === "firsthand" ? "người gửi tự quan sát" : result.sourceType === "hearsay" ? "lời kể gián tiếp" : "chưa rõ nguồn"}${result.missingDetails.length ? ` · Cần bổ sung: ${result.missingDetails.join(", ")}` : ""}`);
     } catch (caught) { setError(caught instanceof Error ? caught.message : "Không kết nối được AI."); }
@@ -361,7 +411,6 @@ function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess, onSimu
   }
 
   async function submitReport() {
-    if (simulated) { setSubmitted(true); window.setTimeout(onSimulated, 500); return; }
     if (!userEmail) { onLogin(); return; }
     setBusy(true); setError("");
     try {
@@ -380,16 +429,14 @@ function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess, onSimu
         <div className="report-body"><label htmlFor="report-description">Bạn quan sát điều gì? <span>*</span></label><textarea id="report-description" value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Ví dụ: Khoảng 16 giờ, mặt đường có nước đọng gần cổng phụ…" maxLength={1600} rows={4} /><small className="report-hint">Ghi thời điểm và vị trí. Không đi vào vùng ngập để chụp ảnh.</small>
           <label htmlFor="observed-at">Thời điểm quan sát</label><input id="observed-at" type="datetime-local" value={observedAt} onChange={(event) => setObservedAt(event.target.value)} />
           <label htmlFor="report-location">Vị trí chọn từ bản đồ</label><div className="report-location"><LocateFixed size={16} /><span>Điểm bản đồ · {location.lat.toFixed(5)}, {location.lon.toFixed(5)}</span></div>
-          <label className="upload-label" htmlFor="report-image"><FileImage size={16} /> Ảnh tùy chọn <span>JPEG, PNG hoặc WebP · tối đa 2 MB</span></label><input id="report-image" type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { const file = event.target.files?.[0]; if (file) setImage(URL.createObjectURL(file)); }} />{image ? <div className="image-preview"><Image src={image} alt="Ảnh xem trước phản ánh" width={57} height={45} unoptimized /><span>Ảnh chỉ được xem trước trên thiết bị trong bản hiện tại.</span></div> : null}
-          <label className="consent-row"><input type="checkbox" checked={aiConsent} onChange={(event) => setAiConsent(event.target.checked)} /><span>Tôi đồng ý gửi phần mô tả (không gửi ảnh) tới DeepSeek để AI hỗ trợ phân tích. Có thể gửi phản ánh mà không bật lựa chọn này.</span></label>
-          {!simulated ? <label className="consent-row public-consent"><input type="checkbox" checked={publicConsent} onChange={(event) => setPublicConsent(event.target.checked)} /><span>Tôi đồng ý cho công khai tóm tắt do moderator biên tập cùng vị trí đã làm tròn xấp xỉ 100m sau khi duyệt. Email và nguyên văn báo cáo không hiển thị công khai.</span></label> : null}
+          <label className="upload-label" htmlFor="report-image"><FileImage size={16} /> Ảnh tùy chọn <span>JPEG, PNG hoặc WebP · tối đa 2 MB · chỉ xem trước</span></label><input id="report-image" type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { const file = event.target.files?.[0]; if (file) setImage(URL.createObjectURL(file)); }} />{image ? <div className="image-preview"><Image src={image} alt="Ảnh xem trước phản ánh" width={57} height={45} unoptimized /><span>Ảnh chỉ được xem trước trên thiết bị trong bản hiện tại; chưa tải lên máy chủ.</span></div> : null}
+          <label className="consent-row"><input type="checkbox" checked={aiConsent} onChange={(event) => setAiConsent(event.target.checked)} /><span>Tôi đồng ý gửi phần mô tả (không gửi ảnh) tới dịch vụ AI để hỗ trợ phân tích. Có thể gửi phản ánh mà không bật lựa chọn này.</span></label>
+          <label className="consent-row public-consent"><input type="checkbox" checked={publicConsent} onChange={(event) => setPublicConsent(event.target.checked)} /><span>Tôi đồng ý cho công khai tóm tắt do moderator biên tập cùng vị trí đã làm tròn xấp xỉ 100m sau khi duyệt. Email và nguyên văn báo cáo không hiển thị công khai.</span></label>
           {aiConsent ? <button className="secondary-button" disabled={busy || description.trim().length < 8} onClick={() => void analyzeDescription()}><Sparkles size={14} />{busy ? "Đang phân tích…" : "Phân tích mô tả bằng AI"}</button> : null}
           {analysis ? <div className="inline-notice"><Sparkles size={15} />{analysis}</div> : null}
           {error ? <div className="inline-notice error-notice" role="alert">{error}</div> : null}
-          <label className="consent-row simulated-consent"><input type="checkbox" checked={simulated} onChange={(event) => setSimulated(event.target.checked)} /><span>Đây là dữ liệu tình huống mô phỏng cho FloodLab, không phải báo cáo thực.</span></label>
-          {submitted ? <div className="inline-notice"><ShieldCheck size={15} />Bản gửi được gắn nhãn {simulated ? "MÔ PHỎNG" : "CHỜ ĐĂNG NHẬP"}; chưa đăng lên bản đồ công khai.</div> : null}
         </div>
-        <footer><span><ShieldCheck size={14} /> Chờ kiểm duyệt · chưa phải cảnh báo</span><button className="primary-button" disabled={description.trim().length < 8 || busy || (!simulated && !publicConsent)} onClick={() => void submitReport()}>{simulated ? <Sparkles size={15} /> : <ArrowRight size={15} />}{simulated ? "Tạo mô phỏng" : userEmail ? (busy ? "Đang gửi…" : "Gửi phản ánh") : "Đăng nhập để gửi"}</button></footer>
+        <footer><span><ShieldCheck size={14} /> Chờ kiểm duyệt · chưa phải cảnh báo</span><button className="primary-button" disabled={description.trim().length < 8 || busy || !publicConsent} onClick={() => void submitReport()}><ArrowRight size={15} />{userEmail ? (busy ? "Đang gửi…" : "Gửi phản ánh") : "Đăng nhập để gửi"}</button></footer>
       </section>
     </div>
   );
@@ -419,7 +466,7 @@ function RouteWorkspace({ origin, destination, onOriginChange, onDestinationChan
   }
 
   function coordinateField(label: string, name: "origin" | "destination", value: MapPoint, update: (point: MapPoint) => void) {
-    return <fieldset className="route-point"><legend>{label}</legend><label>Vĩ độ<input type="number" step="0.00001" min="10.25" max="12.75" value={value.lat} onChange={(event) => update({ ...value, lat: Number(event.target.value) })} /></label><label>Kinh độ<input type="number" step="0.00001" min="106.25" max="108.1" value={value.lon} onChange={(event) => update({ ...value, lon: Number(event.target.value) })} /></label><button type="button" className="secondary-button" onClick={() => onSelectPoint(name)}><LocateFixed size={13} /> Chọn trên bản đồ</button></fieldset>;
+    return <fieldset className="route-point"><legend>{label}</legend><label>Vĩ độ<input type="number" step="0.00001" min="8.18" max="23.39" value={value.lat} onChange={(event) => update({ ...value, lat: Number(event.target.value) })} /></label><label>Kinh độ<input type="number" step="0.00001" min="102.14" max="109.47" value={value.lon} onChange={(event) => update({ ...value, lon: Number(event.target.value) })} /></label><button type="button" className="secondary-button" onClick={() => onSelectPoint(name)}><LocateFixed size={16} /> Chọn trên bản đồ</button></fieldset>;
   }
 
   return <section className="panel path-workspace"><div className="panel-header"><div><p className="panel-overline">FLOODPATH · TUYẾN ỨNG VIÊN</p><h2>Chọn điểm A/B và phương tiện</h2></div><Route size={19} /></div><p className="panel-caption">Các phương án là tuyến ứng viên của provider. Màu/độ dài không biểu diễn tuyến an toàn.</p><form onSubmit={(event) => void compareRoute(event)}><div className="route-point-grid">{coordinateField("Điểm A · xuất phát", "origin", origin, onOriginChange)}{coordinateField("Điểm B · đến", "destination", destination, onDestinationChange)}</div><label className="route-mode-label">Phương tiện<select value={mode} onChange={(event) => setMode(event.target.value as typeof mode)}><option value="motorbike">Xe máy · Valhalla motor_scooter</option><option value="car">Ô tô · ORS driving-car</option><option value="walking">Đi bộ · ORS foot-walking</option></select></label><button className="primary-button route-submit" disabled={busy}>{busy ? "Đang tìm tuyến…" : "Tìm và đối chiếu tuyến"}<ArrowRight size={14} /></button></form>{error ? <div className="inline-notice error-notice" role="alert">{error}</div> : null}{result ? <div className="route-result"><small>{result.provider} · {result.profile} · evidence: {result.evidenceCoverage === "published_reports_only" ? "bản tin đã xem xét được công bố" : "chưa kết nối"}</small><div className="route-candidate-list">{result.routes.map((candidate) => <button className={`route-candidate ${selectedRoute === candidate.id ? "selected" : ""}`} key={candidate.id} onClick={() => { setSelectedRoute(candidate.id); onRoute(candidate.geometry); }}><b>{candidate.label}</b><span>{(candidate.distanceMeters / 1000).toFixed(1)} km · {Math.max(1, Math.round(candidate.durationSeconds / 60))} phút provider</span><small>{candidate.nearbyReviewedReportCount} phản ánh đã xem xét trong bán kính {candidate.evidenceRadiusMeters}m</small></button>)}</div>{result.limitations.map((limitation) => <p key={limitation}>{limitation}</p>)}</div> : null}</section>;
@@ -475,9 +522,35 @@ function ReportsWorkspace({ role, userEmail }: { role: NonNullable<Session>["rol
 }
 
 function LoginDialog({ onClose, onSuccess }: { onClose: () => void; onSuccess: (session: NonNullable<Session>) => void }) {
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const [identifier, setIdentifier] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  return <div className="modal-backdrop auth-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><form className="report-dialog auth-dialog" onSubmit={async (event) => { event.preventDefault(); setBusy(true); setError(""); try { const response = await fetch("/api/auth/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) }); const body = await response.json(); if (!response.ok) throw new Error(body.error); const sessionResponse = await fetch("/api/auth/session"); const sessionBody = await sessionResponse.json(); onSuccess(sessionBody.user); } catch (caught) { setError(caught instanceof Error ? caught.message : "Đăng nhập thất bại."); } finally { setBusy(false); } }}><header><span className="report-heading-icon"><ShieldCheck size={19} /></span><div><p className="panel-overline">TÀI KHOẢN FLOODTWIN</p><h2>Đăng nhập</h2></div><button type="button" aria-label="Đóng" onClick={onClose}><X size={18} /></button></header><div className="report-body"><p className="report-hint">Tài khoản do quản trị viên cấp. FloodTwin không tự mở đăng ký công khai.</p><label htmlFor="login-email">Email</label><input id="login-email" type="email" required autoComplete="username" value={email} onChange={(event) => setEmail(event.target.value)} /><label htmlFor="login-password">Mật khẩu</label><input id="login-password" type="password" required autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} />{error ? <div className="inline-notice error-notice" role="alert">{error}</div> : null}</div><footer><span>Phiên xác thực Supabase</span><button className="primary-button" disabled={busy}>{busy ? "Đang đăng nhập…" : "Đăng nhập"}</button></footer></form></div>;
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setError(""); setMessage("");
+    try {
+      const payload = mode === "login" ? { action: "login", identifier, password } : { action: "register", username, email, password };
+      const response = await fetch("/api/auth/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const body = await response.json();
+      if (!response.ok) throw new Error(body.error);
+      if (mode === "register") {
+        if (body.confirmationRequired) { setMessage(body.message); return; }
+        const sessionResponse = await fetch("/api/auth/session");
+        const sessionBody = await sessionResponse.json();
+        if (sessionBody.user) { onSuccess(sessionBody.user); return; }
+        setMessage(body.message ?? "Đăng ký thành công. Hãy đăng nhập.");
+        setMode("login"); setIdentifier(username); return;
+      }
+      const sessionResponse = await fetch("/api/auth/session");
+      const sessionBody = await sessionResponse.json();
+      if (!sessionBody.user) throw new Error("Đăng nhập thành công nhưng chưa đọc được phiên. Hãy tải lại trang.");
+      onSuccess(sessionBody.user);
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "Thao tác tài khoản thất bại."); }
+    finally { setBusy(false); }
+  }
+  return <div className="modal-backdrop auth-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><form className="report-dialog auth-dialog" onSubmit={(event) => void submit(event)}><header><span className="report-heading-icon"><ShieldCheck size={19} /></span><div><p className="panel-overline">TÀI KHOẢN FLOODTWIN</p><h2>{mode === "login" ? "Đăng nhập" : "Tạo tài khoản"}</h2></div><button type="button" aria-label="Đóng" onClick={onClose}><X size={18} /></button></header><div className="report-body"><p className="report-hint">Tài khoản mới tự nhận quyền thành viên để dùng các tính năng AI và gửi phản ánh. Email dùng để xác nhận tài khoản.</p>{mode === "register" ? <><label htmlFor="register-username">Tên đăng nhập</label><input id="register-username" required minLength={3} maxLength={24} pattern="[A-Za-z0-9_]+" autoComplete="username" value={username} onChange={(event) => setUsername(event.target.value)} /><label htmlFor="register-email">Email</label><input id="register-email" type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} /></> : <><label htmlFor="login-identifier">Tên đăng nhập hoặc email</label><input id="login-identifier" required autoComplete="username" value={identifier} onChange={(event) => setIdentifier(event.target.value)} /></>}<label htmlFor="login-password">Mật khẩu{mode === "register" ? " · ít nhất 10 ký tự" : ""}</label><input id="login-password" type="password" required minLength={mode === "register" ? 10 : undefined} maxLength={128} autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(event) => setPassword(event.target.value)} />{message ? <div className="inline-notice" role="status">{message}</div> : null}{error ? <div className="inline-notice error-notice" role="alert">{error}</div> : null}<button className="secondary-button" type="button" onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); setMessage(""); }}>{mode === "login" ? "Chưa có tài khoản? Đăng ký" : "Đã có tài khoản? Đăng nhập"}</button></div><footer><span>Phiên xác thực Supabase</span><button className="primary-button" disabled={busy}>{busy ? "Đang xử lý…" : mode === "login" ? "Đăng nhập" : "Đăng ký"}</button></footer></form></div>;
 }

@@ -18,6 +18,8 @@ const required = [
   ["explicit publication consent", /public_consent boolean not null default false[\s\S]*and public_consent/i],
   ["coarsened public coordinates", /round\(extensions\.st_y\(point::extensions\.geometry\)::numeric, 4\)/i],
   ["version checked author withdrawal", /withdraw_report[\s\S]*r\.author_id = \(select auth\.uid\(\)\)[\s\S]*r\.version = p_expected_version/i],
+  ["unique username lookup isolated from client roles", /create table public\.user_profiles[\s\S]*create unique index user_profiles_username_ci_idx[\s\S]*revoke all on public\.user_profiles from public, anon, authenticated/i],
+  ["self sign-up username profile trigger", /create or replace function public\.create_user_profile[\s\S]*raw_user_meta_data[\s\S]*on_auth_user_created_profile/i],
 ];
 
 const content = (await Promise.all(files.map((file) => readFile(resolve(migrationDir, file), "utf8")))).join("\n");

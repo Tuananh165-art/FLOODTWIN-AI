@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { VIETNAM_BOUNDS } from "@/lib/geo/vietnam";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const reportInput = z.object({
   description: z.string().trim().min(8).max(1600),
-  latitude: z.number().min(10.25).max(12.75),
-  longitude: z.number().min(106.25).max(108.1),
+  latitude: z.number().min(VIETNAM_BOUNDS.south).max(VIETNAM_BOUNDS.north),
+  longitude: z.number().min(VIETNAM_BOUNDS.west).max(VIETNAM_BOUNDS.east),
   observedAt: z.string().datetime({ offset: true }).refine((value) => Date.parse(value) <= Date.now() + 5 * 60_000, "Thời điểm quan sát không thể ở tương lai."),
   dataMode: z.literal("real"),
   publicConsent: z.literal(true),
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
   const { data: { user } } = await client.auth.getUser();
   if (!user) return NextResponse.json({ error: "Vui lòng đăng nhập để gửi phản ánh." }, { status: 401 });
   const input = reportInput.safeParse(await request.json().catch(() => null));
-  if (!input.success) return NextResponse.json({ error: "Kiểm tra mô tả, thời gian và vị trí trong địa bàn Đồng Nai." }, { status: 400 });
+  if (!input.success) return NextResponse.json({ error: "Kiểm tra mô tả, thời gian và vị trí trong phạm vi Việt Nam." }, { status: 400 });
 
   const { data, error } = await client.from("reports").insert({
     author_id: user.id,

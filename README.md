@@ -1,6 +1,6 @@
 # FloodTwin AI
 
-FloodTwin AI là ứng dụng web tiếng Việt thử nghiệm để xem tín hiệu mưa, gửi và kiểm duyệt phản ánh hiện trường, rồi phát triển so sánh phương án di chuyển. Phạm vi nghiên cứu bao trùm địa bàn Đồng Nai sau hợp nhất, gồm Bình Phước trước đây.
+FloodTwin AI là ứng dụng web tiếng Việt thử nghiệm để xem tín hiệu mưa, gửi và kiểm duyệt phản ánh hiện trường, rồi so sánh phương án di chuyển. Có thể chọn tâm bản đồ Đồng Nai, TP. Hồ Chí Minh hoặc Toàn Việt Nam. Các API dùng khung tọa độ bao phủ Việt Nam để tra cứu, không phải ranh giới hành chính chính xác.
 
 Ứng dụng là công cụ thông tin tham khảo. Mưa dự báo không chứng minh đường ngập; không có báo cáo không có nghĩa là đường an toàn. FloodTwin không thay thế bản tin/cảnh báo chính thức và không bảo đảm tuyến đường an toàn.
 
@@ -8,15 +8,15 @@ FloodTwin AI là ứng dụng web tiếng Việt thử nghiệm để xem tín h
 
 - Dashboard responsive, bản đồ MapLibre với tile OpenStreetMap và attribution, chọn tọa độ và nút vị trí thiết bị.
 - API Open-Meteo cho dữ liệu điểm dự báo hiện tại và tối đa 48 mốc giờ; tổng mưa 1/3/6/24 giờ; quy tắc mưa thử nghiệm có phiên bản, không phải xác suất ngập.
-- FloodLab có tám kịch bản cục bộ, phát lại, reset và xuất cấu hình JSON; watermark luôn hiển thị và không ghi dữ liệu thật.
+- FloodLab có tám kịch bản cục bộ, phát lại, reset và xuất cấu hình JSON; watermark luôn hiển thị và không ghi dữ liệu thật. Đây là công cụ thử giao diện/quy trình, không phải mô hình dự báo.
 - Supabase migration với vai trò, RLS, audit trigger, public view đã lọc và bucket riêng tư.
-- Đăng nhập email/mật khẩu cho tài khoản admin cấp; API tạo phản ánh có RLS.
+- Đăng ký username/email/mật khẩu và đăng nhập username hoặc email qua Supabase; trigger tự cấp role member, còn moderator/admin vẫn được phân quyền riêng.
 - Endpoint DeepSeek phân tích văn bản theo lựa chọn đồng ý, kiểm tra JSON bằng Zod, giới hạn qua Upstash; lỗi không chặn gửi thủ công.
 - Endpoint tuyến ứng viên gọi ORS/Valhalla, ánh xạ đúng profile, cache hình học 30 phút, và tính số báo cáo đã xem xét còn hiệu lực trong bán kính 50m. Chưa tính độ phủ dữ liệu hoặc áp dụng đóng đường chính thức.
 - Xuất CSV/GeoJSON từ view công khai đã lọc, chỉ gồm báo cáo đã xem xét còn hiệu lực; CSV trung hòa công thức spreadsheet và GeoJSON dùng `[kinh độ, vĩ độ]`.
 - Danh mục yêu cầu có 276 dòng tại [`docs/roadmap-276.csv`](docs/roadmap-276.csv), sinh lại bằng script.
 
-Ảnh ở form hiện chỉ xem trước trên thiết bị; tải lên an toàn và phân tích ảnh chưa bật. So sánh tuyến hiện chỉ đối chiếu tuyến provider với báo cáo được công bố; chưa có lớp dữ liệu đủ để kết luận nguy cơ tuyến và chưa áp dụng lệnh đóng đường. Lịch sử báo cáo của thành viên và hàng chờ moderator đã có; export riêng tư theo tài khoản, thông báo, nhật ký sự kiện đầy đủ và deploy cloud thật còn trong roadmap. PWA chỉ cache app shell/tài nguyên cùng nguồn; API và tile OSM không được cache offline.
+Ảnh ở form hiện chỉ xem trước trên thiết bị; tải lên an toàn và phân tích ảnh chưa bật. So sánh tuyến hiện chỉ đối chiếu tuyến provider với báo cáo được công bố; chưa có lớp dữ liệu đủ để kết luận nguy cơ tuyến và chưa áp dụng lệnh đóng đường. Lịch sử báo cáo của thành viên và hàng chờ moderator đã có. Nút chuông hiện giải thích rằng trung tâm thông báo chưa được kết nối; không phát thông báo tự động. FloodCommand trong phiên bản này là hàng chờ kiểm duyệt, chưa điều phối ứng phó. Export riêng tư theo tài khoản, thông báo, nhật ký sự kiện đầy đủ và deploy cloud thật còn trong roadmap. PWA chỉ cache app shell/tài nguyên cùng nguồn; API và tile OSM không được cache offline.
 
 ## Chạy local
 
@@ -42,6 +42,7 @@ Lệnh trên chỉ dành cho máy chưa có `.env`; nếu tệp đã tồn tại
 - Supabase: làm theo [`docs/SUPABASE.md`](docs/SUPABASE.md).
 - Upstash, DeepSeek, ORS và Valhalla: làm theo [`docs/PROVIDERS.md`](docs/PROVIDERS.md).
 - Workflow demo, test, deploy và lỗi thường gặp: [`docs/HUONG-DAN-DEMO.md`](docs/HUONG-DAN-DEMO.md).
+- Kịch bản chạy thử mọi module và AI theo từng bước: [`docs/DEMO-SCRIPT-ALL-FEATURES.md`](docs/DEMO-SCRIPT-ALL-FEATURES.md).
 - Tính năng AI khả thi, trạng thái và workflow kiểm thử: [`docs/AI.md`](docs/AI.md).
 - Phạm vi dữ liệu, phương pháp và giới hạn: [`docs/PHUONG-PHAP-VA-DU-LIEU.md`](docs/PHUONG-PHAP-VA-DU-LIEU.md).
 - Tiến độ và tiêu chí: [`docs/implementation-roadmap.md`](docs/implementation-roadmap.md).

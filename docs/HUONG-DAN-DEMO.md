@@ -3,14 +3,16 @@
 ## Chạy local và thao tác màn hình
 
 1. Dùng Node 24; chạy `npm.cmd install`, rồi `npm.cmd run dev`.
-2. Mở `http://localhost:3000`; bản đồ tập trung tại Biên Hòa. Click bản đồ để chọn tọa độ, bấm nút ghim để xin vị trí trình duyệt (phải cấp quyền).
+2. Mở `http://localhost:3000`; chọn khu vực Đồng Nai, TP. Hồ Chí Minh hoặc Toàn Việt Nam ở mục Khu vực. Click bản đồ để chọn điểm và cập nhật dự báo; nút ghim xin vị trí trình duyệt (phải cấp quyền).
 3. Dùng **Lớp dữ liệu** để xem chú giải. Tile lấy từ OpenStreetMap và attribution ở góc bản đồ.
 4. Weather panel hiển thị tối đa 48 giờ dự báo và các tổng 1/3/6/24 giờ của Open-Meteo. Chờ lỗi mạng để xem trạng thái nguồn; đừng diễn giải lỗi thành nguy cơ thấp.
-5. Bấm **FloodLab** để xem watermark giả lập; chọn một trong tám kịch bản, phát lại vòng, chỉnh mưa, xuất cấu hình JSON và reset. Tất cả chỉ đổi trạng thái trong trình duyệt.
-6. Bấm **Gửi phản ánh**. Ảnh trong bản hiện tại chỉ có preview cục bộ; không gửi/tải lên. Có thể gửi nội dung bằng tài khoản Supabase đã cấp; quyết định moderation API yêu cầu vai trò moderator/admin.
-7. Chỉ bật consent AI khi muốn gửi phần mô tả tới DeepSeek. AI cần Supabase, Redis, DeepSeek key và model; nếu không, gửi thủ công vẫn hoạt động.
-8. FloodPath nhận A/B bằng cách chọn trên bản đồ hoặc sửa tọa độ, rồi lấy các tuyến ứng viên theo phương tiện. Hệ thống đếm báo cáo nhóm dự án đã xem xét còn hiệu lực trong bán kính 50m; con số này không cho biết tuyến an toàn và không tự đóng đường.
+5. Bấm **FloodLab** để xem watermark giả lập; chọn một trong tám kịch bản, phát lại vòng, chỉnh mưa, xuất cấu hình JSON và reset. Marker và lượng mưa minh họa thay đổi theo kịch bản. Thao tác kịch bản không gọi API thời tiết/tuyến/AI, không ghi DB hoặc gửi thông báo; bản đồ nền vẫn tải tile OSM.
+6. Bấm **Gửi phản ánh**. Ảnh trong bản hiện tại chỉ có preview cục bộ; không gửi/tải lên. Đăng ký tài khoản mới ngay tại hộp thoại; gửi phản ánh cần consent công khai. Quyết định moderation API vẫn yêu cầu moderator/admin.
+7. Chỉ bật consent AI khi muốn gửi phần mô tả tới dịch vụ AI. AI cần đăng nhập Supabase, Redis và cấu hình model/key ở server. Nếu AI trả lỗi, mã yêu cầu giúp đối chiếu log server; có thể bỏ qua gợi ý và gửi thủ công sau khi đăng nhập/đồng ý công khai.
+8. FloodPath nhận A/B bằng cách chọn trên bản đồ hoặc sửa tọa độ trong khung Việt Nam, rồi lấy các tuyến ứng viên theo phương tiện. Hệ thống đếm báo cáo nhóm dự án đã xem xét còn hiệu lực trong bán kính 50m; con số này không cho biết tuyến an toàn và không tự đóng đường. Xe máy dùng Valhalla; ô tô/đi bộ cần ORS_API_KEY.
 9. Trong **Báo cáo hiện trường**, tải CSV hoặc GeoJSON công khai. Chỉ các tóm tắt đã duyệt/còn hiệu lực được xuất; tọa độ đã làm tròn và không có email/nguyên văn mô tả.
+
+Mỗi mục có hộp **Cách dùng / Tác dụng / Giới hạn** ngay trên màn hình. Nút chuông cho biết trung tâm thông báo chưa có backend. **FloodCommand** hiện là tên hàng chờ moderator; chưa phải hệ thống điều phối hay gửi cảnh báo.
 
 ## Kịch bản demo 5 phút
 
@@ -54,9 +56,9 @@ Chưa cấu hình dự án cloud hay public deployment trong workspace. Không c
 
 - **Weather 503/502:** kiểm tra mạng và API Open-Meteo; UI giữ trạng thái nguồn lỗi, không lấy forecast cũ làm realtime.
 - **Auth 503:** thiếu Supabase URL/anon key hoặc chưa chạy migration.
-- **Auth 401:** tài khoản chưa được admin tạo, sai mật khẩu, hoặc xác nhận email chưa hoàn tất.
+- **Auth 401:** sai tên đăng nhập/email hoặc mật khẩu, hoặc xác nhận email chưa hoàn tất.
 - **Report 403:** kiểm tra RLS; không tắt RLS như cách sửa.
-- **AI 503:** thiếu Upstash, DeepSeek key/model hoặc network; gửi thủ công vẫn dùng được.
+- **AI 502/503/504:** xem `code` và `requestId` trong phản hồi rồi đối chiếu log server. Log chỉ ghi trạng thái provider/model/kích thước đầu ra, không ghi mô tả phản ánh; gửi thủ công vẫn dùng được.
 - **AI 429:** hạn mức hằng ngày; không xóa key/Redis để né quota.
 - **Routing 503:** thiếu key/Redis/provider; Valhalla community không SLA.
 - **Map trống:** kiểm tra kết nối tile và attribution controls; không tải hàng loạt tile.

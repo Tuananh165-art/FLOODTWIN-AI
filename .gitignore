@@ -17,3 +17,5 @@ yarn-debug.log*
 pnpm-debug.log*
 Thumbs.db
 Desktop.ini
+tmp/
+output/

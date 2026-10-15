@@ -10,6 +10,7 @@ export type PublicReport = { id: string; public_summary: string; verification_le
 type FloodMapProps = {
   selectedPoint: MapPoint;
   simulated: boolean;
+  scenarioId?: string;
   onPointSelected: (point: MapPoint) => void;
   routeLine: { type: "LineString"; coordinates: [number, number][] } | null;
   reports: PublicReport[];
@@ -24,7 +25,7 @@ const markerPin = (className: string) => {
   return element;
 };
 
-export function FloodMap({ selectedPoint, simulated, onPointSelected, routeLine, reports, className }: FloodMapProps) {
+export function FloodMap({ selectedPoint, simulated, scenarioId = "rain_rises", onPointSelected, routeLine, reports, className }: FloodMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const userMarkerRef = useRef<Marker | null>(null);
@@ -95,19 +96,25 @@ export function FloodMap({ selectedPoint, simulated, onPointSelected, routeLine,
     demoMarkersRef.current.forEach((marker) => marker.remove());
     demoMarkersRef.current = [];
     if (simulated) {
-      const scenarios = [
-        { lat: 10.956, lon: 106.838 },
-        { lat: 10.918, lon: 106.865 },
-        { lat: 11.028, lon: 107.079 },
-      ];
-      demoMarkersRef.current = scenarios.map(({ lat, lon }) =>
+      const offsets: Record<string, [number, number][]> = {
+        rain_rises: [[0, 0], [0.03, 0.025], [-0.02, 0.035]],
+        new_report: [[0.01, 0.01]],
+        old_photo: [[-0.02, 0.03]],
+        duplicate_burst: [[0, 0], [0.002, 0.001], [-0.001, 0.002], [0.001, -0.002]],
+        source_outage: [[0, 0]],
+        conflicting_reports: [[-0.006, -0.006], [0.006, 0.006]],
+        road_closure: [[0, 0], [0.035, 0.015]],
+        retract_decision: [],
+      };
+      const locations = offsets[scenarioId] ?? offsets.rain_rises;
+      demoMarkersRef.current = locations.map(([latOffset, lonOffset]) =>
         new maplibregl.Marker({ element: markerPin("demo-map-pin") })
-          .setLngLat([lon, lat])
-          .setPopup(new maplibregl.Popup({ offset: 18 }).setText("Tình huống mô phỏng — không phải báo cáo thực"))
+          .setLngLat([selectedPoint.lon + lonOffset, selectedPoint.lat + latOffset])
+          .setPopup(new maplibregl.Popup({ offset: 18 }).setText(`FloodLab · ${scenarioId} · tình huống giả lập, không phải báo cáo thực`))
           .addTo(map),
       );
     }
-  }, [simulated]);
+  }, [simulated, scenarioId, selectedPoint]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -159,7 +166,7 @@ export function FloodMap({ selectedPoint, simulated, onPointSelected, routeLine,
 
   return (
     <div className={`map-frame ${className ?? ""}`}>
-      <div ref={containerRef} className="map-surface" aria-label="Bản đồ Đồng Nai" />
+      <div ref={containerRef} className="map-surface" aria-label="Bản đồ khu vực đang chọn" />
       <button className="map-locate" onClick={locateUser} aria-label="Xem vị trí của tôi">
         <LocateFixed size={17} strokeWidth={1.8} />
       </button>

@@ -1,6 +1,6 @@
 # Tính năng AI: đã làm, có thể mở rộng và chưa bật
 
-Ứng dụng gọi DeepSeek ở server qua `DEEPSEEK_MODEL` trong `.env`. API key hiện chỉ được kiểm tra là có cấu hình, không được in ra tài liệu/log. Mẫu môi trường dùng `deepseek-v4-flash`. Phản hồi provider chưa được gọi trong lượt xác minh này vì yêu cầu phải có phiên Supabase đã đăng nhập, consent theo từng mô tả và Upstash để giới hạn chi phí.
+Ứng dụng gọi DeepSeek ở server qua `DEEPSEEK_MODEL` trong `.env`. API key hiện chỉ được kiểm tra là có cấu hình, không được in ra tài liệu/log. Mẫu môi trường dùng alias `deepseek-v4-flash`; DeepSeek hiện ghi alias này đã retired và request được định tuyến tới V4.1 Flash theo giá Flash. Phản hồi provider chưa được gọi trong lượt xác minh này vì yêu cầu phải có phiên Supabase đã đăng nhập, consent theo từng mô tả và Upstash để giới hạn chi phí. Kịch bản test tổng thể nằm ở [`DEMO-SCRIPT-ALL-FEATURES.md`](DEMO-SCRIPT-ALL-FEATURES.md).
 
 | Năng lực | Trạng thái | Dữ liệu vào/ra | Hàng rào |
 |---|---|---|---|
@@ -11,6 +11,10 @@
 | Phát hiện mâu thuẫn/tóm tắt sự kiện | Chưa bật | Có thể tổng hợp các báo cáo đã được quyền đọc, kèm ID và timestamp | Tách quan sát khác thời điểm khỏi mâu thuẫn; mọi kết luận cần liên kết chứng cứ; không tạo “sự thật hiện tại” từ lời kể |
 | Hỏi đáp có nguồn, soạn bản tin | Chưa bật | Có thể truy xuất từ public view/bản tin chính thức cho người dùng; moderator có thể nhận bản nháp | Không crawler; không đọc dữ liệu riêng trái quyền; chỉ người có quyền công bố; nguồn chính thức phải được nhập và dẫn link |
 | Quyết định duyệt, cấp quyền, đóng đường, cảnh báo | Không giao cho AI | Hành động nghiệp vụ được server/RLS/RPC và người có quyền xử lý | Model không có tools/quyền database/credential; không tự phát lệnh hoặc cảnh báo |
+
+## Đề xuất phạm vi
+
+Chưa nên thêm LangChain/RAG vào luồng hiện tại: trích xuất tình trạng từ một mô tả người dùng không cần kho tri thức, còn repo chưa có tập nguồn chính thức đã tuyển chọn và cập nhật. RAG với báo cáo cộng đồng chưa kiểm duyệt có thể khiến chatbot nói lại tin đồn như dữ kiện. Nếu sau này có kho bản tin chính thức, có thể làm hỏi đáp đơn giản chỉ truy xuất tài liệu đã duyệt, trả link/thời điểm nguồn và từ chối trả lời khi không có đoạn chứng cứ; vẫn gọi cùng DeepSeek và không cấp quyền hành động.
 
 ## Cách kiểm tra luồng AI hiện có
 

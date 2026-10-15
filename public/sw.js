@@ -1,4 +1,4 @@
-const CACHE_NAME = "floodtwin-shell-v1";
+const CACHE_NAME = "floodtwin-shell-v2";
 const APP_SHELL = ["/"];
 
 self.addEventListener("install", (event) => {
@@ -14,13 +14,10 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (request.method !== "GET" || url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
   if (url.pathname.startsWith("/_next/static/")) {
-    event.respondWith(caches.open(CACHE_NAME).then(async (cache) => {
-      const cached = await cache.match(request);
-      if (cached) return cached;
-      const response = await fetch(request);
-      if (response.ok) await cache.put(request, response.clone());
+    event.respondWith(fetch(request).then(async (response) => {
+      if (response.ok) await (await caches.open(CACHE_NAME)).put(request, response.clone());
       return response;
-    }));
+    }).catch(async () => (await caches.match(request)) || Response.error()));
     return;
   }
   if (request.mode === "navigate") {

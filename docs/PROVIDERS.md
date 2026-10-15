@@ -6,7 +6,7 @@
 
 ## DeepSeek
 
-Điền `DEEPSEEK_API_KEY` và giữ `DEEPSEEK_MODEL=deepseek-v4-flash` trong `.env` server. API dùng tương thích Chat Completions với JSON mode, đầu ra Zod và token cap. AI chỉ phân tích phần mô tả văn bản khi người dùng đăng nhập, bật checkbox đồng ý và bấm **Phân tích mô tả bằng AI**. Nội dung là dữ liệu không tin cậy; không gọi tool, không có quyền kiểm duyệt, và người gửi phải xem/sửa kết quả. Nếu DeepSeek/Redis lỗi, người dùng có thể gửi thủ công.
+Điền `DEEPSEEK_API_KEY` và giữ `DEEPSEEK_MODEL=deepseek-v4-flash` trong `.env` server. Theo bảng model hiện hành, đây là alias legacy vẫn được nhận nhưng đã retired; DeepSeek định tuyến request sang V4.1 Flash theo giá Flash. API dùng Chat Completions JSON mode, đầu ra Zod và token cap. AI chỉ phân tích phần mô tả văn bản khi người dùng đăng nhập, bật checkbox đồng ý và bấm **Phân tích mô tả bằng AI**. Nội dung là dữ liệu không tin cậy; không gọi tool, không có quyền kiểm duyệt, và người gửi phải xem/sửa kết quả. Nếu DeepSeek/Redis lỗi, người dùng có thể gửi thủ công.
 
 Đặt Upstash trước khi bật gọi AI: thiếu Redis hoặc không xác thực được limit sẽ khóa endpoint để tránh gọi provider không giới hạn. Hạn mức hiện tại: 20/người/ngày và 200/toàn app/ngày. Vision chưa bật; tên model và API key không chứng minh khả năng ảnh, cần smoke test riêng trước khi triển khai.
 
@@ -34,6 +34,7 @@ Tile OSM standard chỉ được lấy khi người xem mở vùng bản đồ, 
 | Biến | Nơi dùng | Bắt buộc để |
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser/server | Auth, lưu báo cáo |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server only | Tra username khi đăng nhập; không đưa vào browser |
 | `DEEPSEEK_API_KEY`, `DEEPSEEK_MODEL` | Server | AI văn bản |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Server | AI/Valhalla rate limit |
 | `ORS_API_KEY`, `ORS_BASE_URL` | Server | tuyến xe hơi/đi bộ |

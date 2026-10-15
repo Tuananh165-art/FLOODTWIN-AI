@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { reportExtractionSchema } from "@/lib/ai/report-schema";
+import { normalizeReportExtraction, reportExtractionSchema } from "@/lib/ai/report-schema";
 
-describe("DeepSeek report extraction contract", () => {
+describe("AI report extraction contract", () => {
   it("accepts a neutral extraction that preserves hearsay and uncertainty", () => {
     const result = reportExtractionSchema.safeParse({
       condition: "unclear",
@@ -30,5 +30,21 @@ describe("DeepSeek report extraction contract", () => {
       questions: [],
     });
     expect(result.success).toBe(false);
+  });
+
+  it("fills conservative defaults when the model returns an incomplete object", () => {
+    expect(normalizeReportExtraction({ condition: "flooding", missingDetails: "thời điểm" })).toMatchObject({
+      condition: "flooding",
+      sourceType: "unknown",
+      certainty: "unknown",
+      needsLocationConfirmation: true,
+      missingDetails: ["thời điểm"],
+      neutralSummary: "Chưa có tóm tắt; người gửi cần tự rà soát.",
+      questions: [],
+    });
+  });
+
+  it("does not try to normalize non-object output", () => {
+    expect(normalizeReportExtraction(["flooding"])).toBeNull();
   });
 });

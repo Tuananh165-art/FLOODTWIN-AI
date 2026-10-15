@@ -2,20 +2,16 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { assessRainSignal } from "@/lib/flood/risk";
 import { calculateRainAccumulations } from "@/lib/weather/accumulations";
+import { vietnamCoordinateQuerySchema } from "@/lib/geo/vietnam";
 
 export const runtime = "nodejs";
 
-const coordinates = z.object({
-  lat: z.coerce.number().min(10.25).max(12.75),
-  lon: z.coerce.number().min(106.25).max(108.1),
-});
-
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
-  const parsed = coordinates.safeParse({ lat: params.get("lat"), lon: params.get("lon") });
+  const parsed = vietnamCoordinateQuerySchema.safeParse({ lat: params.get("lat"), lon: params.get("lon") });
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Vị trí nằm ngoài phạm vi tra cứu Đồng Nai." }, { status: 400 });
+    return NextResponse.json({ error: "Vị trí nằm ngoài khung tọa độ tra cứu Việt Nam." }, { status: 400 });
   }
 
   const { lat, lon } = parsed.data;

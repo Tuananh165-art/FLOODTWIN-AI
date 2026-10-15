@@ -4,12 +4,13 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { countNearbyReviewedReports } from "@/lib/routing/evidence";
 import { getRouteProvider } from "@/lib/routing/profile";
 import { decodePolyline6 } from "@/lib/routing/polyline";
+import { vietnamPointSchema } from "@/lib/geo/vietnam";
 
 export const runtime = "nodejs";
 
 const requestSchema = z.object({
-  origin: z.object({ lat: z.number().min(10.25).max(12.75), lon: z.number().min(106.25).max(108.1) }),
-  destination: z.object({ lat: z.number().min(10.25).max(12.75), lon: z.number().min(106.25).max(108.1) }),
+  origin: vietnamPointSchema,
+  destination: vietnamPointSchema,
   mode: z.enum(["motorbike", "car", "walking"]),
 });
 
@@ -30,7 +31,7 @@ type Candidate = { id: string; label: string; geometry: { type: "LineString"; co
 
 export async function POST(request: Request) {
   const input = requestSchema.safeParse(await request.json().catch(() => null));
-  if (!input.success) return NextResponse.json({ error: "Điểm đầu/cuối hoặc phương tiện không hợp lệ trong khung tra cứu Đồng Nai." }, { status: 400 });
+  if (!input.success) return NextResponse.json({ error: "Điểm đầu/cuối phải nằm trong khung tọa độ tra cứu Việt Nam; hãy kiểm tra lại vị trí." }, { status: 400 });
   const selected = getRouteProvider(input.data.mode);
   const coordinates = [[input.data.origin.lon, input.data.origin.lat], [input.data.destination.lon, input.data.destination.lat]];
   const controller = AbortSignal.timeout(12_000);
