@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { normalizeReportExtraction } from "@/lib/ai/report-schema";
 import { parseModelJson } from "@/lib/ai/parse-model-json";
+import { checkAiRateLimit } from "@/lib/ai/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,24 +43,8 @@ export async function POST(request: Request) {
   const parsed = inputSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return jsonError("Nội dung không hợp lệ hoặc chưa đồng ý gửi tới AI.", 400);
 
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!redisUrl || !redisToken) return jsonError("Tạm khóa AI vì chưa cấu hình Upstash giới hạn lượt gọi.", 503);
-
-  try {
-    const { Redis } = await import("@upstash/redis");
-    const { Ratelimit } = await import("@upstash/ratelimit");
-    const redis = new Redis({ url: redisUrl, token: redisToken });
-    const limit = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(20, "1 d"), prefix: "floodtwin:ai:user" });
-    const { success } = await limit.limit(user.id);
-    if (!success) return jsonError("Bạn đã đạt giới hạn hỗ trợ AI trong ngày. Bạn vẫn có thể gửi phản ánh thủ công.", 429);
-
-    const globalLimit = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(200, "1 d"), prefix: "floodtwin:ai:global" });
-    const global = await globalLimit.limit("all");
-    if (!global.success) return jsonError("Hệ thống đã đạt giới hạn AI trong ngày.", 429);
-  } catch {
-    return jsonError("Không xác thực được hạn mức AI. Vui lòng thử lại sau.", 503);
-  }
+  const rateLimit = await checkAiRateLimit(user.id);
+  if (!rateLimit.allowed) return jsonError(rateLimit.error, rateLimit.status);
 
   const key = process.env.DEEPSEEK_API_KEY;
   const model = process.env.DEEPSEEK_MODEL;

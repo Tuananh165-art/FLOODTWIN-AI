@@ -107,6 +107,31 @@ test("opens distinct workspaces, shows module guidance and explains notification
   await expect(page.getByText("Thông báo chưa được kết nối")).toBeVisible();
 });
 
+test("answers product help questions with cited local sources and explicit DeepSeek consent", async ({ page }) => {
+  let payload: Record<string, unknown> | null = null;
+  await page.route("**/api/auth/session", (route) => route.fulfill({ json: { configured: true, user: { email: "member@example.test", username: "member", role: "member" } } }));
+  await page.route("**/api/ai/assistant", async (route) => {
+    payload = route.request().postDataJSON();
+    await route.fulfill({ json: {
+      answer: "FloodPath hiển thị tuyến ứng viên; hệ thống không xác nhận tuyến an toàn.",
+      sources: [{ id: "floodpath-help", title: "FloodPath và tuyến ứng viên", source: "Hướng dẫn giao diện · FloodPath", excerpt: "Tuyến hiển thị không được xác nhận an toàn." }],
+      provider: "deepseek", requestedModel: "deepseek-v4-flash", returnedModel: "deepseek-flash",
+    } });
+  });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Phương pháp & trợ giúp" }).click();
+  await expect(page.getByRole("heading", { name: "Trợ lý hướng dẫn sản phẩm" })).toBeVisible();
+  await page.getByRole("textbox", { name: "Câu hỏi" }).fill("FloodPath có xác nhận tuyến an toàn không?");
+  const ask = page.getByRole("button", { name: "Hỏi trợ lý" });
+  await expect(ask).toBeDisabled();
+  await page.getByLabel(/Tôi đồng ý gửi câu hỏi/).check();
+  await ask.click();
+  await expect(page.locator(".help-chat-answer")).toContainText("không xác nhận tuyến an toàn");
+  await expect(page.locator(".help-chat-sources")).toContainText("FloodPath và tuyến ứng viên");
+  await expect(page.locator(".help-chat-answer-title")).toContainText("deepseek-flash");
+  expect(payload).toMatchObject({ question: "FloodPath có xác nhận tuyến an toàn không?", consent: true });
+});
+
 test("selects a city-wide workspace and keeps browser simulation out of the report form", async ({ page }) => {
   const weatherRequests: string[] = [];
   page.on("request", (request) => { if (request.url().includes("/api/weather?")) weatherRequests.push(request.url()); });
