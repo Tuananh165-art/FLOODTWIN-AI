@@ -49,3 +49,5 @@
 .icon-action{min-width:38px;min-height:38px;display:grid;place-items:center}
 .metric-label,.metric-foot,.section-head p,.panel-caption,.source-row small,.lab-scenario small,.route-result small,.route-result p,.report-hint,.consent-row{line-height:1.45}
 @media(max-width:760px){.workspace-label{display:grid;grid-template-columns:auto minmax(130px,1fr);align-items:center;gap:6px;padding:0 1px 9px}.workspace-label select{margin-top:0;padding:7px 9px;font-size:13px}.workspace-label>small{grid-column:2;margin:0;font-size:10px}.section-guide{padding:12px}.section-guide p{font-size:12px}.notification-popover{right:-54px}.map-location-chip{min-width:0;max-width:calc(100% - 22px)}}
+
+.map-load-error{position:absolute;top:11px;left:50%;z-index:2;transform:translateX(-50%);max-width:calc(100% - 24px);padding:8px 11px;border:1px solid #f0d6aa;border-radius:6px;background:#fff8e9;color:#8a612b;box-shadow:0 2px 8px #17253b1a;text-align:center;font-size:11px;line-height:1.4;pointer-events:none}

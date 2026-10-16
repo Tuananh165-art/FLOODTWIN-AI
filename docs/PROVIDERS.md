@@ -41,3 +41,13 @@ Tile OSM standard chỉ được lấy khi người xem mở vùng bản đồ, 
 | `VALHALLA_BASE_URL` | Server | tuyến xe máy |
 
 `.env.example` là mẫu không chứa credential. `.env` và `.env.*` được ignore bởi Git.
+## Bản đồ nền
+
+Mặc định FloodTwin dùng raster tile chuẩn của OpenStreetMap qua MapLibre. Dịch vụ tile OSM là best-effort, không có SLA. Nếu người dùng không kết nối được tới `tile.openstreetmap.org` hoặc cần dịch vụ có quota và hỗ trợ vận hành, có thể dùng một MapLibre style URL từ nhà cung cấp như MapTiler:
+
+1. Tạo API key dành cho web app và giới hạn `Allowed HTTP origins` ở domain production (`floodtwin-ai.vercel.app`); thêm domain preview/local riêng nếu cần.
+2. Trong Vercel Project Settings → Environment Variables, đặt `NEXT_PUBLIC_MAP_STYLE_URL` thành URL style provider, ví dụ `https://api.maptiler.com/maps/streets-v4/style.json?key=<PUBLIC_BROWSER_KEY>`.
+3. Redeploy để Next.js nhúng giá trị public này vào client bundle. Xóa biến để trở về tile OSM mặc định.
+4. Kiểm tra trang production và xác nhận attribution của provider vẫn hiện ở góc bản đồ.
+
+Giá trị `NEXT_PUBLIC_MAP_STYLE_URL` và API key trong URL sẽ được trình duyệt nhìn thấy. Dùng API key loại browser/public, khóa theo HTTP origin và đặt budget/alert trong dashboard provider; không dùng service token bí mật ở biến `NEXT_PUBLIC_*`. Kiểm tra quota, điều khoản thương mại và chi phí hiện tại trực tiếp tại provider trước khi chọn gói.

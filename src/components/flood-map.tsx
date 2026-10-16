@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import maplibregl, { type GeoJSONSource, type MapMouseEvent, type Map as MapLibreMap, type Marker } from "maplibre-gl";
 import { LocateFixed } from "lucide-react";
 
@@ -28,6 +28,7 @@ const markerPin = (className: string) => {
 export function FloodMap({ selectedPoint, simulated, scenarioId = "rain_rises", onPointSelected, routeLine, reports, className }: FloodMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const [mapLoadError, setMapLoadError] = useState(false);
   const userMarkerRef = useRef<Marker | null>(null);
   const demoMarkersRef = useRef<Marker[]>([]);
   const reportMarkersRef = useRef<Marker[]>([]);
@@ -47,7 +48,7 @@ export function FloodMap({ selectedPoint, simulated, scenarioId = "rain_rises", 
       minZoom: 6,
       maxZoom: 18,
       attributionControl: false,
-      style: {
+      style: process.env.NEXT_PUBLIC_MAP_STYLE_URL || {
         version: 8,
         sources: {
           osm: {
@@ -63,6 +64,7 @@ export function FloodMap({ selectedPoint, simulated, scenarioId = "rain_rises", 
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     map.addControl(new maplibregl.AttributionControl({ compact: false }), "bottom-right");
+    map.on("error", () => setMapLoadError(true));
     map.on("click", (event: MapMouseEvent) => {
       callbackRef.current({ lat: event.lngLat.lat, lon: event.lngLat.lng });
     });
@@ -167,6 +169,11 @@ export function FloodMap({ selectedPoint, simulated, scenarioId = "rain_rises", 
   return (
     <div className={`map-frame ${className ?? ""}`}>
       <div ref={containerRef} className="map-surface" aria-label="Bản đồ khu vực đang chọn" />
+      {mapLoadError ? (
+        <div className="map-load-error" role="status">
+          Không tải được nền bản đồ. Kiểm tra kết nối hoặc cấu hình nhà cung cấp bản đồ.
+        </div>
+      ) : null}
       <button className="map-locate" onClick={locateUser} aria-label="Xem vị trí của tôi">
         <LocateFixed size={17} strokeWidth={1.8} />
       </button>
