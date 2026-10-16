@@ -70,6 +70,24 @@ type Section = "overview" | "pulse" | "path" | "reports" | "lab" | "sources";
 type Workspace = "dong_nai" | "ho_chi_minh" | "vietnam";
 type Session = { email: string; username?: string | null; role: "member" | "moderator" | "admin" } | null;
 type FeedStatus = "loading" | "available" | "unavailable" | "not_configured";
+type AIReportAnalysis = {
+  condition: "flooding" | "water_on_road" | "no_flood" | "other" | "unclear";
+  sourceType: "firsthand" | "hearsay" | "unknown";
+  certainty: "certain" | "uncertain" | "unknown";
+  reportedTime: string;
+  placeMentioned: string;
+  needsLocationConfirmation: boolean;
+  missingDetails: string[];
+  neutralSummary: string;
+  questions: string[];
+};
+const aiConditionLabels: Record<AIReportAnalysis["condition"], string> = {
+  flooding: "Có ngập theo mô tả",
+  water_on_road: "Có nước trên đường theo mô tả",
+  no_flood: "Mô tả nói không ngập",
+  other: "Tình trạng khác",
+  unclear: "Chưa rõ tình trạng",
+};
 const defaultPoint: MapPoint = { lat: 10.956, lon: 106.838 };
 const defaultDestination: MapPoint = { lat: 10.905, lon: 106.95 };
 const workspaceOptions: { id: Workspace; label: string; center: MapPoint }[] = [
@@ -393,10 +411,10 @@ function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess }: { lo
   const [image, setImage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [analysis, setAnalysis] = useState("");
+  const [analysis, setAnalysis] = useState<AIReportAnalysis | null>(null);
 
   async function analyzeDescription() {
-    setBusy(true); setError(""); setAnalysis("");
+    setBusy(true); setError(""); setAnalysis(null);
     try {
       const response = await fetch("/api/ai/analyze-report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ description, consent: aiConsent }) });
       const body = await response.json();
@@ -404,8 +422,7 @@ function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess }: { lo
         const trace = typeof body.requestId === "string" ? ` Mã yêu cầu: ${body.requestId}.` : "";
         throw new Error(`${body.error ?? "Chưa phân tích được nội dung."}${trace} AI là tùy chọn; bạn vẫn có thể gửi phản ánh bằng tay.`);
       }
-      const result = body.analysis;
-      setAnalysis(`${result.neutralSummary} · ${result.sourceType === "firsthand" ? "người gửi tự quan sát" : result.sourceType === "hearsay" ? "lời kể gián tiếp" : "chưa rõ nguồn"}${result.missingDetails.length ? ` · Cần bổ sung: ${result.missingDetails.join(", ")}` : ""}`);
+      setAnalysis(body.analysis as AIReportAnalysis);
     } catch (caught) { setError(caught instanceof Error ? caught.message : "Không kết nối được AI."); }
     finally { setBusy(false); }
   }
@@ -433,7 +450,17 @@ function ReportDialog({ location, userEmail, onLogin, onClose, onSuccess }: { lo
           <label className="consent-row"><input type="checkbox" checked={aiConsent} onChange={(event) => setAiConsent(event.target.checked)} /><span>Tôi đồng ý gửi phần mô tả (không gửi ảnh) tới dịch vụ AI để hỗ trợ phân tích. Có thể gửi phản ánh mà không bật lựa chọn này.</span></label>
           <label className="consent-row public-consent"><input type="checkbox" checked={publicConsent} onChange={(event) => setPublicConsent(event.target.checked)} /><span>Tôi đồng ý cho công khai tóm tắt do moderator biên tập cùng vị trí đã làm tròn xấp xỉ 100m sau khi duyệt. Email và nguyên văn báo cáo không hiển thị công khai.</span></label>
           {aiConsent ? <button className="secondary-button" disabled={busy || description.trim().length < 8} onClick={() => void analyzeDescription()}><Sparkles size={14} />{busy ? "Đang phân tích…" : "Phân tích mô tả bằng AI"}</button> : null}
-          {analysis ? <div className="inline-notice"><Sparkles size={15} />{analysis}</div> : null}
+          {analysis ? <div className="inline-notice" aria-live="polite"><Sparkles size={15} /><div><strong>Gợi ý AI — chưa được xác minh</strong><dl>
+            <dt>Tình trạng</dt><dd>{aiConditionLabels[analysis.condition] ?? "Chưa rõ tình trạng"}</dd>
+            <dt>Nguồn thông tin</dt><dd>{analysis.sourceType === "firsthand" ? "Người gửi tự quan sát" : analysis.sourceType === "hearsay" ? "Lời kể gián tiếp" : "Chưa rõ"}</dd>
+            <dt>Mức chắc chắn trong mô tả</dt><dd>{analysis.certainty === "certain" ? "Người gửi diễn đạt chắc chắn" : analysis.certainty === "uncertain" ? "Có yếu tố chưa chắc chắn" : "Chưa rõ"}</dd>
+            {analysis.reportedTime ? <><dt>Thời gian được nhắc</dt><dd>{analysis.reportedTime}</dd></> : null}
+            {analysis.placeMentioned ? <><dt>Địa điểm được nhắc</dt><dd>{analysis.placeMentioned}</dd></> : null}
+            <dt>Vị trí chính xác</dt><dd>{analysis.needsLocationConfirmation ? "Cần người gửi xác nhận" : "Được nhắc trong mô tả; vẫn cần kiểm tra"}</dd>
+            <dt>Tóm tắt</dt><dd>{analysis.neutralSummary}</dd>
+            {analysis.missingDetails.length ? <><dt>Cần bổ sung</dt><dd>{analysis.missingDetails.join(", ")}</dd></> : null}
+            {analysis.questions.length ? <><dt>Câu hỏi gợi ý</dt><dd><ul>{analysis.questions.map((question, index) => <li key={`${index}-${question}`}>{question}</li>)}</ul></dd></> : null}
+          </dl><small>AI không xác minh sự việc hoặc vị trí. Hãy tự kiểm tra và sửa nội dung báo cáo trước khi gửi.</small></div></div> : null}
           {error ? <div className="inline-notice error-notice" role="alert">{error}</div> : null}
         </div>
         <footer><span><ShieldCheck size={14} /> Chờ kiểm duyệt · chưa phải cảnh báo</span><button className="primary-button" disabled={description.trim().length < 8 || busy || !publicConsent} onClick={() => void submitReport()}><ArrowRight size={15} />{userEmail ? (busy ? "Đang gửi…" : "Gửi phản ánh") : "Đăng nhập để gửi"}</button></footer>

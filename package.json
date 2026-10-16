@@ -17,7 +17,9 @@
     "test:e2e:ui": "playwright test --ui",
     "verify:db": "node scripts/verify-migrations.mjs",
     "roadmap:generate": "python scripts/generate-roadmap.py",
-    "smoke:providers": "node scripts/smoke-providers.mjs"
+    "smoke:providers": "node scripts/smoke-providers.mjs",
+    "smoke:ai": "node scripts/evaluate-ai-smoke.mjs",
+    "evaluate:ai": "node scripts/evaluate-ai-smoke.mjs --benchmark"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",
