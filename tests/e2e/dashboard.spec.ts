@@ -140,8 +140,9 @@ test("submits opted-in report text to AI and renders the normalized suggestion",
   await page.locator(".consent-row").first().locator("input").check();
   await page.getByRole("button", { name: "Phân tích mô tả bằng AI" }).click();
   await expect(page.locator(".report-body .inline-notice")).toContainText("Người gửi nghe kể về nước đọng tối qua.");
-  await expect(page.locator(".report-body .inline-notice")).toContainText("lời kể gián tiếp");
-  await expect(page.locator(".report-body .inline-notice")).toContainText("Cần bổ sung: vị trí chính xác");
+  await expect(page.locator(".report-body .inline-notice")).toContainText("Lời kể gián tiếp");
+  const missingDetails = page.locator(".report-body .inline-notice dt").filter({ hasText: "Cần bổ sung" }).locator("xpath=following-sibling::dd[1]");
+  await expect(missingDetails).toHaveText("vị trí chính xác");
   expect(payload).toMatchObject({
     description: "Tôi nghe người dân nói đoạn đường gần chợ có nước đọng tối qua.",
     consent: true,
